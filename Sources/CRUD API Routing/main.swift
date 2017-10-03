@@ -9,7 +9,7 @@
 import Foundation
 
 protocol Persistable {
-    associatedtype Model: Codable
+    associatedtype Model: Codable = Self
     associatedtype I: Codable
     // create
     static func create(model: Model) throws -> Model
@@ -68,7 +68,6 @@ struct Employee: Codable {
 }
 
 extension Employee: Persistable {
-    typealias Model = Employee
     typealias I = String
 }
 
