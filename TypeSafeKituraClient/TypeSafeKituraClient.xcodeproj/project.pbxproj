@@ -6,6 +6,10 @@
 	objectVersion = 48;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		671677111F83B53E007DAA76 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671677101F83B53E007DAA76 /* main.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		671676F91F8395D9007DAA76 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -21,6 +25,7 @@
 /* Begin PBXFileReference section */
 		671676FB1F8395D9007DAA76 /* libTypeSafeKituraClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTypeSafeKituraClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6716770C1F83987B007DAA76 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		671677101F83B53E007DAA76 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +58,7 @@
 		6716770A1F83987B007DAA76 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6716770F1F83B524007DAA76 /* CRUD API Routing */,
 				6716770B1F83987B007DAA76 /* TypeSafeKituraClient */,
 			);
 			path = Sources;
@@ -64,6 +70,14 @@
 				6716770C1F83987B007DAA76 /* main.swift */,
 			);
 			path = TypeSafeKituraClient;
+			sourceTree = "<group>";
+		};
+		6716770F1F83B524007DAA76 /* CRUD API Routing */ = {
+			isa = PBXGroup;
+			children = (
+				671677101F83B53E007DAA76 /* main.swift */,
+			);
+			path = "CRUD API Routing";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				671677111F83B53E007DAA76 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,7 +259,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "TypeSafeKituraClient/TypeSafeKituraClient-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -261,7 +275,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "TypeSafeKituraClient/TypeSafeKituraClient-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

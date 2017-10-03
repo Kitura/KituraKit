@@ -7,7 +7,8 @@ let package = Package(
     name: "TypeSafeKituraClient",
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-         .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", from: "0.0.0"),
+        .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMinor(from: "1.7.0")),
+        .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", from: "0.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
