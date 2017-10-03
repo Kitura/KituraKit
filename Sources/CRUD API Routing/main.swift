@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol MyPersistable {
+protocol Persistable {
     associatedtype Model: Codable
     associatedtype I: Codable
     // create
@@ -25,36 +25,38 @@ protocol MyPersistable {
     static func delete() throws -> Void
 }
 
-extension MyPersistable {
+extension Persistable {
+    
     // create
     static func create(model: Model) throws -> Model {
-        // Perform REST call...
+        // Perform post REST call...
         return model
     }
     // read
     static func read(id: I) throws -> [Model] {
-        // Perform REST call...
+        // Perform get REST call...
         let model: [Model] = []
         return model
     }
     // read all
     static func read() throws -> [Model] {
-        // Perform REST call...
+        // Perform get REST call...
+        
         let model: [Model] = []
         return model
     }
     // update
     static func update(id: I, model: Model) throws -> Model {
-        // Perform REST call...
+        // Perform put REST call...
         return model
     }
     // delete
     static func delete(id: I) throws -> Void {
-        // Perform REST call...
+        // Perform delete REST call...
     }
     // delete all
     static func delete() throws -> Void {
-        // Perform REST call...
+        // Perform delete REST call...
     }
 }
 
@@ -65,9 +67,9 @@ struct Employee: Codable {
     let name: String
 }
 
-extension Employee: MyPersistable {
+extension Employee: Persistable {
     typealias Model = Employee
-    typealias I = Employee
+    typealias I = String
 }
 
 let Emp1 = Employee(id: "id", name: "name")

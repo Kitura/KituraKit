@@ -24,7 +24,7 @@
 
 /* Begin PBXFileReference section */
 		671676FB1F8395D9007DAA76 /* libTypeSafeKituraClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTypeSafeKituraClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6716770C1F83987B007DAA76 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		6716770C1F83987B007DAA76 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		671677101F83B53E007DAA76 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,7 +67,7 @@
 		6716770B1F83987B007DAA76 /* TypeSafeKituraClient */ = {
 			isa = PBXGroup;
 			children = (
-				6716770C1F83987B007DAA76 /* main.swift */,
+				6716770C1F83987B007DAA76 /* Client.swift */,
 			);
 			path = TypeSafeKituraClient;
 			sourceTree = "<group>";
