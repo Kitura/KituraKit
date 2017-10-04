@@ -36,48 +36,39 @@ public class Client {
   
     // GET - basic type safe routing
     public func get<O: Codable>(_ route: String, resultHandler: @escaping ArrayCodableClosure<O>) {
-        guard let url = URL(string: baseURL + route) else {
-            Log.error("Failed to create URL object from: \(baseURL)")
-            // Using nil value as the mechanism to let the user of the library that 
-            // an error occured...
-            // Another approach could be to pass an error object also to resultHandler...
-            // But... is that better?  
-            resultHandler(nil)
-            return
-        }
-
-        // Using URLSession as a steppingstone for now...
-        // TODO: Use SwiftyRequest instead
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        // Build task for request
-        let requestTask = URLSession(configuration: .default).dataTask(with: request) { data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse else {
-                Log.error("GET request failed: \(String(describing: error))")
-                resultHandler(nil)
-                return
-            }
-
-            Log.verbose("HTTP response code: \(httpResponse.statusCode)")
-            // OK = 200
-            if httpResponse.statusCode == 200, let data = data {
+        let url: String = baseURL + route
+        let request = RestRequest(method: .get, url: url, acceptType: "application/json")
+        request.responseData { response in
+            switch response.result {
+            case .success(let data):
                 let items: [O]? = try? JSONDecoder().decode([O].self, from: data)
-                resultHandler(items)
-             } else {
-                Log.error("Failed to process response.")
-                resultHandler(nil)
-            }
+                resultHandler(items)               
+            case .failure(let error):
+                Log.error("GET failure: \(error)")
+                // Using nil value as the mechanism to let the user that 
+                // an error occured...
+                // Another approach could be to pass an error object also to resultHandler...
+                // But... is that better? Using nil makes the API simpler...
+                resultHandler(nil)            
+            }           
         }
-
-        Log.verbose("Successfully built HTTP GET request for \(url)")
-        requestTask.resume()
     }
 
     // POST - basic type safe routing
 	public func post<I: Codable, O: Codable>(_ route: String, data: I, resultHandler: @escaping CodableClosure<O>) {
-        //TODO
-        resultHandler(nil)
+        let url: String = baseURL + route
+        let encoded = try? JSONEncoder().encode(data)
+        let request = RestRequest(method: .post, url: url, acceptType: "application/json", messageBody: encoded)
+        request.responseData { response in
+            switch response.result {
+            case .success(let data):
+                let item: O? = try? JSONDecoder().decode(O.self, from: data)
+                resultHandler(item)               
+            case .failure(let error):
+                Log.error("POST failure: \(error)")
+                resultHandler(nil)               
+            }           
+        }
     }
 
     //TODO - Add addtional methods for PUT, DELETE, PATCH

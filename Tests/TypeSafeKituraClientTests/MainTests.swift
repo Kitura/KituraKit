@@ -60,12 +60,12 @@ class MainTests: XCTestCase {
   // :-/ Not good to have to add a dependency to Package.swift when it is only neede for testing... but
   // that may be the option unless we want to mockup our own server, which may create unnecessary work for us.
 
-  // Note that as of now, given how the tests are written, they will fail (unless you have a kitura server running
-  // locally that can process the requests).
+  // Note that as of now, given how the tests are written, they will fail, UNLESS you have a kitura server running
+  // locally that can process the requests.
 
   func testClientGet() {
-    // TODO
-    let expectation1 = expectation(description: "A response is received from the server -> array of user objects.")
+    // TODO - needs improvement
+    let expectation1 = expectation(description: "A response is received from the server -> array of users")
     // Define client
     let client = Client(baseURL: "http://localhost:8080")
     // Invoke GET operation on library
@@ -82,19 +82,21 @@ class MainTests: XCTestCase {
   }
 
    func testClientPost() {
-    // TODO
-    let expectation1 = expectation(description: "A response is received from the server -> new user object.")
+    // TODO - needs improvement
+    let expectation1 = expectation(description: "A response is received from the server -> user")
     // Define client
     let client = Client(baseURL: "http://localhost:8080")
     // Invoke GET operation on library
-    let user = User(id: 10, name: "John Doe")
-    client.post("/users", data: user) { (user: User?) -> Void in
+    let expectedUser = User(id: 10, name: "John Doe")
+    client.post("/users", data: expectedUser) { (user: User?) -> Void in
       guard let user = user else {
         XCTFail("Failed to post user!")
         expectation1.fulfill()
         return
       }
       print("User: \(user)")
+      XCTAssertEqual(user.id, expectedUser.id)
+      XCTAssertEqual(user.name, expectedUser.name)
       expectation1.fulfill()
     }
     waitForExpectations(timeout: 10.0, handler: nil)
