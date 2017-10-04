@@ -36,72 +36,160 @@ public struct User: Codable {
 }
 
 class MainTests: XCTestCase {
-
-  static var allTests: [(String, (MainTests) -> () throws -> Void)] {
-    return [
-      ("testClientGet", testClientGet),
-      ("testClientPost", testClientPost)
-    ]
-  }
-
-
-  override func setUp() {
-    super.setUp()
-  }
-
-  override func tearDown() {
-    super.tearDown()
-  }
-
-  // TODO: See test cases we implemented for Kitura-Starter (we may need something similar)
-  // https://github.com/IBM-Bluemix/Kitura-Starter/blob/master/Tests/ControllerTests/RouteTests.swift
-  // I don't see a way to specify test-only dependencies... they removed this capability 
-  // Hence, we may need to add Kitura as a dependency just for testing...
-  // :-/ Not good to have to add a dependency to Package.swift when it is only neede for testing... but
-  // that may be the option unless we want to mockup our own server, which may create unnecessary work for us.
-
-  // Note that as of now, given how the tests are written, they will fail, UNLESS you have a kitura server running
-  // locally that can process the requests.
-
-  func testClientGet() {
-    // TODO - needs improvement
-    let expectation1 = expectation(description: "A response is received from the server -> array of users")
-    // Define client
-    let client = Client(baseURL: "http://localhost:8080")
-    // Invoke GET operation on library
-    client.get("/users") { (users: [User]?) -> Void in
-      guard let users = users else {
-        XCTFail("Failed to get users!")
-        expectation1.fulfill()
-        return
-      }
-      print("Users: \(users)")
-      expectation1.fulfill()
+    
+    static var allTests: [(String, (MainTests) -> () throws -> Void)] {
+        return [
+            ("testClientGet", testClientGet),
+            ("testClientGetSingle", testClientGetSingle),
+            ("testClientPost", testClientPost),
+            ("testClientPut", testClientPut),
+            ("testClientPatch", testClientPatch),
+            ("testClientDelete", testClientDelete),
+            ("testClientDeleteSingle", testClientDeleteSingle)
+        ]
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
-  }
-
-   func testClientPost() {
-    // TODO - needs improvement
-    let expectation1 = expectation(description: "A response is received from the server -> user")
-    // Define client
-    let client = Client(baseURL: "http://localhost:8080")
-    // Invoke GET operation on library
-    let expectedUser = User(id: 10, name: "John Doe")
-    client.post("/users", data: expectedUser) { (user: User?) -> Void in
-      guard let user = user else {
-        XCTFail("Failed to post user!")
-        expectation1.fulfill()
-        return
-      }
-      print("User: \(user)")
-      XCTAssertEqual(user.id, expectedUser.id)
-      XCTAssertEqual(user.name, expectedUser.name)
-      expectation1.fulfill()
+    
+    override func setUp() {
+        super.setUp()
     }
-    waitForExpectations(timeout: 10.0, handler: nil)
-  }
-
-  //TODO - Add additional test cases
-
+    
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    // TODO: See test cases we implemented for Kitura-Starter (we may need something similar)
+    // https://github.com/IBM-Bluemix/Kitura-Starter/blob/master/Tests/ControllerTests/RouteTests.swift
+    // I don't see a way to specify test-only dependencies... they removed this capability
+    // Hence, we may need to add Kitura as a dependency just for testing...
+    // :-/ Not good to have to add a dependency to Package.swift when it is only neede for testing... but
+    // that may be the option unless we want to mockup our own server, which may create unnecessary work for us.
+    
+    // Note that as of now, given how the tests are written, they will fail, UNLESS you have a kitura server running
+    // locally that can process the requests.
+    
+    func testClientGet() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        client.get("/users") { (users: [User]?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get users!")
+                expectation1.fulfill()
+                return
+            }
+            print("Users: \(users)")
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testClientGetSingle() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        client.get("/users", identifier: "1234") { (user: User?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get user!")
+                expectation1.fulfill()
+                return
+            }
+            print("User: \(user)")
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testClientPost() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        let expectedUser = User(id: 10, name: "John Doe")
+        client.post("/users", data: expectedUser) { (user: User?) -> Void in
+            guard let user = user else {
+                XCTFail("Failed to post user!")
+                expectation1.fulfill()
+                return
+            }
+            print("User: \(user)")
+            XCTAssertEqual(user.id, expectedUser.id)
+            XCTAssertEqual(user.name, expectedUser.name)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testClientPut() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        let expectedUser = User(id: 10, name: "John Doe")
+        client.put("/users", identifier: "1234", data: expectedUser) { (user: User?) -> Void in
+            guard let user = user else {
+                XCTFail("Failed to put user!")
+                expectation1.fulfill()
+                return
+            }
+            print("User: \(user)")
+            XCTAssertEqual(user.id, expectedUser.id)
+            XCTAssertEqual(user.name, expectedUser.name)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testClientPatch() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        let expectedUser = User(id: 10, name: "John Doe")
+        client.patch("/users", identifier: "1234", data: expectedUser) { (user: User?) -> Void in
+            guard let user = user else {
+                XCTFail("Failed to patch user!")
+                expectation1.fulfill()
+                return
+            }
+            print("User: \(user)")
+            XCTAssertEqual(user.id, expectedUser.id)
+            XCTAssertEqual(user.name, expectedUser.name)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testClientDelete() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "No response is received from the server")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        client.delete("/users") { () -> Void in
+            print("Deleted")
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testClientDeleteSingle() {
+        // TODO - needs improvement
+        let expectation1 = expectation(description: "No response is received from the server")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        client.patch("/users", identifier: "1234") { () -> Void in
+            print("Deleted single")
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
 }

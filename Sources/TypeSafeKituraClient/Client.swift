@@ -21,6 +21,7 @@ import SwiftyRequest
 public class Client {
 
     // Define closures
+    public typealias VoidClosure = () -> Void
     public typealias CodableClosure<O: Codable> = (O?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?) -> Void
     
@@ -45,12 +46,24 @@ public class Client {
                 resultHandler(items)               
             case .failure(let error):
                 Log.error("GET failure: \(error)")
-                // Using nil value as the mechanism to let the user that 
-                // an error occured...
-                // Another approach could be to pass an error object also to resultHandler...
-                // But... is that better? Using nil makes the API simpler...
                 resultHandler(nil)            
             }           
+        }
+    }
+    
+    // GET single - basic type safe routing
+    public func get<I: Codable, O: Codable>(_ route: String, identifier: I, resultHandler: @escaping CodableClosure<O>) {
+        let url: String = baseURL + route + "/:" + identifier
+        let request = RestRequest(method: .get, url: url, acceptType: "application/json")
+        request.responseData { response in
+            switch response.result {
+            case .success(let data):
+                let items: O? = try? JSONDecoder().decode(O.self, from: data)
+                resultHandler(items)
+            case .failure(let error):
+                Log.error("GET failure: \(error)")
+                resultHandler(nil)
+            }
         }
     }
 
@@ -70,127 +83,74 @@ public class Client {
             }           
         }
     }
+    
+    // PUT - basic type safe routing
+    public func put<I: Codable, II: Codable, O: Codable>(_ route: String, identifier: I, data: II, resultHandler: @escaping CodableClosure<O>) {
+        let url: String = baseURL + route + "/:" + identifier
+        let encoded = try? JSONEncoder().encode(data)
+        let request = RestRequest(method: .put, url: url, acceptType: "application/json", messageBody: encoded)
+        request.responseData { response in
+            switch response.result {
+            case .success(let data):
+                let item: O? = try? JSONDecoder().decode(O.self, from: data)
+                resultHandler(item)
+            case .failure(let error):
+                Log.error("PUT failure: \(error)")
+                resultHandler(nil)
+            }
+        }
+    }
+    
+    // PATCH - basic type safe routing
+    public func patch<I: Codable, II: Codable, O: Codable>(_ route: String, identifier: I, data: II, resultHandler: @escaping CodableClosure<O>) {
+        let url: String = baseURL + route + "/:" + identifier
+        let encoded = try? JSONEncoder().encode(data)
+        let request = RestRequest(method: .patch, url: url, acceptType: "application/json", messageBody: encoded)
+        request.responseData { response in
+            switch response.result {
+            case .success(let data):
+                let item: O? = try? JSONDecoder().decode(O.self, from: data)
+                resultHandler(item)
+            case .failure(let error):
+                Log.error("PATCH failure: \(error)")
+                resultHandler(nil)
+            }
+        }
+    }
+    
+    // DELETE - basic type safe routing
+    public func delete(_ route: String, resultHandler: @escaping VoidClosure) {
+        let url: String = baseURL + route
+        let request = RestRequest(method: .delete, url: url, acceptType: "application/json")
+        request.responseData { response in
+            switch response.result {
+            case .success():
+                Log.success("DELETED")
+                resultHandler(nil)
+            case .failure(let error):
+                Log.error("DELETE failure: \(error)")
+                resultHandler(nil)
+            }
+        }
+    }
+    
+    // DELETE single - basic type safe routing
+    public func delete<I: Codable>(_ route: String, identifier: I, resultHandler: @escaping VoidClosure) {
+        let url: String = baseURL + route + "/:" + identifier
+        let request = RestRequest(method: .delete, url: url, acceptType: "application/json")
+        request.responseData { response in
+            switch response.result {
+            case .success():
+                Log.success("DELETED single")
+                resultHandler(item)
+            case .failure(let error):
+                Log.error("DELETE failure: \(error)")
+                resultHandler(nil)
+            }
+        }
+    }
 
-    //TODO - Add addtional methods for PUT, DELETE, PATCH
     // TODO - Once we have completed basic type safe routing on the client, 
     // we will start tackling the CRUD API (which uses the Persistable protocol)
-
-  /*    
-    client.get(path: "/users/1") { (result: Employee?, error: Error?) in
-    
-    }
-     */
-    
-    /*
-    func get<ReturnType: Codable>(path: String, id: String, onCompletion: (ReturnType?, Error?) -> Void) {
-        // construct the GET request
-        
-        let url = "\(serverURL)/\(path):\(id)"
-        let requestParameters = RestRequest(method: .post,
-                                            url: url,
-                                            credentials: .apiKey)
-        let request = RestRequest(requestParameters)
-        request.responseData(responseToError: responseToError) { response in
-            
-            if let value = try? JSONDecoder.decode(ReturnType.self, data: responseData) {
-                onCompletion(value, nil)
-            } else {
-                onCompletion(nil, RequestError(message: ""))
-            }
-            
-        }
-    }
-    
-    func getAll<ReturnType: Codable>(path: String, onCompletion: (ReturnType?, Error?) -> Void) {
-        // construct the GET request
-        
-        let url = "\(serverURL)/\(path)"
-        let requestParameters = RestRequest(method: .post,
-                                            url: url,
-                                            credentials: .apiKey)
-        let request = RestRequest(requestParameters)
-        request.responseData(responseToError: responseToError) { response in
-            
-            if let value = try? JSONDecoder.decode(ReturnType.self, data: responseData) {
-                onCompletion(value, nil)
-            } else {
-                onCompletion(nil, RequestError(message: ""))
-            }
-            
-        }
-    }
-    
-    func post<ReturnType: Codable>(path: String, data: Codable, onCompletion: (ReturnType?, error?) -> Void) {
-        // construct the POST request
-        
-        let url = "\(serverURL)/\(path)"
-        let param = try JSONDecoder().decode(data.self, from: data)
-        let requestParameters = RestRequest(method: .post,
-                                            url: url,
-                                            credentials: .apiKey,
-                                            message: param)
-        let request = RestRequest(requestParameters)
-        request.responseData(responseToError: responseToError) { result in
-            
-            if let value = try? JSONEncoder.encode(result) {
-                response.send(data: value)
-            } else {
-                response.status(.internalServerError)
-            }
-            
-        }
-    }
-    
-    func put<ReturnType: Codable>(path: String, id: String, data: Codable, onCompletion: (ReturnType?, error?) -> Void) {
-        // construct the POST request
-        
-        let url = "\(serverURL)/\(path):\(id)"
-        let param = try JSONDecoder().decode(data.self, from: data)
-        let requestParameters = RestRequest(method: .post,
-                                            url: url,
-                                            credentials: .apiKey,
-                                            message: param)
-        let request = RestRequest(requestParameters)
-        request.responseData(responseToError: responseToError) { result in
-            
-            if let value = try? JSONEncoder.encode(result) {
-                response.send(data: value)
-            } else {
-                response.status(.internalServerError)
-            }
-            
-        }
-    }
-    
-    func delete<ReturnType: Codable>(path: String, id: String, onCompletion: (ReturnType?, error?) -> Void) {
-        // construct the POST request
-        
-        let url = "\(serverURL)/\(path):\(id)"
-        let requestParameters = RestRequest(method: .post,
-                                            url: url,
-                                            credentials: .apiKey)
-        let request = RestRequest(requestParameters)
-        request.responseData(responseToError: responseToError) { result in
-            
-            print(result)
-            
-        }
-    }
-    
-    func deleteAll<ReturnType: Codable>(path: String, onCompletion: (ReturnType?, error?) -> Void) {
-        // construct the POST request
-        
-        let url = "\(serverURL)/\(path)"
-        let requestParameters = RestRequest(method: .post,
-                                            url: url,
-                                            credentials: .apiKey)
-        let request = RestRequest(requestParameters)
-        request.responseData(responseToError: responseToError) { result in
-            
-            print(result)
-            
-        }
-    }
-    */
     
 }
