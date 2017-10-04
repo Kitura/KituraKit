@@ -26,6 +26,9 @@ import Foundation
 @testable import TypeSafeKituraClient
 
 // Models/entities
+// I am now wondering if we should make all entities model conform to Codable
+// and a new custom protocol that requires an identifier field...
+// if we do so, then we don't need to pass the identifier field as a separate parameter... TBD...
 public struct User: Codable {
     public let id: Int
     public let name: String
@@ -91,7 +94,7 @@ class MainTests: XCTestCase {
         // Define client
         let client = Client(baseURL: "http://localhost:8080")
         // Invoke GET operation on library
-        client.get("/users", identifier: "20") { (user: User?) -> Void in
+        client.get("/users", identifier: "1") { (user: User?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to get user!")
                 expectation1.fulfill()
@@ -130,8 +133,8 @@ class MainTests: XCTestCase {
         // Define client
         let client = Client(baseURL: "http://localhost:8080")
         // Invoke GET operation on library
-        let expectedUser = User(id: 20, name: "John Doe")
-        client.put("/users", identifier: expectedUser.id, data: expectedUser) { (user: User?) -> Void in
+        let expectedUser = User(id: 10, name: "John Doe")
+        client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to put user!")
                 expectation1.fulfill()
@@ -151,8 +154,8 @@ class MainTests: XCTestCase {
         // Define client
         let client = Client(baseURL: "http://localhost:8080")
         // Invoke GET operation on library
-        let expectedUser = User(id: 30, name: "John Doe")
-        client.patch("/users", identifier: "10", data: expectedUser) { (user: User?) -> Void in
+        let expectedUser = User(id: 10, name: "John Doe")
+        client.patch("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to patch user!")
                 expectation1.fulfill()
@@ -161,6 +164,23 @@ class MainTests: XCTestCase {
             print("User: \(user)")
             XCTAssertEqual(user.id, expectedUser.id)
             XCTAssertEqual(user.name, expectedUser.name)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+
+     func testClientDeleteSingle() {
+        // TODO - needs improvement
+        // Hmm... we may need to update our library since given how the API is at the moment,
+        // the user has no idea if his/her request failed or succeeded.
+        let expectation1 = expectation(description: "No response is received from the server")
+        // Define client
+        let client = Client(baseURL: "http://localhost:8080")
+        // Invoke GET operation on library
+        client.delete("/users", identifier: "10") { (error: Error?) -> Void in
+            if let _ = error {
+                XCTFail("Failed to delete user!")
+            }
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 10.0, handler: nil)

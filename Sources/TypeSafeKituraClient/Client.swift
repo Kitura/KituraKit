@@ -17,11 +17,12 @@
 import Foundation
 import LoggerAPI
 import SwiftyRequest
+import Models
 
 public class Client {
 
     // Define closures
-    public typealias VoidClosure = () -> Void
+    public typealias VoidClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?) -> Void
     
@@ -52,8 +53,8 @@ public class Client {
     }
     
     // GET single - basic type safe routing
-    public func get<I: Codable, O: Codable>(_ route: String, identifier: I, resultHandler: @escaping CodableClosure<O>) {
-        let url: String = baseURL + route + "/" + String(describing: identifier)
+    public func get<O: Codable>(_ route: String, identifier: String, resultHandler: @escaping CodableClosure<O>) {
+        let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(method: .get, url: url, acceptType: "application/json")
         request.responseData { response in
             switch response.result {
@@ -85,8 +86,8 @@ public class Client {
     }
     
     // PUT - basic type safe routing
-    public func put<I: Codable, II: Codable, O: Codable>(_ route: String, identifier: I, data: II, resultHandler: @escaping CodableClosure<O>) {
-        let url: String = baseURL + route + "/" + String(describing: identifier)
+    public func put<I: Codable, O: Codable>(_ route: String, identifier: String, data: I, resultHandler: @escaping CodableClosure<O>) {
+        let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url, acceptType: "application/json", messageBody: encoded)
         request.responseData { response in
@@ -102,8 +103,8 @@ public class Client {
     }
     
     // PATCH - basic type safe routing
-    public func patch<I: Codable, II: Codable, O: Codable>(_ route: String, identifier: I, data: II, resultHandler: @escaping CodableClosure<O>) {
-        let url: String = baseURL + route + "/" + String(describing: identifier)
+    public func patch<I: Codable, O: Codable>(_ route: String, identifier: String, data: I, resultHandler: @escaping CodableClosure<O>) {
+        let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url, acceptType: "application/json", messageBody: encoded)
         request.responseData { response in
@@ -124,26 +125,26 @@ public class Client {
         let request = RestRequest(method: .delete, url: url, acceptType: "application/json")
         request.responseData { response in
             switch response.result {
-            case .success(let data):
-                resultHandler()
+            case .success:
+                resultHandler(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                resultHandler()
+                resultHandler(error)
             }
         }
     }
     
     // DELETE single - basic type safe routing
-    public func delete<I: Codable>(_ route: String, identifier: I, resultHandler: @escaping VoidClosure) {
-        let url: String = baseURL + route + "/" + String(describing: identifier)
+    public func delete(_ route: String, identifier: String, resultHandler: @escaping VoidClosure) {
+        let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(method: .delete, url: url, acceptType: "application/json")
         request.responseData { response in
             switch response.result {
-            case .success(let data):
-                resultHandler()
+            case .success:
+                resultHandler(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                resultHandler()
+                resultHandler(error)
             }
         }
     }

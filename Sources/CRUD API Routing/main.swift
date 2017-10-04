@@ -11,23 +11,6 @@ import TypeSafeKituraClient
 
 let client = Client(baseURL: "http://localhost:8080")
 
-protocol Persistable {
-    associatedtype Model: Codable = Self
-    associatedtype I: Codable
-    // create
-    static func create(model: Model, respondWith: @escaping (Model) -> Void)
-    // read
-    static func read(id: I, respondWith: @escaping (Model) -> Void)
-    // read all
-    static func read(respondWith: @escaping (Model) -> Void)
-    // update
-    static func update(id: I, model: Model, respondWith: @escaping (Model) -> Void)
-    // delete
-    static func delete(id: I, respondWith: @escaping () -> Void)
-    // delete all
-    static func delete(respondWith: @escaping () -> Void)
-}
-
 extension Persistable {
     
     // setup name space based on name of model (eg. User -> user(s))
