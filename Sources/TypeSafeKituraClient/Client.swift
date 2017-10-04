@@ -53,7 +53,7 @@ public class Client {
     
     // GET single - basic type safe routing
     public func get<I: Codable, O: Codable>(_ route: String, identifier: I, resultHandler: @escaping CodableClosure<O>) {
-        let url: String = baseURL + route + "/:" + String(describing: identifier)
+        let url: String = baseURL + route + "/" + String(describing: identifier)
         let request = RestRequest(method: .get, url: url, acceptType: "application/json")
         request.responseData { response in
             switch response.result {
@@ -86,7 +86,7 @@ public class Client {
     
     // PUT - basic type safe routing
     public func put<I: Codable, II: Codable, O: Codable>(_ route: String, identifier: I, data: II, resultHandler: @escaping CodableClosure<O>) {
-        let url: String = baseURL + route + "/:" + String(describing: identifier)
+        let url: String = baseURL + route + "/" + String(describing: identifier)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url, acceptType: "application/json", messageBody: encoded)
         request.responseData { response in
@@ -103,7 +103,7 @@ public class Client {
     
     // PATCH - basic type safe routing
     public func patch<I: Codable, II: Codable, O: Codable>(_ route: String, identifier: I, data: II, resultHandler: @escaping CodableClosure<O>) {
-        let url: String = baseURL + route + "/:" + String(describing: identifier)
+        let url: String = baseURL + route + "/" + String(describing: identifier)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url, acceptType: "application/json", messageBody: encoded)
         request.responseData { response in
@@ -135,7 +135,7 @@ public class Client {
     
     // DELETE single - basic type safe routing
     public func delete<I: Codable>(_ route: String, identifier: I, resultHandler: @escaping VoidClosure) {
-        let url: String = baseURL + route + "/:" + String(describing: identifier)
+        let url: String = baseURL + route + "/" + String(describing: identifier)
         let request = RestRequest(method: .delete, url: url, acceptType: "application/json")
         request.responseData { response in
             switch response.result {
