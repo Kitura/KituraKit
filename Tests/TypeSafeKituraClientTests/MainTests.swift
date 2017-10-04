@@ -92,7 +92,7 @@ class MainTests: XCTestCase {
         let client = Client(baseURL: "http://localhost:8080")
         // Invoke GET operation on library
         client.get("/users", identifier: "1234") { (user: User?) -> Void in
-            guard let users = users else {
+            guard let user = user else {
                 XCTFail("Failed to get user!")
                 expectation1.fulfill()
                 return
@@ -185,7 +185,7 @@ class MainTests: XCTestCase {
         // Define client
         let client = Client(baseURL: "http://localhost:8080")
         // Invoke GET operation on library
-        client.patch("/users", identifier: "1234") { () -> Void in
+        client.delete("/users", identifier: "1234") { () -> Void in
             print("Deleted single")
             expectation1.fulfill()
         }
