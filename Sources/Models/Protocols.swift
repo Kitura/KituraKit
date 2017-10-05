@@ -14,7 +14,6 @@
  * limitations under the License.
  **/
 
-
 // NOTE: The contents of this file will more than likely be extracted to its own repository.
 // This way we can share these protocols between the server (Kitura) and the client.
 
