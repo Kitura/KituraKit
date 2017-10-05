@@ -41,7 +41,7 @@ class MainTests: XCTestCase {
             ("testClientGetSingle", testClientGetSingle),
             ("testClientPost", testClientPost),
             ("testClientPut", testClientPut),
-            ("testClientPatch", testClientPatch)
+            ("testClientPatch", testClientPatch),
             ("testClientDelete", testClientDelete),
             ("testClientDeleteSingle", testClientDeleteSingle)
         ]
