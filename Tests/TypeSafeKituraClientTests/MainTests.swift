@@ -22,6 +22,7 @@
 
 import XCTest
 import Foundation
+import Kitura
 
 @testable import TypeSafeKituraClient
 
@@ -54,6 +55,11 @@ class MainTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        
+        let router = Router()
+        Kitura.addHTTPServer(onPort: 8080, with: router)
+        Kitura.start()
+        
     }
     
     override func tearDown() {
@@ -111,9 +117,9 @@ class MainTests: XCTestCase {
         // TODO - needs improvement
         let expectation1 = expectation(description: "A response is received from the server -> user")
         // Define client
-        let client = Client(baseURL: "http://localhost:8080")
+        let client = Client(baseURL: "http:localhost:8080")
         // Invoke GET operation on library
-        let expectedUser = User(id: 10, name: "John Doe")
+        let expectedUser = User(id: 40, name: "John Doe")
         client.post("/users", data: expectedUser) { (user: User?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to post user!")
@@ -190,6 +196,7 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 10.0, handler: nil)
     }
+    
     
     // delete tests get executed first and cause get individual user tests to fail as the users have been deleted
     
