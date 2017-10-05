@@ -74,18 +74,18 @@ public class Controller {
             response.status(.internalServerError)
         }
     }
-    
+
     public func deleteAll(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         userStore = [:]
         response.status(.OK)
     }
-    
+
     public func deleteUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
         }
-        
+
         userStore[id] = nil
         response.status(.OK)
     }

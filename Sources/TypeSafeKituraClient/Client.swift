@@ -25,7 +25,7 @@ public class Client {
     public typealias VoidClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?) -> Void
-    
+
     // Instance variables
     public let baseURL: String
 
@@ -35,7 +35,7 @@ public class Client {
     }
 
     // HTTP verb/action methods (basic type safe routing)
-  
+
     // GET - basic type safe routing
     public func get<O: Codable>(_ route: String, resultHandler: @escaping ArrayCodableClosure<O>) {
         let url: String = baseURL + route
@@ -44,14 +44,14 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let items: [O]? = try? JSONDecoder().decode([O].self, from: data)
-                resultHandler(items)               
+                resultHandler(items)
             case .failure(let error):
                 Log.error("GET failure: \(error)")
-                resultHandler(nil)            
-            }           
+                resultHandler(nil)
+            }
         }
     }
-    
+
     // GET single - basic type safe routing
     public func get<O: Codable>(_ route: String, identifier: String, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
@@ -80,14 +80,14 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let item: O? = try? JSONDecoder().decode(O.self, from: data)
-                resultHandler(item)               
+                resultHandler(item)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
-                resultHandler(nil)               
-            }           
+                resultHandler(nil)
+            }
         }
     }
-    
+
     // PUT - basic type safe routing
     public func put<I: Codable, O: Codable>(_ route: String, identifier: String, data: I, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
@@ -106,7 +106,7 @@ public class Client {
             }
         }
     }
-    
+
     // PATCH - basic type safe routing
     public func patch<I: Codable, O: Codable>(_ route: String, identifier: String, data: I, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
@@ -125,7 +125,7 @@ public class Client {
             }
         }
     }
-    
+
     // DELETE - basic type safe routing
     public func delete(_ route: String, resultHandler: @escaping VoidClosure) {
         let url: String = baseURL + route
@@ -140,7 +140,7 @@ public class Client {
             }
         }
     }
-    
+
     // DELETE single - basic type safe routing
     public func delete(_ route: String, identifier: String, resultHandler: @escaping VoidClosure) {
         let url: String = baseURL + route + "/\(identifier)"
@@ -158,5 +158,5 @@ public class Client {
 
     // TODO - Once we have completed basic type safe routing on the client, 
     // we will start tackling the CRUD API (which uses the Persistable protocol)
-    
+
 }

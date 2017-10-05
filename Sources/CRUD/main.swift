@@ -12,13 +12,13 @@ import TypeSafeKituraClient
 let client = Client(baseURL: "http://localhost:8080")
 
 extension Persistable {
-    
+
     // setup name space based on name of model (eg. User -> user(s))
     let typeWithType: String = String(describing: type(of: self))
     let typeName = String(typeWithType.characters.dropLast(5))
     let single = "/\(typeName.lowercased())"
     let plural = "\(single)s"
-    
+
     // create
     static func create(model: Model, respondWith: @escaping (Model) -> Void) {
         // Perform post REST call...
@@ -29,7 +29,7 @@ extension Persistable {
             return model
         }
     }
-    
+
     // read
     static func read(id: I, respondWith: @escaping (Model) -> Void) {
         // Perform get REST call...
@@ -40,7 +40,7 @@ extension Persistable {
             return model
         }
     }
-    
+
     // read all
     static func read(respondWith: @escaping (Model) -> Void) {
         // Perform get REST call...
@@ -51,7 +51,7 @@ extension Persistable {
             return model
         }
     }
-    
+
     // update
     static func update(id: I, model: Model, respondWith: @escaping (Model) -> Void) {
         // Perform put REST call...
@@ -62,23 +62,23 @@ extension Persistable {
             return model
         }
     }
-    
+
     // delete
     static func delete(id: I, respondWith: @escaping () -> Void) {
         // Perform delete REST call...
         client.delete("/\(plural)", identifier: id) { () -> Void in
-            
+
         }
     }
-    
+
     // delete all
     static func delete(respondWith: @escaping () -> Void) {
         // Perform delete REST call...
         client.delete("/\(plural)") { () -> Void in
-            
+
         }
     }
-    
+
 }
 
 // Test out the functions with example struct

@@ -48,17 +48,17 @@ class MainTests: XCTestCase {
     }
 
     private let controller = Controller(store: initialStore)
-    
+
     private let client = Client(baseURL: "http://localhost:8080")
-    
+
     override func setUp() {
         super.setUp()
-        
+
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
 
     }
-    
+
     override func tearDown() {
         Kitura.stop()
         super.tearDown()
@@ -87,7 +87,7 @@ class MainTests: XCTestCase {
             XCTAssertEqual(users.count, 4)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testClientGetSingle() {
@@ -103,7 +103,7 @@ class MainTests: XCTestCase {
             XCTAssertEqual(user, initialStore[id]!)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testClientPost() {
@@ -121,7 +121,7 @@ class MainTests: XCTestCase {
             XCTAssertEqual(user, newUser)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testClientPut() {
@@ -131,7 +131,7 @@ class MainTests: XCTestCase {
         let expectedUser = User(id: 5, name: "John Doe")
 
         client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?) -> Void in
-            
+
             guard let user = user else {
                 XCTFail("Failed to put user!")
                 return
@@ -140,7 +140,7 @@ class MainTests: XCTestCase {
             XCTAssertEqual(user, expectedUser)
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testClientPatch() {
@@ -158,7 +158,7 @@ class MainTests: XCTestCase {
 
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
      func testClientDeleteSingle() {
@@ -178,7 +178,7 @@ class MainTests: XCTestCase {
             }
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     // delete tests get executed first and cause get individual user tests to fail as the users have been deleted
@@ -193,6 +193,6 @@ class MainTests: XCTestCase {
             }
             expectation1.fulfill()
         }
-        waitForExpectations(timeout: 10.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 }
