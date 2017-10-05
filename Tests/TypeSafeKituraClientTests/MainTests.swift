@@ -69,6 +69,7 @@ class MainTests: XCTestCase {
     
     // Note that as of now, given how the tests are written, they will fail, UNLESS you have a kitura server running
     // locally that can process the requests.
+    // Let's fully automated the test cases.
     
     func testClientGet() {
         // TODO - needs improvement
@@ -171,8 +172,12 @@ class MainTests: XCTestCase {
 
      func testClientDeleteSingle() {
         // TODO - needs improvement
-        // Hmm... we may need to update our library since given how the API is at the moment,
-        // the user has no idea if his/her request failed or succeeded.
+        // Updated our library API since noticed that in the delete use cases,
+        // the user had no idea if his/her request failed or succeeded.
+        // See the changes below... with this chance, now the user gets an error
+        // in the closure if there was an error.
+        // Given this, we may need to adopt passing an Error object back to the user
+        // whenerver an error occurs in the other API methods as well just to be consistent.
         let expectation1 = expectation(description: "No response is received from the server")
         // Define client
         let client = Client(baseURL: "http://localhost:8080")
