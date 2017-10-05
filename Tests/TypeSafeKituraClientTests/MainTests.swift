@@ -108,7 +108,6 @@ class MainTests: XCTestCase {
 
     func testClientPost() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
-        let expectation2 = expectation(description: "Correct number of users was returned")
 
         // Invoke GET operation on library
         let newUser = User(id: 5, name: "John Doe")
@@ -121,16 +120,6 @@ class MainTests: XCTestCase {
 
             XCTAssertEqual(user, newUser)
             expectation1.fulfill()
-            
-            self.client.get("/users") { (users: [User]?) -> Void in
-                guard let users = users else {
-                    XCTFail("Failed to post user!")
-                    return
-                }
-
-                XCTAssertEqual(users.count, initialStore.count + 1)
-                expectation2.fulfill()
-            }
         }
         waitForExpectations(timeout: 10.0, handler: nil)
     }
@@ -183,8 +172,9 @@ class MainTests: XCTestCase {
 
         // Invoke GET operation on library
         client.delete("/users", identifier: "0") { error in
-            if error != nil {
+            guard error == nil else {
                 XCTFail("Failed to delete user!")
+                return
             }
             expectation1.fulfill()
         }
@@ -197,6 +187,10 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "No response is received from the server")
 
         client.delete("/users") { error in
+            guard error == nil else {
+                XCTFail("Failed to delete user!")
+                return
+            }
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 10.0, handler: nil)

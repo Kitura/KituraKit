@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/SwiftyRequest.git",
         "state": {
           "branch": null,
-          "revision": "fb25eb73f22c3f97d780f659168731a02b015da0",
-          "version": "0.0.2"
+          "revision": "994695641c14ea3140e95cf392359271b07b921b",
+          "version": "0.0.3"
         }
       }
     ]
