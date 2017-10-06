@@ -1,3 +1,3 @@
 # TypeSafeKituraClient
 
-A description of this package.
+A library to implement client side safe routing for Kitura.

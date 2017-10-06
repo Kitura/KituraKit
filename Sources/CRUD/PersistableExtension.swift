@@ -1,20 +1,29 @@
-//
-//  main.swift
-//  TypeSafeKituraClient
-//
-//  Created by Shihab Mehboob on 03/10/2017.
-//  Copyright © 2017 IBM. All rights reserved.
-//
+/*
+ * Copyright IBM Corporation 2017
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific langua›ge governing permissions and
+ * limitations under the License.
+ */
 
 import Foundation
 import TypeSafeKituraClient
+import Models
 
 let client = Client(baseURL: "http://localhost:8080")
 
 extension Persistable {
 
     // setup name space based on name of model (eg. User -> user(s))
-    let typeWithType: String = String(describing: type(of: self))
+    let typeWithType: String = String(describing: type(of: Self))
     let typeName = String(typeWithType.characters.dropLast(5))
     let single = "/\(typeName.lowercased())"
     let plural = "\(single)s"
@@ -81,20 +90,3 @@ extension Persistable {
 
 }
 
-// Test out the functions with example struct
-// To be moved to test class, and used in the iOS app
-/*
-struct Employee: Codable {
-    let id: String
-    let name: String
-}
-
-extension Employee: Persistable {
-    typealias I = String
-}
-
-let Emp1 = Employee(id: "id", name: "name")
-let Emp2 = try Employee.create(model: Emp1)
-print(Emp1)
-print(Emp2)
-*/
