@@ -54,6 +54,8 @@ class MainTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
+        continueAfterFailure = false
+
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
 
