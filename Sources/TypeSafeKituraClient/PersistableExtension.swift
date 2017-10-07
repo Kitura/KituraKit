@@ -20,13 +20,13 @@ import Models
 //let client = Client(baseURL: "http://localhost:8080")
 
 // TBD
-protocol PersistableC: Persistable {
+protocol Persistable: Models.Persistable {
     // TBD
     static var client: Client { get }
     // TBD
 }
 
-extension PersistableC {
+extension Persistable {
 
     // Set up name space based on name of model (e.g. User -> user(s))
     static var modelType: String {
