@@ -23,19 +23,22 @@
 import XCTest
 import Foundation
 import Kitura
+import Models
 
-@testable import CRUD
+@testable import TypeSafeKituraClient
 
 struct Employee: Codable {
     let id: String
     let name: String
 }
 
+/*
 extension Employee: Persistable {
     typealias I = String
 }
+*/
 
-class MainTests: XCTestCase {
+class PersistableExtTests: XCTestCase {
 
 //    static var allTests: [(String, (MainTests) -> () throws -> Void)] {
 //        return [

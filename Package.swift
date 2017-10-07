@@ -38,17 +38,9 @@ let package = Package(
             name: "TypeSafeKituraClient",
             dependencies: ["Models", "SwiftyRequest"]
         ),
-//        .target(
-//            name: "CRUD",
-//            dependencies: ["Models", "TypeSafeKituraClient", "SwiftyRequest"]
-//        ),
         .testTarget(
             name: "TypeSafeKituraClientTests",
-            dependencies: ["TypeSafeKituraClient", "Kitura"]
+            dependencies: ["Models", "TypeSafeKituraClient", "Kitura"]
         ),
-//        .testTarget(
-//            name: "CRUDTests",
-//            dependencies: ["CRUD", "Kitura"]
-//        )
     ]
 )

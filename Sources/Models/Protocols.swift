@@ -19,11 +19,11 @@
 
 import Foundation
 
-public protocol Identifiable {
+public protocol Identifier {
    init(value: String) throws
 }
 
-public struct IntId: Identifiable {
+public struct IntId: Identifier {
     public let id: Int
     public init(value: String) throws {
         if let id = Int(value) {
@@ -41,17 +41,17 @@ public enum TypeError: Error {
 
 public protocol Persistable {
     associatedtype Model: Codable = Self
-    associatedtype I: Identifiable
+    //associatedtype I: Identifiable
     // Create
     static func create(model: Model, respondWith: @escaping (Model) -> Void)
     // Read
-    static func read(id: I, respondWith: @escaping (Model) -> Void)
+    static func read(id: String, respondWith: @escaping (Model) -> Void)
     // Read all
     static func read(respondWith: @escaping (Model) -> Void)
     // Update
-    static func update(id: I, model: Model, respondWith: @escaping (Model) -> Void)
+    static func update(id: String, model: Model, respondWith: @escaping (Model) -> Void)
     // Delete
-    static func delete(id: I, respondWith: @escaping () -> Void)
+    static func delete(id: String, respondWith: @escaping () -> Void)
     // Delete all
     static func delete(respondWith: @escaping () -> Void)
 }

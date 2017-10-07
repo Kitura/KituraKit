@@ -22,6 +22,8 @@ import Models
 public class Client {
 
     // Define closures
+    // To be consistent, we may need to also pass an optional Error instance
+    // to the other closures as well... TBD
     public typealias VoidClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?) -> Void
@@ -158,7 +160,5 @@ public class Client {
 
     // TODO - Once we have completed basic type safe routing on the client, 
     // we will start tackling the CRUD API (which uses the Persistable protocol)
-    
-    
 
 }
