@@ -26,7 +26,7 @@ public class Client {
     // to the other closures as well... TBD
     public typealias VoidClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
-    public typealias ArrayCodableClosure<O: Codable> = ([O]?) -> Void
+    public typealias ArrayCodableClosure<O: Codable> = ([O]?, Error?) -> Void
 
     // Instance variables
     public let baseURL: String
@@ -46,10 +46,10 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let items: [O]? = try? JSONDecoder().decode([O].self, from: data)
-                resultHandler(items)
+                resultHandler(items, nil)
             case .failure(let error):
                 Log.error("GET failure: \(error)")
-                resultHandler(nil)
+                resultHandler(nil, error)
             }
         }
     }

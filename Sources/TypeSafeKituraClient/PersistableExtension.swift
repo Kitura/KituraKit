@@ -50,21 +50,33 @@ extension Persistable {
     // read
     static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void) {
         client.get(routePlural, identifier: id) { (model: Model?, error: Error?) -> Void in
-            respondWith(model, nil)
+            if let model = model {
+                respondWith(model, nil)
+            } else {
+                respondWith(nil, error)
+            }
         }
     }
     
     // read all
     static func read(respondWith: @escaping ([Model]?, Error?) -> Void) {
-        client.get(routePlural) { (model: [Model]?) -> Void in
-            respondWith(model, nil)
+        client.get(routePlural) { (model: [Model]?, error: Error?) -> Void in
+            if let model = model {
+                respondWith(model, nil)
+            } else {
+                respondWith(nil, error)
+            }
         }
     }
 
     // update
     static func update(id: String, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
         client.put(routePlural, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
-            respondWith(model, nil)
+            if let model = model {
+                respondWith(model, nil)
+            } else {
+                respondWith(nil, error)
+            }
         }
     }
 

@@ -81,9 +81,9 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
 
         // Invoke GET operation on library
-        client.get("/users") { (users: [User]?) -> Void in
+        client.get("/users") { (users: [User]?, error: Error?) -> Void in
             guard let users = users else {
-                XCTFail("Failed to get users!")
+                XCTFail("Failed to get users! Error: \(error)")
                 return
             }
             XCTAssertEqual(users.count, 4)
