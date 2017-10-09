@@ -97,9 +97,9 @@ class MainTests: XCTestCase {
 
         // Invoke GET operation on library
         let id = "1"
-        client.get("/users", identifier: id) { (user: User?) -> Void in
+        client.get("/users", identifier: id) { (user: User?, error: Error?) -> Void in
             guard let user = user else {
-                XCTFail("Failed to get user!")
+                XCTFail("Failed to get user! Error: \(error)")
                 return
             }
             XCTAssertEqual(user, initialStore[id]!)
@@ -114,9 +114,9 @@ class MainTests: XCTestCase {
         // Invoke GET operation on library
         let newUser = User(id: 5, name: "John Doe")
 
-        client.post("/users", data: newUser) { (user: User?) -> Void in
+        client.post("/users", data: newUser) { (user: User?, error: Error?) -> Void in
             guard let user = user else {
-                XCTFail("Failed to post user!")
+                XCTFail("Failed to post user! Error: \(error)")
                 return
             }
 
@@ -132,10 +132,10 @@ class MainTests: XCTestCase {
         // Invoke GET operation on library
         let expectedUser = User(id: 5, name: "John Doe")
 
-        client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?) -> Void in
+        client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: Error?) -> Void in
 
             guard let user = user else {
-                XCTFail("Failed to put user!")
+                XCTFail("Failed to put user! Error: \(error)")
                 return
             }
 
@@ -150,9 +150,9 @@ class MainTests: XCTestCase {
 
         let expectedUser = User(id: 5, name: "John Doe")
 
-        client.patch("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?) -> Void in
+        client.patch("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: Error?) -> Void in
             guard let user = user else {
-                XCTFail("Failed to patch user!")
+                XCTFail("Failed to patch user! Error: \(error)")
                 return
             }
 

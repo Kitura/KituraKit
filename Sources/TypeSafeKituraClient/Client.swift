@@ -25,7 +25,7 @@ public class Client {
     // To be consistent, we may need to also pass an optional Error instance
     // to the other closures as well... TBD
     public typealias VoidClosure = (Error?) -> Void
-    public typealias CodableClosure<O: Codable> = (O?) -> Void
+    public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?) -> Void
 
     // Instance variables
@@ -63,16 +63,16 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let items: O? = try? JSONDecoder().decode(O.self, from: data)
-                resultHandler(items)
+                resultHandler(items, nil)
             case .failure(let error):
                 Log.error("GET failure: \(error)")
-                resultHandler(nil)
+                resultHandler(nil, error)
             }
         }
     }
 
     // POST - basic type safe routing
-	public func post<I: Codable, O: Codable>(_ route: String, data: I, resultHandler: @escaping CodableClosure<O>) {
+    public func post<I: Codable, O: Codable>(_ route: String, data: I, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url)
@@ -82,10 +82,10 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let item: O? = try? JSONDecoder().decode(O.self, from: data)
-                resultHandler(item)
+                resultHandler(item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
-                resultHandler(nil)
+                resultHandler(nil, error)
             }
         }
     }
@@ -101,10 +101,10 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let item: O? = try? JSONDecoder().decode(O.self, from: data)
-                resultHandler(item)
+                resultHandler(item, nil)
             case .failure(let error):
                 Log.error("PUT failure: \(error)")
-                resultHandler(nil)
+                resultHandler(nil, error)
             }
         }
     }
@@ -120,10 +120,10 @@ public class Client {
             switch response.result {
             case .success(let data):
                 let item: O? = try? JSONDecoder().decode(O.self, from: data)
-                resultHandler(item)
+                resultHandler(item, nil)
             case .failure(let error):
                 Log.error("PATCH failure: \(error)")
-                resultHandler(nil)
+                resultHandler(nil, error)
             }
         }
     }

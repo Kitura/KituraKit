@@ -37,46 +37,50 @@ extension Persistable {
     static var routePlural: String { return "\(routeSingular)s" }
 
     // create
-    static func create(model: Model, respondWith: @escaping (Model?) -> Void) {
-        client.post(routePlural, data: model) { (model: Model?) -> Void in
-           respondWith(model)
+    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
+        client.post(routePlural, data: model) { (model: Model?, error: Error?) -> Void in
+            if let model = model {
+                respondWith(model, nil)
+            } else {
+                respondWith(nil, error)
+            }
         }
     }
 
     // read
-    static func read(id: String, respondWith: @escaping (Model?) -> Void) {
-        client.get(routePlural, identifier: id) { (model: Model?) -> Void in
-            respondWith(model)
+    static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void) {
+        client.get(routePlural, identifier: id) { (model: Model?, error: Error?) -> Void in
+            respondWith(model, nil)
         }
     }
     
     // read all
-    static func read(respondWith: @escaping ([Model]?) -> Void) {
+    static func read(respondWith: @escaping ([Model]?, Error?) -> Void) {
         client.get(routePlural) { (model: [Model]?) -> Void in
-            respondWith(model)
+            respondWith(model, nil)
         }
     }
 
     // update
-    static func update(id: String, model: Model, respondWith: @escaping (Model?) -> Void) {
-        client.put(routePlural, identifier: id, data: model) { (model: Model?) -> Void in
-            respondWith(model)
+    static func update(id: String, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
+        client.put(routePlural, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
+            respondWith(model, nil)
         }
     }
 
     // delete
-    static func delete(id: String, respondWith: @escaping () -> Void) {
+    static func delete(id: String, respondWith: @escaping (Error?) -> Void) {
         // Perform delete REST call...
         client.delete(routePlural, identifier: id) { (error: Error?) -> Void in
-            //respondWith(error)
+            respondWith(error)
         }
     }
 
     // delete all
-    static func delete(respondWith: @escaping () -> Void) {
+    static func delete(respondWith: @escaping (Error?) -> Void) {
         // Perform delete REST call...
         client.delete("/") { (error: Error?) -> Void in
-            //respondWith(error)
+            respondWith(error)
         }
     }
 
