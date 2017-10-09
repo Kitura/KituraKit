@@ -16,10 +16,7 @@
 
 import Foundation
 
-// Models/entities
-// I am now wondering if we should make all entities model conform to Codable
-// and a new custom protocol that requires an identifier field...
-// if we do so, then we don't need to pass the identifier field as a separate parameter... TBD...
+// Models/entities (application/use case specific)
 public struct User: Codable, Equatable {
     public let id: Int
     public let name: String
@@ -27,8 +24,8 @@ public struct User: Codable, Equatable {
         self.id = id
         self.name = name
     }
-}
 
-public func ==(lhs: User, rhs: User) -> Bool {
-    return lhs.id == rhs.id && lhs.name == rhs.name
+    public static func ==(lhs: User, rhs: User) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.name == rhs.name)
+    }
 }
