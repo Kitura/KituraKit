@@ -17,15 +17,6 @@
 import Foundation
 import Models
 
-//let client = Client(baseURL: "http://localhost:8080")
-
-// TBD
-protocol Persistable: Models.Persistable {
-    // TBD
-    static var client: Client { get }
-    // TBD
-}
-
 extension Persistable {
 
     // Set up name space based on name of model (e.g. User -> user(s))
@@ -36,17 +27,10 @@ extension Persistable {
 	static var routeSingular: String { return "/\(modelType.lowercased())" }
     static var routePlural: String { return "\(routeSingular)s" }
 
-    // create
-    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.post(routePlural, data: model) { (model: Model?, error: Error?) -> Void in
-            if let model = model {
-                respondWith(model, nil)
-            } else {
-                respondWith(nil, error)
-            }
-        }
+    static var client: Client {
+        return Client.default
     }
-
+    
     // read
     static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void) {
         client.get(routePlural, identifier: id) { (model: Model?, error: Error?) -> Void in
@@ -61,6 +45,17 @@ extension Persistable {
     // read all
     static func read(respondWith: @escaping ([Model]?, Error?) -> Void) {
         client.get(routePlural) { (model: [Model]?, error: Error?) -> Void in
+            if let model = model {
+                respondWith(model, nil)
+            } else {
+                respondWith(nil, error)
+            }
+        }
+    }
+    
+    // create
+    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
+        client.post(routePlural, data: model) { (model: Model?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
             } else {

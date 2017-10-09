@@ -83,7 +83,7 @@ class MainTests: XCTestCase {
         // Invoke GET operation on library
         client.get("/users") { (users: [User]?, error: Error?) -> Void in
             guard let users = users else {
-                XCTFail("Failed to get users! Error: \(error)")
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
             }
             XCTAssertEqual(users.count, 4)
@@ -99,7 +99,7 @@ class MainTests: XCTestCase {
         let id = "1"
         client.get("/users", identifier: id) { (user: User?, error: Error?) -> Void in
             guard let user = user else {
-                XCTFail("Failed to get user! Error: \(error)")
+                XCTFail("Failed to get user! Error: \(String(describing: error))")
                 return
             }
             XCTAssertEqual(user, initialStore[id]!)
@@ -116,7 +116,7 @@ class MainTests: XCTestCase {
 
         client.post("/users", data: newUser) { (user: User?, error: Error?) -> Void in
             guard let user = user else {
-                XCTFail("Failed to post user! Error: \(error)")
+                XCTFail("Failed to post user! Error: \(String(describing: error))")
                 return
             }
 
@@ -135,7 +135,7 @@ class MainTests: XCTestCase {
         client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: Error?) -> Void in
 
             guard let user = user else {
-                XCTFail("Failed to put user! Error: \(error)")
+                XCTFail("Failed to put user! Error: \(String(describing: error))")
                 return
             }
 
@@ -152,7 +152,7 @@ class MainTests: XCTestCase {
 
         client.patch("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: Error?) -> Void in
             guard let user = user else {
-                XCTFail("Failed to patch user! Error: \(error)")
+                XCTFail("Failed to patch user! Error: \(String(describing: error))")
                 return
             }
 
@@ -170,12 +170,12 @@ class MainTests: XCTestCase {
         // in the closure if there was an error.
         // Given this, we may need to adopt passing an Error object back to the user
         // whenerver an error occurs in the other API methods as well just to be consistent.
-        let expectation1 = expectation(description: "No response is received from the server")
+        let expectation1 = expectation(description: "No error is received from the server")
 
         // Invoke GET operation on library
         client.delete("/users", identifier: "0") { error in
             guard error == nil else {
-                XCTFail("Failed to delete user!")
+                XCTFail("Failed to delete user! Error: \(String(describing: error))")
                 return
             }
             expectation1.fulfill()
@@ -186,15 +186,33 @@ class MainTests: XCTestCase {
     // delete tests get executed first and cause get individual user tests to fail as the users have been deleted
 
     func testClientDelete() {
-        let expectation1 = expectation(description: "No response is received from the server")
+        let expectation1 = expectation(description: "No error is received from the server")
 
         client.delete("/users") { error in
             guard error == nil else {
-                XCTFail("Failed to delete user!")
+                XCTFail("Failed to delete user! Error: \(String(describing: error))")
                 return
             }
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+    
+    // Commenting out this test case for now...
+    // There seems to be a defect in the SwiftyRequest repo
+    // Aaron is looking into this. Stay tuned!
+    // func testClientDeleteInvalid() {
+    //     let expectation1 = expectation(description: "An error is received from the server")
+        
+    //     client.delete("/notAValidRoute") { error in
+    //         guard error == nil else {
+    //             expectation1.fulfill()
+    //             return
+    //         }
+    //         XCTFail("Deleted user, but it doesn't exist! Error: \(String(describing: error))")
+    //         expectation1.fulfill()
+    //     }
+    //     waitForExpectations(timeout: 3.0, handler: nil)
+    // }
+
 }

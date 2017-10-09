@@ -32,11 +32,12 @@ struct Employee: Codable {
     let name: String
 }
 
-/*
 extension Employee: Persistable {
-    typealias I = String
+    // Users of this library should only have to make their 
+    // models conform to Persistable protocol by adding this extension
+    // Note that the Employee structure definition as shown above (in a real
+    // world case would be shared between the server and the client)
 }
-*/
 
 class PersistableExtTests: XCTestCase {
 
@@ -46,29 +47,36 @@ class PersistableExtTests: XCTestCase {
 //        ]
 //    }
 
+    private let controller = Controller(store: initialStore)
+    
     override func setUp() {
         super.setUp()
-
-    }
-
-    override func tearDown() {
-        super.tearDown()
+        
+        continueAfterFailure = false
+        
+        Kitura.addHTTPServer(onPort: 8080, with: controller.router)
+        Kitura.start()
+        
     }
     
-//    No testing at the moment as the extension isn't working correctly right now (compliation error).
+    override func tearDown() {
+        Kitura.stop()
+        super.tearDown()
+    }
+//
 //    func testCreate() {
 //
 //        let expectation1 = expectation(description: "An employee is created successfully.")
 //
 //        let emp1 = Employee(id: "5", name: "Kye Maloy")
-//        let emp2 = try Employee.create(model: emp1) { (emp: Employee) -> Void in
+//        let emp2 = try Employee.create(model: emp1) { (emp: Employee?, error: Error?) -> Void in
 //            guard let emp = emp else {
 //                XCTFail("Failed to create employee")
 //            }
-//
-//            XCTAssertEqual(emp1, emp)
-//            expectation1.fulfill()
 //        }
+//
+//        XCTAssertEqual(emp1, emp2)
+//        expectation1.fulfill()
 //        waitForExpectations(timeout: 3.0, handler: nil)
 //    }
 
