@@ -47,7 +47,7 @@ public protocol Persistable {
     // Read
     static func read(id: String, respondWith: @escaping (Model) -> Void)
     // Read all
-    static func read(respondWith: @escaping (Model) -> Void)
+    static func read(respondWith: @escaping ([Model]) -> Void)
     // Update
     static func update(id: String, model: Model, respondWith: @escaping (Model) -> Void)
     // Delete

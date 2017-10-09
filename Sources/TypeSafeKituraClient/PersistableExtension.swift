@@ -64,23 +64,21 @@ extension Persistable {
         }
     }
 
-    /*
     // delete
     static func delete(id: String, respondWith: @escaping () -> Void) {
         // Perform delete REST call...
-        client.delete(routePlural, identifier: id) { () -> Void in
-
+        client.delete(routePlural, identifier: id) { (error: Error?) -> Void in
+            //respondWith(error)
         }
     }
 
     // delete all
     static func delete(respondWith: @escaping () -> Void) {
         // Perform delete REST call...
-        client.delete("/\(plural)") { () -> Void in
-
+        client.delete("/") { (error: Error?) -> Void in
+            //respondWith(error)
         }
     }
-    */
 
 }
 
