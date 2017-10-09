@@ -27,9 +27,12 @@ import Models
 
 @testable import TypeSafeKituraClient
 
-struct Employee: Codable {
+struct Employee: Codable, TypeSafeKituraClient.Persistable {
+
     let id: String
     let name: String
+    static var client: Client  = Client(baseURL: "http://localhost:8080")
+    
 }
 
 /*
@@ -37,6 +40,7 @@ extension Employee: Persistable {
     typealias I = String
 }
 */
+
 
 class PersistableExtTests: XCTestCase {
 
@@ -46,29 +50,36 @@ class PersistableExtTests: XCTestCase {
 //        ]
 //    }
 
+    private let controller = Controller(store: initialStore)
+    
     override func setUp() {
         super.setUp()
-
-    }
-
-    override func tearDown() {
-        super.tearDown()
+        
+        continueAfterFailure = false
+        
+        Kitura.addHTTPServer(onPort: 8080, with: controller.router)
+        Kitura.start()
+        
     }
     
-//    No testing at the moment as the extension isn't working correctly right now (compliation error).
+    override func tearDown() {
+        Kitura.stop()
+        super.tearDown()
+    }
+//
 //    func testCreate() {
 //
 //        let expectation1 = expectation(description: "An employee is created successfully.")
 //
 //        let emp1 = Employee(id: "5", name: "Kye Maloy")
-//        let emp2 = try Employee.create(model: emp1) { (emp: Employee) -> Void in
+//        let emp2 = try Employee.create(model: emp1) { (emp: Employee?, error: Error?) -> Void in
 //            guard let emp = emp else {
 //                XCTFail("Failed to create employee")
 //            }
-//
-//            XCTAssertEqual(emp1, emp)
-//            expectation1.fulfill()
 //        }
+//
+//        XCTAssertEqual(emp1, emp2)
+//        expectation1.fulfill()
 //        waitForExpectations(timeout: 3.0, handler: nil)
 //    }
 
