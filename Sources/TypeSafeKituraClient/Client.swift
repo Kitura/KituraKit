@@ -21,12 +21,16 @@ import Models
 
 public class Client {
 
-    // Define closures
-    // To be consistent, we may need to also pass an optional Error instance
-    // to the other closures as well... TBD
     public typealias VoidClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?, Error?) -> Void
+
+    public static var defaultBaseURL: String = "http://localhost:8080"
+    public static var `default`: Client {
+        get {
+            return Client(baseURL: defaultBaseURL)
+        }
+    }
 
     // Instance variables
     public let baseURL: String

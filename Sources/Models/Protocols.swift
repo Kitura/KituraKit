@@ -43,13 +43,13 @@ public protocol Persistable {
     associatedtype Model: Codable = Self
     //associatedtype I: Identifiable
     // Create
-    static func create(model: Model, respondWith: @escaping (Model, Error?) -> Void)
+    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void)
     // Read
-    static func read(id: String, respondWith: @escaping (Model, Error?) -> Void)
+    static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void)
     // Read all
-    static func read(respondWith: @escaping ([Model], Error?) -> Void)
+    static func read(respondWith: @escaping ([Model]?, Error?) -> Void)
     // Update
-    static func update(id: String, model: Model, respondWith: @escaping (Model, Error?) -> Void)
+    static func update(id: String, model: Model, respondWith: @escaping (Model?, Error?) -> Void)
     // Delete
     static func delete(id: String, respondWith: @escaping (Error?) -> Void)
     // Delete all

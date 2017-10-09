@@ -27,20 +27,17 @@ import Models
 
 @testable import TypeSafeKituraClient
 
-struct Employee: Codable, TypeSafeKituraClient.Persistable {
-
+struct Employee: Codable {
     let id: String
     let name: String
-    static var client: Client  = Client(baseURL: "http://localhost:8080")
-    
 }
 
-/*
 extension Employee: Persistable {
-    typealias I = String
+    // Users of this library should only have to make their 
+    // models conform to Persistable protocol by adding this extension
+    // Note that the Employee structure definition as shown above (in a real
+    // world case would be shared between the server and the client)
 }
-*/
-
 
 class PersistableExtTests: XCTestCase {
 

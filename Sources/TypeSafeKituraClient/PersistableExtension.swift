@@ -17,15 +17,6 @@
 import Foundation
 import Models
 
-//let client = Client(baseURL: "http://localhost:8080")
-
-// TBD
-protocol Persistable: Models.Persistable {
-    // TBD
-    static var client: Client { get }
-    // TBD
-}
-
 extension Persistable {
 
     // Set up name space based on name of model (e.g. User -> user(s))
@@ -36,6 +27,9 @@ extension Persistable {
 	static var routeSingular: String { return "/\(modelType.lowercased())" }
     static var routePlural: String { return "\(routeSingular)s" }
 
+    static var client: Client {
+        return Client.default
+    }
     
     // read
     static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void) {
