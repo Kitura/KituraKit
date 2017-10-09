@@ -90,6 +90,15 @@
           "revision": "994695641c14ea3140e95cf392359271b07b921b",
           "version": "0.0.3"
         }
+      },
+      {
+        "package": "TypeSafeContracts",
+        "repositoryURL": "https://github.com/IBM-Swift/TypeSafeContracts",
+        "state": {
+          "branch": "master",
+          "revision": "356c9be39fa69eaea400849fc94c66ff63cea1a8",
+          "version": null
+        }
       }
     ]
   },

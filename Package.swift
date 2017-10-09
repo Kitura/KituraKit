@@ -24,23 +24,20 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", .upToNextMajor(from: "0.0.3")),
-        .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMajor(from: "1.7.0"))
+        .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMajor(from: "1.7.0")),
+        .package(url: "https://github.com/IBM-Swift/TypeSafeContracts", .branch("master"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         // CRUD and CRUD tests removed until the files compile
         .target(
-            name: "Models",
-            dependencies: []
-        ),
-        .target(
             name: "TypeSafeKituraClient",
-            dependencies: ["Models", "SwiftyRequest"]
+            dependencies: ["TypeSafeContracts", "SwiftyRequest"]
         ),
         .testTarget(
             name: "TypeSafeKituraClientTests",
-            dependencies: ["Models", "TypeSafeKituraClient", "Kitura"]
+            dependencies: ["TypeSafeContracts", "TypeSafeKituraClient", "Kitura"]
         ),
     ]
 )

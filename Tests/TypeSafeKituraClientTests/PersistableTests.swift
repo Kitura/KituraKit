@@ -23,7 +23,7 @@
 import XCTest
 import Foundation
 import Kitura
-import Models
+import TypeSafeContracts
 
 @testable import TypeSafeKituraClient
 

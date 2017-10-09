@@ -15,7 +15,7 @@
  */
 
 import Foundation
-import Models
+import TypeSafeContracts
 
 extension Persistable {
 

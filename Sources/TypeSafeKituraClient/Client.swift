@@ -17,7 +17,7 @@
 import Foundation
 import LoggerAPI
 import SwiftyRequest
-import Models
+import TypeSafeContracts
 
 public class Client {
 
