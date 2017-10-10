@@ -1,6 +1,5 @@
 # Travis CI build file for KituraBuddy.
 
-# whitelist (branches that should be built)
 branches:
   only:
     - master
