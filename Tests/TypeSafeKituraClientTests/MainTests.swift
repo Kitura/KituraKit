@@ -205,7 +205,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> Error")
         
         // Invoke PUT operation on library
-        let newUser = User(id: 5, name: "John Doe")
+        let expectedUser = User(id: 5, name: "John Doe")
         
         client.put("/use", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
@@ -240,7 +240,7 @@ class MainTests: XCTestCase {
     func testClientPatchErrorPath() {
         let expectation1 = expectation(description: "A response is received from the server -> Error")
         
-        let newUser = User(id: 5, name: "John Doe")
+        let expectedUser = User(id: 5, name: "John Doe")
         
         client.patch("/use", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
