@@ -88,6 +88,7 @@ class PersistableExtTests: XCTestCase {
             emp2 = emp
         }
         
+        
             XCTAssertEqual(emp1, emp2)
             expectation1.fulfill()
             waitForExpectations(timeout: 3.0, handler: nil)
