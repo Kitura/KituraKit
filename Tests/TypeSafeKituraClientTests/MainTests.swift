@@ -98,10 +98,10 @@ class MainTests: XCTestCase {
     }
     
     func testClientGetErrorPath() {
-        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        let expectation1 = expectation(description: "An error is received from the server")
         
         // Invoke GET operation on library
-        client.get("/use") { (users: [User]?, error: Error?) -> Void in
+        client.get("/notAValidRoute") { (users: [User]?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
             if String(describing: error!) == err {
                 expectation1.fulfill()
@@ -130,11 +130,11 @@ class MainTests: XCTestCase {
     }
     
     func testClientGetSingleErrorPath() {
-        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        let expectation1 = expectation(description: "An error is received from the server")
         
         // Invoke GET operation on library
         let id = "1"
-        client.get("/use", identifier: id) { (users: User?, error: Error?) -> Void in
+        client.get("/notAValidRoute", identifier: id) { (users: User?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
             if String(describing: error!) == err {
                 expectation1.fulfill()
@@ -165,12 +165,12 @@ class MainTests: XCTestCase {
     }
     
     func testClientPostErrorPath() {
-        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        let expectation1 = expectation(description: "An error is received from the server")
         
         // Invoke POST operation on library
         let newUser = User(id: 5, name: "John Doe")
         
-        client.post("/use", data: newUser) { (users: User?, error: Error?) -> Void in
+        client.post("/notAValidRoute", data: newUser) { (users: User?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
             if String(describing: error!) == err {
                 expectation1.fulfill()
@@ -202,12 +202,12 @@ class MainTests: XCTestCase {
     }
     
     func testClientPutErrorPath() {
-        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        let expectation1 = expectation(description: "An error is received from the server")
         
         // Invoke PUT operation on library
         let expectedUser = User(id: 5, name: "John Doe")
         
-        client.put("/use", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
+        client.put("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
             if String(describing: error!) == err {
                 expectation1.fulfill()
@@ -238,11 +238,11 @@ class MainTests: XCTestCase {
     }
     
     func testClientPatchErrorPath() {
-        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        let expectation1 = expectation(description: "An error is received from the server")
         
         let expectedUser = User(id: 5, name: "John Doe")
         
-        client.patch("/use", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
+        client.patch("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
             let err: String? = "Error HTTP Response: `Optional(404)`"
             if String(describing: error!) == err {
                 expectation1.fulfill()
