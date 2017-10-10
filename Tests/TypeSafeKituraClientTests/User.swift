@@ -25,7 +25,9 @@ public struct User: Codable, Equatable {
         self.name = name
     }
 
+
     public static func ==(lhs: User, rhs: User) -> Bool {
         return (lhs.id == rhs.id) && (lhs.name == rhs.name)
     }
+
 }

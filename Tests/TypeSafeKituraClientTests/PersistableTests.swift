@@ -27,7 +27,12 @@ import Models
 
 @testable import TypeSafeKituraClient
 
-struct Employee: Codable {
+struct Employee: Codable, Equatable {
+    
+    static func ==(lhs: Employee, rhs: Employee) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.name == rhs.name)
+    }
+    
     let id: String
     let name: String
 }
@@ -40,13 +45,13 @@ extension Employee: Persistable {
 }
 
 class PersistableExtTests: XCTestCase {
-
-//    static var allTests: [(String, (MainTests) -> () throws -> Void)] {
-//        return [
-//            ("testCreate", testCreate)
-//        ]
-//    }
-
+    
+        static var allTests: [(String, (PersistableExtTests) -> () throws -> Void)] {
+            return [
+                ("testCreate", testCreate)
+            ]
+        }
+    
     private let controller = Controller(store: initialStore)
     
     override func setUp() {
@@ -63,21 +68,29 @@ class PersistableExtTests: XCTestCase {
         Kitura.stop()
         super.tearDown()
     }
-//
-//    func testCreate() {
-//
-//        let expectation1 = expectation(description: "An employee is created successfully.")
-//
-//        let emp1 = Employee(id: "5", name: "Kye Maloy")
-//        let emp2 = try Employee.create(model: emp1) { (emp: Employee?, error: Error?) -> Void in
-//            guard let emp = emp else {
-//                XCTFail("Failed to create employee")
-//            }
-//        }
-//
-//        XCTAssertEqual(emp1, emp2)
-//        expectation1.fulfill()
-//        waitForExpectations(timeout: 3.0, handler: nil)
-//    }
-
+    
+    func testCreate() {
+        
+        //Test runs and fails, need to work out how to compare the two Employees when the method
+        //finishes. This just creates two, but the assignment on line 86 doesnt change the values.
+        
+        let expectation1 = expectation(description: "An employee is created successfully.")
+        
+        let emp1 = Employee(id: "5", name: "Kye Maloy")
+        var emp2 = Employee.init(id: "NA", name: "NA")
+        
+        //Crashes without try SIGABORT
+        try Employee.create(model: emp1) { (emp: Employee?, error: Error?) -> Void in
+            guard let emp = emp else {
+                XCTFail("Failed to create employee")
+                return
+            }
+            emp2 = emp
+        }
+        
+            XCTAssertEqual(emp1, emp2)
+            expectation1.fulfill()
+            waitForExpectations(timeout: 3.0, handler: nil)
+        
+    }
 }

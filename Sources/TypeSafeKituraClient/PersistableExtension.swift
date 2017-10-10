@@ -31,6 +31,17 @@ extension Persistable {
         return Client.default
     }
     
+    // create
+    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
+        client.post(routePlural, data: model) { (model: Model?, error: Error?) -> Void in
+            if let model = model {
+                respondWith(model, nil)
+            } else {
+                respondWith(nil, error)
+            }
+        }
+    }
+    
     // read
     static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void) {
         client.get(routePlural, identifier: id) { (model: Model?, error: Error?) -> Void in
@@ -52,17 +63,7 @@ extension Persistable {
             }
         }
     }
-    
-    // create
-    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.post(routePlural, data: model) { (model: Model?, error: Error?) -> Void in
-            if let model = model {
-                respondWith(model, nil)
-            } else {
-                respondWith(nil, error)
-            }
-        }
-    }
+
 
     // update
     static func update(id: String, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
