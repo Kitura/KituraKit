@@ -16,8 +16,9 @@
 
 import XCTest
 
-@testable import TypeSafeKituraClientTests
+@testable import KituraBuddyTests
 
 XCTMain([
-    testCase(MainTests.allTests)
+    testCase(MainTests.allTests),
+    testCase(PersistableTests.allTests)
 ])

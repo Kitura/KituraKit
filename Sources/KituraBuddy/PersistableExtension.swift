@@ -15,7 +15,7 @@
  */
 
 import Foundation
-import TypeSafeContracts
+import SafetyContracts
 
 extension Persistable {
 
@@ -27,8 +27,8 @@ extension Persistable {
 	static var routeSingular: String { return "/\(modelType.lowercased())" }
     static var routePlural: String { return "\(routeSingular)s" }
 
-    static var client: Client {
-        return Client.default
+    static var client: KituraBuddy {
+        return KituraBuddy.default
     }
     
     // create

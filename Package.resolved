@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "CEpoll",
+        "repositoryURL": "https://github.com/IBM-Swift/CEpoll.git",
+        "state": {
+          "branch": null,
+          "revision": "7b65f0adfe5a1f36fc16b16760f5f99cfd3a4e1a",
+          "version": "0.1.1"
+        }
+      },
+      {
         "package": "CircuitBreaker",
         "repositoryURL": "https://github.com/IBM-Swift/CircuitBreaker.git",
         "state": {
@@ -56,12 +65,39 @@
         }
       },
       {
+        "package": "OpenSSL",
+        "repositoryURL": "https://github.com/IBM-Swift/OpenSSL.git",
+        "state": {
+          "branch": null,
+          "revision": "95c405c18a071a1c13616e984ba1b3c6091ca6ca",
+          "version": "0.3.7"
+        }
+      },
+      {
         "package": "SSLService",
         "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
         "state": {
           "branch": null,
-          "revision": "b89110394ecd78107b266b921cbf3d58bf913793",
-          "version": "0.12.58"
+          "revision": "3e84f3fe62f881cb572c682f08787d005e1604c9",
+          "version": "0.12.59"
+        }
+      },
+      {
+        "package": "SafetyContracts",
+        "repositoryURL": "https://github.com/IBM-Swift/SafetyContracts.git",
+        "state": {
+          "branch": null,
+          "revision": "d9ab3062564233e4de74dae675371fce90f12d63",
+          "version": "0.0.2"
+        }
+      },
+      {
+        "package": "Signals",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueSignals.git",
+        "state": {
+          "branch": null,
+          "revision": "0fab5a9f166e96f17bb9646dc56cd22a6f3c3757",
+          "version": "0.9.50"
         }
       },
       {
@@ -89,15 +125,6 @@
           "branch": null,
           "revision": "c3d6ca08de32d457413364396ca9428473a8e303",
           "version": "0.0.4"
-        }
-      },
-      {
-        "package": "TypeSafeContracts",
-        "repositoryURL": "https://github.com/IBM-Swift/TypeSafeContracts",
-        "state": {
-          "branch": "master",
-          "revision": "797b3784dbee05cedf13581a517eb9f81211115f",
-          "version": null
         }
       }
     ]

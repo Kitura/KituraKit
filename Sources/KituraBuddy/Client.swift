@@ -17,18 +17,18 @@
 import Foundation
 import LoggerAPI
 import SwiftyRequest
-import TypeSafeContracts
+import SafetyContracts
 
-public class Client {
+public class KituraBuddy {
 
     public typealias VoidClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?, Error?) -> Void
 
     public static var defaultBaseURL: String = "http://localhost:8080"
-    public static var `default`: Client {
+    public static var `default`: KituraBuddy {
         get {
-            return Client(baseURL: defaultBaseURL)
+            return KituraBuddy(baseURL: defaultBaseURL)
         }
     }
 

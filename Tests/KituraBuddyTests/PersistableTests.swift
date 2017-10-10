@@ -23,19 +23,9 @@
 import XCTest
 import Foundation
 import Kitura
-import TypeSafeContracts
+import SafetyContracts
 
-@testable import TypeSafeKituraClient
-
-struct Employee: Codable, Equatable {
-    
-    static func ==(lhs: Employee, rhs: Employee) -> Bool {
-        return (lhs.id == rhs.id) && (lhs.name == rhs.name)
-    }
-    
-    let id: String
-    let name: String
-}
+@testable import KituraBuddy
 
 extension Employee: Persistable {
     // Users of this library should only have to make their 
@@ -44,15 +34,15 @@ extension Employee: Persistable {
     // world case would be shared between the server and the client)
 }
 
-class PersistableExtTests: XCTestCase {
+class PersistableTests: XCTestCase {
     
-        static var allTests: [(String, (PersistableExtTests) -> () throws -> Void)] {
+        static var allTests: [(String, (PersistableTests) -> () throws -> Void)] {
             return [
                 ("testCreate", testCreate)
             ]
         }
     
-    private let controller = Controller(store: initialStore)
+    private let controller = Controller(userStore: initialStore)
     
     override func setUp() {
         super.setUp()
@@ -70,27 +60,20 @@ class PersistableExtTests: XCTestCase {
     }
     
     func testCreate() {
-        
-        //Test runs and fails, need to work out how to compare the two Employees when the method
-        //finishes. This just creates two, but the assignment on line 86 doesnt change the values.
-        
+        // Fixed the issues with this test, see below.        
         let expectation1 = expectation(description: "An employee is created successfully.")
-        
-        let emp1 = Employee(id: "5", name: "Kye Maloy")
-        var emp2 = Employee.init(id: "NA", name: "NA")
+        let newEmployee = Employee(id: "5", name: "Kye Maloy")
         
         //Crashes without try SIGABORT
-        try Employee.create(model: emp1) { (emp: Employee?, error: Error?) -> Void in
+        Employee.create(model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
             guard let emp = emp else {
-                XCTFail("Failed to create employee")
+                XCTFail("Failed to create employee!")
                 return
             }
-            emp2 = emp
+            XCTAssertEqual(newEmployee, emp)
+            expectation1.fulfill()
         }
         
-            XCTAssertEqual(emp1, emp2)
-            expectation1.fulfill()
-            waitForExpectations(timeout: 3.0, handler: nil)
-        
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 }
