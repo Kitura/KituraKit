@@ -38,10 +38,15 @@ class MainTests: XCTestCase {
     static var allTests: [(String, (MainTests) -> () throws -> Void)] {
         return [
             ("testClientGet", testClientGet),
+            ("testClientGetErrorPath", testClientGetErrorPath),
             ("testClientGetSingle", testClientGetSingle),
+            ("testClientGetSingleErrorPath", testClientGetSingleErrorPath),
             ("testClientPost", testClientPost),
+            ("testClientPostErrorPath", testClientPostErrorPath),
             ("testClientPut", testClientPut),
+            ("testClientPutErrorPath", testClientPutErrorPath),
             ("testClientPatch", testClientPatch),
+            ("testClientPatchErrorPath", testClientPatchErrorPath),
             ("testClientDelete", testClientDelete),
             ("testClientDeleteSingle", testClientDeleteSingle)
         ]
@@ -91,6 +96,22 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+    
+    func testClientGetErrorPath() {
+        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        
+        // Invoke GET operation on library
+        client.get("/use") { (users: [User]?, error: Error?) -> Void in
+            let err: String? = "Error HTTP Response: `Optional(404)`"
+            if String(describing: error!) == err {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                return
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 
     func testClientGetSingle() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
@@ -107,11 +128,28 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+    
+    func testClientGetSingleErrorPath() {
+        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        
+        // Invoke GET operation on library
+        let id = "1"
+        client.get("/use", identifier: id) { (users: User?, error: Error?) -> Void in
+            let err: String? = "Error HTTP Response: `Optional(404)`"
+            if String(describing: error!) == err {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                return
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 
     func testClientPost() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
-        // Invoke GET operation on library
+        // Invoke POST operation on library
         let newUser = User(id: 5, name: "John Doe")
 
         client.post("/users", data: newUser) { (user: User?, error: Error?) -> Void in
@@ -125,11 +163,29 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+    
+    func testClientPostErrorPath() {
+        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        
+        // Invoke POST operation on library
+        let newUser = User(id: 5, name: "John Doe")
+        
+        client.post("/use", data: newUser) { (users: User?, error: Error?) -> Void in
+            let err: String? = "Error HTTP Response: `Optional(404)`"
+            if String(describing: error!) == err {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                return
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 
     func testClientPut() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
-        // Invoke GET operation on library
+        // Invoke PUT operation on library
         let expectedUser = User(id: 5, name: "John Doe")
 
         client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: Error?) -> Void in
@@ -141,6 +197,24 @@ class MainTests: XCTestCase {
 
             XCTAssertEqual(user, expectedUser)
             expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testClientPutErrorPath() {
+        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        
+        // Invoke PUT operation on library
+        let newUser = User(id: 5, name: "John Doe")
+        
+        client.put("/use", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
+            let err: String? = "Error HTTP Response: `Optional(404)`"
+            if String(describing: error!) == err {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                return
+            }
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
@@ -159,6 +233,23 @@ class MainTests: XCTestCase {
             XCTAssertEqual(user, expectedUser)
 
             expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testClientPatchErrorPath() {
+        let expectation1 = expectation(description: "A response is received from the server -> Error")
+        
+        let newUser = User(id: 5, name: "John Doe")
+        
+        client.patch("/use", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
+            let err: String? = "Error HTTP Response: `Optional(404)`"
+            if String(describing: error!) == err {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                return
+            }
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
