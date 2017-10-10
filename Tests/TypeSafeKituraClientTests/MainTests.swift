@@ -198,21 +198,17 @@ class MainTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
     
-    // Commenting out this test case for now...
-    // There seems to be a defect in the SwiftyRequest repo
-    // Aaron is looking into this. Stay tuned!
-    // func testClientDeleteInvalid() {
-    //     let expectation1 = expectation(description: "An error is received from the server")
+    func testClientDeleteInvalid() {
+        let expectation1 = expectation(description: "An error is received from the server")
         
-    //     client.delete("/notAValidRoute") { error in
-    //         guard error == nil else {
-    //             expectation1.fulfill()
-    //             return
-    //         }
-    //         XCTFail("Deleted user, but it doesn't exist! Error: \(String(describing: error))")
-    //         expectation1.fulfill()
-    //     }
-    //     waitForExpectations(timeout: 3.0, handler: nil)
-    // }
+        client.delete("/notAValidRoute") { error in
+            guard error == nil else {
+                expectation1.fulfill()
+                return
+            }
+            XCTFail("Deleted user, but it doesn't exist! Error: \(String(describing: error))")
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 
 }
