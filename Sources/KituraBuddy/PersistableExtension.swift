@@ -17,16 +17,9 @@
 import Foundation
 import SafetyContracts
 
+// CRUD API - type safe routing
 extension Persistable {
-
-    // Set up name space based on name of model (e.g. User -> user(s))
-    static var modelType: String {
-        let kind = String(describing: Swift.type(of: self))
-        return String(kind.characters.dropLast(5))
-    }
-	static var routeSingular: String { return "/\(modelType.lowercased())" }
-    static var routePlural: String { return "\(routeSingular)s" }
-
+    
     static var client: KituraBuddy {
         return KituraBuddy.default
     }
@@ -43,7 +36,7 @@ extension Persistable {
     }
     
     // read
-    static func read(id: String, respondWith: @escaping (Model?, Error?) -> Void) {
+    static func read(id: Id, respondWith: @escaping (Model?, Error?) -> Void) {
         client.get(routePlural, identifier: id) { (model: Model?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
@@ -66,7 +59,7 @@ extension Persistable {
 
 
     // update
-    static func update(id: String, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
+    static func update(id: Id, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
         client.put(routePlural, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
@@ -77,7 +70,7 @@ extension Persistable {
     }
 
     // delete
-    static func delete(id: String, respondWith: @escaping (Error?) -> Void) {
+    static func delete(id: Id, respondWith: @escaping (Error?) -> Void) {
         // Perform delete REST call...
         client.delete(routePlural, identifier: id) { (error: Error?) -> Void in
             respondWith(error)

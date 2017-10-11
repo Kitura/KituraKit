@@ -38,21 +38,21 @@
         }
       },
       {
-        "package": "Kitura-TemplateEngine",
-        "repositoryURL": "https://github.com/IBM-Swift/Kitura-TemplateEngine.git",
-        "state": {
-          "branch": null,
-          "revision": "8e75a213bf4dd7b5effd03848335e344535969aa",
-          "version": "1.7.2"
-        }
-      },
-      {
         "package": "Kitura-net",
         "repositoryURL": "https://github.com/IBM-Swift/Kitura-net.git",
         "state": {
           "branch": null,
           "revision": "5b1b9b2463633f43f0e9fcee74c8360d6feb8d81",
           "version": "1.7.16"
+        }
+      },
+      {
+        "package": "Kitura-TemplateEngine",
+        "repositoryURL": "https://github.com/IBM-Swift/Kitura-TemplateEngine.git",
+        "state": {
+          "branch": null,
+          "revision": "8e75a213bf4dd7b5effd03848335e344535969aa",
+          "version": "1.7.2"
         }
       },
       {
@@ -74,21 +74,12 @@
         }
       },
       {
-        "package": "SSLService",
-        "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
-        "state": {
-          "branch": null,
-          "revision": "3e84f3fe62f881cb572c682f08787d005e1604c9",
-          "version": "0.12.59"
-        }
-      },
-      {
         "package": "SafetyContracts",
         "repositoryURL": "https://github.com/IBM-Swift/SafetyContracts.git",
         "state": {
           "branch": null,
-          "revision": "d9ab3062564233e4de74dae675371fce90f12d63",
-          "version": "0.0.2"
+          "revision": "7bc1bb8f90251906266ae43121ef80798f419a95",
+          "version": "0.0.3"
         }
       },
       {
@@ -105,8 +96,17 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueSocket.git",
         "state": {
           "branch": null,
-          "revision": "5aae4f88a4c80b6bd6461e3ff4e37df100779422",
-          "version": "0.12.72"
+          "revision": "60cf41bcc4636c52435d4660a2e2d64f1c26ea4d",
+          "version": "0.12.73"
+        }
+      },
+      {
+        "package": "SSLService",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
+        "state": {
+          "branch": null,
+          "revision": "cbdd3306226ba554a5622e2644c2835b4e10f86e",
+          "version": "0.12.60"
         }
       },
       {

@@ -21,7 +21,7 @@ import SafetyContracts
 
 public class KituraBuddy {
 
-    public typealias VoidClosure = (Error?) -> Void
+    public typealias SimpleClosure = (Error?) -> Void
     public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?, Error?) -> Void
 
@@ -59,7 +59,7 @@ public class KituraBuddy {
     }
 
     // GET single - basic type safe routing
-    public func get<O: Codable>(_ route: String, identifier: String, resultHandler: @escaping CodableClosure<O>) {
+    public func get<O: Codable>(_ route: String, identifier: Identifier, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(url: url)
 
@@ -69,7 +69,7 @@ public class KituraBuddy {
                 let items: O? = try? JSONDecoder().decode(O.self, from: data)
                 resultHandler(items, nil)
             case .failure(let error):
-                Log.error("GET failure: \(error)")
+                Log.error("GET (single) failure: \(error)")
                 resultHandler(nil, error)
             }
         }
@@ -95,7 +95,7 @@ public class KituraBuddy {
     }
 
     // PUT - basic type safe routing
-    public func put<I: Codable, O: Codable>(_ route: String, identifier: String, data: I, resultHandler: @escaping CodableClosure<O>) {
+    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url)
@@ -114,7 +114,7 @@ public class KituraBuddy {
     }
 
     // PATCH - basic type safe routing
-    public func patch<I: Codable, O: Codable>(_ route: String, identifier: String, data: I, resultHandler: @escaping CodableClosure<O>) {
+    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, resultHandler: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url)
@@ -133,7 +133,7 @@ public class KituraBuddy {
     }
 
     // DELETE - basic type safe routing
-    public func delete(_ route: String, resultHandler: @escaping VoidClosure) {
+    public func delete(_ route: String, resultHandler: @escaping SimpleClosure) {
         let url: String = baseURL + route
         let request = RestRequest(method: .delete, url: url)
         request.responseData { response in
@@ -148,7 +148,7 @@ public class KituraBuddy {
     }
 
     // DELETE single - basic type safe routing
-    public func delete(_ route: String, identifier: String, resultHandler: @escaping VoidClosure) {
+    public func delete(_ route: String, identifier: Identifier, resultHandler: @escaping SimpleClosure) {
         let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(method: .delete, url: url)
         request.responseData { response in
@@ -161,8 +161,5 @@ public class KituraBuddy {
             }
         }
     }
-
-    // TODO - Once we have completed basic type safe routing on the client, 
-    // we will start tackling the CRUD API (which uses the Persistable protocol)
 
 }

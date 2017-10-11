@@ -30,8 +30,10 @@ import SafetyContracts
 extension Employee: Persistable {
     // Users of this library should only have to make their 
     // models conform to Persistable protocol by adding this extension
-    // Note that the Employee structure definition as shown above (in a real
-    // world case would be shared between the server and the client)
+    // and specify the concrete type for the Identifier
+    // Note that the Employee structure definition in a real
+    // world case would be shared between the server and the client.
+    public typealias Id = IntId
 }
 
 class PersistableTests: XCTestCase {
@@ -64,7 +66,6 @@ class PersistableTests: XCTestCase {
         let expectation1 = expectation(description: "An employee is created successfully.")
         let newEmployee = Employee(id: "5", name: "Kye Maloy")
         
-        //Crashes without try SIGABORT
         Employee.create(model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
             guard let emp = emp else {
                 XCTFail("Failed to create employee!")
@@ -76,4 +77,6 @@ class PersistableTests: XCTestCase {
         
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+
+    //TODO - Add more test cases for CRUD type safe routing
 }
