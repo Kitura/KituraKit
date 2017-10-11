@@ -26,7 +26,7 @@ extension Persistable {
     
     // create
     static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.post(routePlural, data: model) { (model: Model?, error: Error?) -> Void in
+        client.post(route, data: model) { (model: Model?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
             } else {
@@ -37,7 +37,7 @@ extension Persistable {
     
     // read
     static func read(id: Id, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.get(routePlural, identifier: id) { (model: Model?, error: Error?) -> Void in
+        client.get(route, identifier: id) { (model: Model?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
             } else {
@@ -48,7 +48,7 @@ extension Persistable {
     
     // read all
     static func read(respondWith: @escaping ([Model]?, Error?) -> Void) {
-        client.get(routePlural) { (model: [Model]?, error: Error?) -> Void in
+        client.get(route) { (model: [Model]?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
             } else {
@@ -60,7 +60,7 @@ extension Persistable {
 
     // update
     static func update(id: Id, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.put(routePlural, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
+        client.put(route, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
             if let model = model {
                 respondWith(model, nil)
             } else {
@@ -72,7 +72,7 @@ extension Persistable {
     // delete
     static func delete(id: Id, respondWith: @escaping (Error?) -> Void) {
         // Perform delete REST call...
-        client.delete(routePlural, identifier: id) { (error: Error?) -> Void in
+        client.delete(route, identifier: id) { (error: Error?) -> Void in
             respondWith(error)
         }
     }
