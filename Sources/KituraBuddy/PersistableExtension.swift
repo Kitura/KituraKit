@@ -17,21 +17,6 @@
 import Foundation
 import SafetyContracts
 
-public func checkErrorCode(_ errorCode: Int) -> RouteHandlerError {
-    switch errorCode {
-    case 202:
-        return .accepted
-    case 417:
-        return .expectationFailed
-    case 505:
-        return .httpVersionNotSupported
-    case 404:
-        return .notFound
-    default:
-        return .unknown
-    }
-}
-
 func httpErrorCodeParser(_ errorCode: String) -> Int{
     let errorOnly = errorCode.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890").inverted)
     let errorNumberCode = Int(errorOnly)
@@ -53,7 +38,7 @@ extension Persistable {
             
             if let error = error {
                 let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = checkErrorCode(err)
+                let errorCode = RouteHandlerError(rawValue: err)
                 respondWith(nil, errorCode)
                 return
             }
@@ -75,7 +60,7 @@ extension Persistable {
             
             if let error = error {
                 let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = checkErrorCode(err)
+                let errorCode = RouteHandlerError(rawValue: err)
                 respondWith(nil, errorCode)
                 return
             }
@@ -96,7 +81,7 @@ extension Persistable {
             
             if let error = error {
                 let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = checkErrorCode(err)
+                let errorCode = RouteHandlerError(rawValue: err)
                 respondWith(nil, errorCode)
                 return
             }
@@ -118,7 +103,7 @@ extension Persistable {
             
             if let error = error {
                 let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = checkErrorCode(err)
+                let errorCode = RouteHandlerError(rawValue: err)
                 respondWith(nil, errorCode)
                 return
             }
