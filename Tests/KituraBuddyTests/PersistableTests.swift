@@ -67,8 +67,13 @@ class PersistableTests: XCTestCase {
         let newEmployee = Employee(id: "5", name: "Kye Maloy")
         
         Employee.create(model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
+            if error != nil {
+                XCTFail("Failed to create employee! \(error!)")
+                return
+            }
             guard let emp = emp else {
-                XCTFail("Failed to create employee!")
+                //var err = checkErrorCode(String(describing: error!))
+                XCTFail("Failed to create employee! \(error!)")
                 return
             }
             XCTAssertEqual(newEmployee, emp)
@@ -77,6 +82,5 @@ class PersistableTests: XCTestCase {
         
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-
     //TODO - Add more test cases for CRUD type safe routing
 }

@@ -17,6 +17,21 @@
 import Foundation
 import SafetyContracts
 
+public func checkErrorCode(_ errorCode: String) -> RouteHandlerError {
+    switch errorCode {
+    case "Error HTTP Response: `Optional(202)`":
+        return .accepted
+    case "Error HTTP Response: `Optional(417)`":
+        return .expectationFailed
+    case "Error HTTP Response: `Optional(505)`":
+        return .httpVersionNotSupported
+    case "Error HTTP Response: `Optional(404)`":
+        return .notFound
+    default:
+        return .unknown
+    }
+}
+
 // CRUD API - type safe routing
 extension Persistable {
     
@@ -28,21 +43,19 @@ extension Persistable {
     static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
         client.post(route, data: model) { (model: Model?, error: Error?) -> Void in
             // First determine if error was not nil
-            if error != nil {
-                respondWith(nil, error)
+            
+            if let error = error {
+                let err = checkErrorCode(String(describing: error))
+                respondWith(nil, err)
                 return
             }
 
             // Next, determine if model was nil
             guard let model = model else {
-                // If we get here, then error and model were both nil
-                // Then we should create our own custom error instance
-                // and send it to the user of our library
-                //TODO: create error instance
                 respondWith(nil, error)
                 return
             }
-
+            
             // If we get here, then model was not nil and error was nil
             respondWith(model, nil)
         }
@@ -51,8 +64,10 @@ extension Persistable {
     // read
     static func read(id: Id, respondWith: @escaping (Model?, Error?) -> Void) {
         client.get(route, identifier: id) { (model: Model?, error: Error?) -> Void in
-            if error != nil {
-                respondWith(nil, error)
+            
+            if let error = error {
+                let err = checkErrorCode(String(describing: error))
+                respondWith(nil, err)
                 return
             }
 
@@ -69,8 +84,10 @@ extension Persistable {
     // read all
     static func read(respondWith: @escaping ([Model]?, Error?) -> Void) {
         client.get(route) { (model: [Model]?, error: Error?) -> Void in
-            if error != nil {
-                respondWith(nil, error)
+            
+            if let error = error {
+                let err = checkErrorCode(String(describing: error))
+                respondWith(nil, err)
                 return
             }
 
@@ -88,8 +105,10 @@ extension Persistable {
     // update
     static func update(id: Id, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
         client.put(route, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
-            if error != nil {
-                respondWith(nil, error)
+            
+            if let error = error {
+                let err = checkErrorCode(String(describing: error))
+                respondWith(nil, err)
                 return
             }
 
