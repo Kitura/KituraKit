@@ -96,11 +96,10 @@ class MainTests: XCTestCase {
         
         // Invoke GET operation on library
         client.get("/notAValidRoute") { (users: [User]?, error: Error?) -> Void in
-            let err: String? = "Error HTTP Response: `Optional(404)`"
-            if String(describing: error!) == err {
+            if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
-                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
         }
@@ -129,11 +128,10 @@ class MainTests: XCTestCase {
         // Invoke GET operation on library
         let id = "1"
         client.get("/notAValidRoute", identifier: id) { (users: User?, error: Error?) -> Void in
-            let err: String? = "Error HTTP Response: `Optional(404)`"
-            if String(describing: error!) == err {
+            if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
-                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
         }
@@ -165,8 +163,7 @@ class MainTests: XCTestCase {
         let newUser = User(id: 5, name: "John Doe")
         
         client.post("/notAValidRoute", data: newUser) { (users: User?, error: Error?) -> Void in
-            let err: String? = "Error HTTP Response: `Optional(404)`"
-            if String(describing: error!) == err {
+            if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
                 XCTFail("Failed to get user! Error: \(String(describing: error))")
@@ -202,8 +199,7 @@ class MainTests: XCTestCase {
         let expectedUser = User(id: 5, name: "John Doe")
         
         client.put("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
-            let err: String? = "Error HTTP Response: `Optional(404)`"
-            if String(describing: error!) == err {
+            if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
                 XCTFail("Failed to get user! Error: \(String(describing: error))")
@@ -232,16 +228,14 @@ class MainTests: XCTestCase {
     }
     
     func testClientPatchErrorPath() {
-        let expectation1 = expectation(description: "An error is received from the server")
-        
+        let expectation1 = expectation(description: "An error is received from the server")        
         let expectedUser = User(id: 5, name: "John Doe")
         
         client.patch("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
-            let err: String? = "Error HTTP Response: `Optional(404)`"
-            if String(describing: error!) == err {
+            if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
-                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
         }

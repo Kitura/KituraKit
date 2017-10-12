@@ -25,7 +25,6 @@ public struct User: Codable, Equatable {
         self.name = name
     }
 
-
     public static func ==(lhs: User, rhs: User) -> Bool {
         return (lhs.id == rhs.id) && (lhs.name == rhs.name)
    }
@@ -33,12 +32,12 @@ public struct User: Codable, Equatable {
 }
 
 public struct Employee: Codable, Equatable {    
+    public let id: String
+    public let name: String
+
     public static func ==(lhs: Employee, rhs: Employee) -> Bool {
         return (lhs.id == rhs.id) && (lhs.name == rhs.name)
     }
-    
-    let id: String
-    let name: String
 }
 
 let initialStore = [

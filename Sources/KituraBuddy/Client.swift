@@ -53,7 +53,8 @@ public class KituraBuddy {
                 resultHandler(items, nil)
             case .failure(let error):
                 Log.error("GET failure: \(error)")
-                resultHandler(nil, error)
+                let err = self.process(error: error)
+                resultHandler(nil, err)
             }
         }
     }
@@ -70,7 +71,8 @@ public class KituraBuddy {
                 resultHandler(items, nil)
             case .failure(let error):
                 Log.error("GET (single) failure: \(error)")
-                resultHandler(nil, error)
+                let err = self.process(error: error)
+                resultHandler(nil, err)
             }
         }
     }
@@ -89,7 +91,8 @@ public class KituraBuddy {
                 resultHandler(item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
-                resultHandler(nil, error)
+                let err = self.process(error: error)
+                resultHandler(nil, err)
             }
         }
     }
@@ -108,7 +111,8 @@ public class KituraBuddy {
                 resultHandler(item, nil)
             case .failure(let error):
                 Log.error("PUT failure: \(error)")
-                resultHandler(nil, error)
+                let err = self.process(error: error)
+                resultHandler(nil, err)
             }
         }
     }
@@ -127,7 +131,8 @@ public class KituraBuddy {
                 resultHandler(item, nil)
             case .failure(let error):
                 Log.error("PATCH failure: \(error)")
-                resultHandler(nil, error)
+                let err = self.process(error: error)
+                resultHandler(nil, err)
             }
         }
     }
@@ -142,7 +147,8 @@ public class KituraBuddy {
                 resultHandler(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                resultHandler(error)
+                let err = self.process(error: error)
+                resultHandler(err)
             }
         }
     }
@@ -157,8 +163,17 @@ public class KituraBuddy {
                 resultHandler(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                resultHandler(error)
+                let err = self.process(error: error)
+                resultHandler(err)
             }
+        }
+    }
+
+    private func process(error: Error) -> Error {
+        if let rhError = RouteHandlerError(error) {
+            return rhError
+        } else {
+            return error
         }
     }
 

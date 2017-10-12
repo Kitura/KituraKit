@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
         "state": {
           "branch": null,
-          "revision": "cbdd3306226ba554a5622e2644c2835b4e10f86e",
-          "version": "0.12.60"
+          "revision": "1e69d878a34e5889b506baa8f349b6444edb0449",
+          "version": "0.12.61"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/SafetyContracts.git",
         "state": {
           "branch": null,
-          "revision": "7649263b1dedb0796269c1783b5637646ec0782e",
-          "version": "0.0.5"
+          "revision": "1364e36f6bb17a2a7612f933a7e002a57223efe8",
+          "version": "0.0.7"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueSocket.git",
         "state": {
           "branch": null,
-          "revision": "60cf41bcc4636c52435d4660a2e2d64f1c26ea4d",
-          "version": "0.12.73"
+          "revision": "badbf15cb8ea1ca6df5458f1472d84f1e070f7a7",
+          "version": "0.12.74"
         }
       },
       {

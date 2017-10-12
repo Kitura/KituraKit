@@ -17,13 +17,6 @@
 import Foundation
 import SafetyContracts
 
-func httpErrorCodeParser(_ errorCode: String) -> Int{
-    let errorOnly = errorCode.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890").inverted)
-    let errorNumberCode = Int(errorOnly)
-    return errorNumberCode!
-}
-
-
 // CRUD API - type safe routing
 extension Persistable {
     
@@ -32,14 +25,11 @@ extension Persistable {
     }
     
     // create
-    static func create(model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.post(route, data: model) { (model: Model?, error: Error?) -> Void in
-            // First determine if error was not nil
-            
+    static func create(model: Self, respondWith: @escaping (Self?, Error?) -> Void) {
+        client.post(route, data: model) { (model: Self?, error: Error?) -> Void in
+            // First determine if error was not nil            
             if let error = error {
-                let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = RouteHandlerError(rawValue: err)
-                respondWith(nil, errorCode)
+                respondWith(nil, error)
                 return
             }
 
@@ -55,18 +45,14 @@ extension Persistable {
     }
     
     // read
-    static func read(id: Id, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.get(route, identifier: id) { (model: Model?, error: Error?) -> Void in
-            
+    static func read(id: Id, respondWith: @escaping (Self?, Error?) -> Void) {
+        client.get(route, identifier: id) { (model: Self?, error: Error?) -> Void in
             if let error = error {
-                let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = RouteHandlerError(rawValue: err)
-                respondWith(nil, errorCode)
+                respondWith(nil, error)
                 return
             }
 
             guard let model = model else {
-                //TODO: create error instance
                 respondWith(nil, error)
                 return
             }
@@ -76,18 +62,15 @@ extension Persistable {
     }
     
     // read all
-    static func read(respondWith: @escaping ([Model]?, Error?) -> Void) {
-        client.get(route) { (model: [Model]?, error: Error?) -> Void in
+    static func read(respondWith: @escaping ([Self]?, Error?) -> Void) {
+        client.get(route) { (model: [Self]?, error: Error?) -> Void in
             
             if let error = error {
-                let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = RouteHandlerError(rawValue: err)
-                respondWith(nil, errorCode)
+                respondWith(nil, error)
                 return
             }
 
             guard let model = model else {
-                //TODO: create error instance
                 respondWith(nil, error)
                 return
             }
@@ -98,18 +81,15 @@ extension Persistable {
 
 
     // update
-    static func update(id: Id, model: Model, respondWith: @escaping (Model?, Error?) -> Void) {
-        client.put(route, identifier: id, data: model) { (model: Model?, error: Error?) -> Void in
+    static func update(id: Id, model: Self, respondWith: @escaping (Self?, Error?) -> Void) {
+        client.put(route, identifier: id, data: model) { (model: Self?, error: Error?) -> Void in
             
             if let error = error {
-                let err = httpErrorCodeParser(String(describing: error))
-                let errorCode = RouteHandlerError(rawValue: err)
-                respondWith(nil, errorCode)
+                respondWith(nil, error)
                 return
             }
 
             guard let model = model else {
-                //TODO: create error instance
                 respondWith(nil, error)
                 return
             }
@@ -122,11 +102,6 @@ extension Persistable {
     static func delete(id: Id, respondWith: @escaping (Error?) -> Void) {
         // Perform delete REST call...
         client.delete(route, identifier: id) { (error: Error?) -> Void in
-            guard let _ = error else {
-                //TODO: create error instance
-                respondWith(error)
-                return
-            }
             respondWith(error)
         }
     }
@@ -135,11 +110,6 @@ extension Persistable {
     static func delete(respondWith: @escaping (Error?) -> Void) {
         // Perform delete REST call...
         client.delete("/") { (error: Error?) -> Void in
-            guard let _ = error else {
-                //TODO: create error instance
-                respondWith(error)
-                return
-            }
             respondWith(error)
         }
     }

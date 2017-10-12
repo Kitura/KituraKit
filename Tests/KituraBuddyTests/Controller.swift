@@ -45,7 +45,7 @@ public class Controller {
         router.patch("/users/:id", handler: updateUser)
         router.delete("/users/:id", handler: deleteUser)
         router.delete("/users", handler: deleteAll)
-        // employee routes
+        // employees routes
         router.post("/employees", handler: addEmployee)
         // TODO: Add additional routes for employees
     }

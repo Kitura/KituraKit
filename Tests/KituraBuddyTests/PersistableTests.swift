@@ -33,7 +33,7 @@ extension Employee: Persistable {
     // and specify the concrete type for the Identifier
     // Note that the Employee structure definition in a real
     // world case would be shared between the server and the client.
-    public typealias Id = IntId
+    public typealias Id = Int
 }
 
 class PersistableTests: XCTestCase {
@@ -72,7 +72,6 @@ class PersistableTests: XCTestCase {
                 return
             }
             guard let emp = emp else {
-                //var err = checkErrorCode(String(describing: error!))
                 XCTFail("Failed to create employee! \(error!)")
                 return
             }
