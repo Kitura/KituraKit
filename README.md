@@ -1,4 +1,4 @@
-# TypeSafeKituraClient
+# KituraBuddy
 
 Under construction... stay tuned!
 

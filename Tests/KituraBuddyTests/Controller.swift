@@ -19,22 +19,25 @@ import Foundation
 
 public class Controller {
 
-    typealias Key = String
+    public typealias Key = String
 
     public let router: Router
 
     private var userStore: [Key: User] = [:]
+    private var employeeStore: [Key: Employee] = [:]
 
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
-    public init(store: [String: User]) {
-        userStore = store
+    public init(userStore: [Key: User] = [:], employeeStore: [Key: Employee] = [:]) {
+        self.userStore = userStore
+        self.employeeStore = employeeStore
         router = Router()
         setupRoutes()
     }
 
     private func setupRoutes() {
+        // users routes
         router.get("/users", handler: getUsers)
         router.get("/users/:id", handler: getUser)
         router.post("/users", handler: addUser)
@@ -42,6 +45,9 @@ public class Controller {
         router.patch("/users/:id", handler: updateUser)
         router.delete("/users/:id", handler: deleteUser)
         router.delete("/users", handler: deleteAll)
+        // employee routes
+        router.post("/employees", handler: addEmployee)
+        // TODO: Add additional routes for employees
     }
 
     public func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
@@ -104,6 +110,18 @@ public class Controller {
 
         userStore[id] = nil
         response.status(.OK)
+    }
+
+    public func addEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        do {
+            var data = Data()
+            _ = try request.read(into: &data)
+            let employee = try decoder.decode(Employee.self, from: data)
+            employeeStore[String(employee.id)] = employee
+            response.status(.OK).send(data: data)
+        } catch {
+            response.status(.internalServerError)
+        }
     }
     
 }

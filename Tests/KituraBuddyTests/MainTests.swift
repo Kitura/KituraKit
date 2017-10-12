@@ -24,14 +24,7 @@ import XCTest
 import Foundation
 import Kitura
 
-@testable import TypeSafeKituraClient
-
-let initialStore = [
-    "1": User(id: 1, name: "Mike"),
-    "2": User(id: 2, name: "Chris"),
-    "3": User(id: 3, name: "Ricardo"),
-    "4": User(id: 4, name: "Aaron")
-]
+@testable import KituraBuddy
 
 class MainTests: XCTestCase {
 
@@ -52,9 +45,9 @@ class MainTests: XCTestCase {
         ]
     }
 
-    private let controller = Controller(store: initialStore)
+    private let controller = Controller(userStore: initialStore)
 
-    private let client = Client(baseURL: "http://localhost:8080")
+    private let client = KituraBuddy(baseURL: "http://localhost:8080")
 
     override func setUp() {
         super.setUp()
