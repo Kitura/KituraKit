@@ -23,6 +23,7 @@
 import XCTest
 import Foundation
 import Kitura
+import SafetyContracts
 
 @testable import KituraBuddy
 

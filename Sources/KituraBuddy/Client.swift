@@ -25,7 +25,7 @@ public class KituraBuddy {
     public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?, Error?) -> Void
 
-    public static var defaultBaseURL: String = "http://localhost:8080"
+    public static var defaultBaseURL: String = "http://localhost:8080/abcd"
     public static var `default`: KituraBuddy {
         get {
             return KituraBuddy(baseURL: defaultBaseURL)
