@@ -40,11 +40,16 @@ class PersistableTests: XCTestCase {
     
         static var allTests: [(String, (PersistableTests) -> () throws -> Void)] {
             return [
-                ("testCreate", testCreate)
+                ("testCreate", testCreate),
+                ("testRead", testRead),
+                ("testReadAll", testReadAll),
+                ("testUpdate", testUpdate),
+                ("testDelete", testDelete),
+                ("testDeleteAll", testDeleteAll)
             ]
         }
     
-    private let controller = Controller(userStore: initialStore)
+    private let controller = Controller(userStore: initialStore, employeeStore: initialStoreEmployee)
     
     override func setUp() {
         super.setUp()
@@ -62,7 +67,6 @@ class PersistableTests: XCTestCase {
     }
     
     func testCreate() {
-        // Fixed the issues with this test, see below.        
         let expectation1 = expectation(description: "An employee is created successfully.")
         let newEmployee = Employee(id: "5", name: "Kye Maloy")
         
@@ -81,5 +85,89 @@ class PersistableTests: XCTestCase {
         
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    //TODO - Add more test cases for CRUD type safe routing
+    
+    func testRead() {
+        let expectation1 = expectation(description: "An employee is read successfully.")
+        
+        Employee.read(id: 4) { (emp: Employee?, error: Error?) -> Void in
+            
+            if error != nil {
+                XCTFail("Failed to read employee! \(error!)")
+                return
+            }
+            guard emp != nil else {
+                XCTFail("Failed to read employee! \(error!)")
+                return
+            }
+ 
+            expectation1.fulfill()
+        }
+        
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testReadAll() {
+        let expectation1 = expectation(description: "All employees are read successfully.")
+        
+        Employee.read() { (emp: [Employee]?, error: Error?) -> Void in
+            if error != nil {
+                XCTFail("Failed to read employees! \(error!)")
+                return
+            }
+            guard emp != nil else {
+                XCTFail("Failed to read employees! \(error!)")
+                return
+            }
+            expectation1.fulfill()
+        }
+        
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testUpdate() {
+        let expectation1 = expectation(description: "An employee is updated successfully.")
+        let newEmployee = Employee(id: "5", name: "Kye Maloy")
+        
+        Employee.update(id: 5, model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
+            if error != nil {
+                XCTFail("Failed to update employees! \(error!)")
+                return
+            }
+            guard emp != nil else {
+                XCTFail("Failed to update employees! \(error!)")
+                return
+            }
+            expectation1.fulfill()
+        }
+        
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testDelete() {
+        let expectation1 = expectation(description: "An employee is deleted successfully.")
+        
+        Employee.delete(id: 5) { (error: Error?) -> Void in
+            if error != nil {
+                XCTFail("Failed to delete employee! \(error!)")
+                return
+            }
+            expectation1.fulfill()
+        }
+        
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testDeleteAll() {
+        let expectation1 = expectation(description: "All employees are deleted successfully.")
+        
+        Employee.delete() { (error: Error?) -> Void in
+            if error != nil {
+                XCTFail("Failed to delete all employees! \(error!)")
+                return
+            }
+            expectation1.fulfill()
+        }
+        
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 }

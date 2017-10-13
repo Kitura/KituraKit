@@ -46,3 +46,10 @@ let initialStore = [
     "3": User(id: 3, name: "Ricardo"),
     "4": User(id: 4, name: "Aaron")
 ]
+
+let initialStoreEmployee = [
+    "1": Employee(id: "1", name: "Mike"),
+    "2": Employee(id: "2", name: "Chris"),
+    "3": Employee(id: "3", name: "Ricardo"),
+    "4": Employee(id: "4", name: "Aaron")
+]

@@ -46,8 +46,13 @@ public class Controller {
         router.delete("/users/:id", handler: deleteUser)
         router.delete("/users", handler: deleteAll)
         // employees routes
+        router.get("/employees", handler: getEmployees)
+        router.get("/employees/:id", handler: getEmployee)
         router.post("/employees", handler: addEmployee)
-        // TODO: Add additional routes for employees
+        router.put("/employees/:id", handler: addEmployee)
+        router.patch("/employees/:id", handler: updateEmployee)
+        router.delete("/employees/:id", handler: deleteEmployee)
+        router.delete("/employees", handler: deleteAllEmployees)
     }
 
     public func getUsers(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
@@ -111,19 +116,73 @@ public class Controller {
         userStore[id] = nil
         response.status(.OK)
     }
-
+    
+    public func getEmployees(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        let employees = employeeStore.map { $1 }
+        try response.status(.OK).send(data: encoder.encode(employees)).end()
+    }
+    
+    public func getEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        guard let id = request.parameters["id"] else {
+            response.status(.badRequest)
+            return
+        }
+        
+        print("EMPSTORE - \(employeeStore)")
+        
+        guard let employee = employeeStore[id] else {
+            response.status(.badRequest)
+            return
+        }
+        
+        try response.status(.OK).send(data: encoder.encode(employee)).end()
+    }
+    
     public func addEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         do {
             var data = Data()
             _ = try request.read(into: &data)
             let employee = try decoder.decode(Employee.self, from: data)
             employeeStore[String(employee.id)] = employee
+            
+            print("EMPST: \(employeeStore)")
+            
             response.status(.OK).send(data: data)
         } catch {
             response.status(.internalServerError)
         }
     }
     
+    public func updateEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        guard let id = request.parameters["id"] else {
+            response.status(.badRequest)
+            return
+        }
+        do {
+            var data = Data()
+            _ = try request.read(into: &data)
+            let employee = try decoder.decode(Employee.self, from: data)
+            employeeStore[id] = employee
+            response.status(.OK).send(data: data)
+        } catch {
+            response.status(.internalServerError)
+        }
+    }
+    
+    public func deleteAllEmployees(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        employeeStore = [:]
+        response.status(.OK)
+    }
+    
+    public func deleteEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        guard let id = request.parameters["id"] else {
+            response.status(.badRequest)
+            return
+        }
+        
+        employeeStore[id] = nil
+        response.status(.OK)
+    }
 }
 
 
