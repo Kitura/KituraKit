@@ -43,11 +43,13 @@ class PersistableTests: XCTestCase {
         static var allTests: [(String, (PersistableTests) -> () throws -> Void)] {
             return [
                 ("testCreate", testCreate),
+                ("testCreateInvalid", testCreateInvalid),
                 ("testRead", testRead),
                 ("testReadInvalid", testReadInvalid),
                 ("testReadAll", testReadAll),
                 ("testUpdate", testUpdate),
                 ("testDelete", testDelete),
+                ("testDeleteInvalid", testDeleteInvalid),
                 ("testDeleteAll", testDeleteAll)
             ]
         }
@@ -58,7 +60,6 @@ class PersistableTests: XCTestCase {
         super.setUp()
         
         continueAfterFailure = false
-        
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
         
@@ -87,6 +88,28 @@ class PersistableTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
     
+    func testCreateInvalid() {
+        let expecation1 = expectation(description: "Create fails and returns error because the object already exists.")
+        let duplicateEmployee = Employee(id: "1", name: "Mike")
+        
+        Employee.create(model: duplicateEmployee) { (emp: Employee?, error: Error?) in
+            
+            guard let error = error else {
+                if emp != nil {
+                    XCTFail("An employee object was returned erronously")
+                    expecation1.fulfill()
+                }
+                return
+            }
+            
+            //Error is a conflict as the resource already exists.
+            XCTAssertEqual(error as? RouteHandlerError, SafetyContracts.RouteHandlerError.conflict)
+            expecation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+
+    }
+    
     func testRead() {
         let expectation1 = expectation(description: "An employee is read successfully.")
         let expectedEmployee = initialStoreEmployee["3".value]
@@ -111,7 +134,7 @@ class PersistableTests: XCTestCase {
     }
     
     func testReadInvalid() {
-        let expectation1 = expectation(description: "Error returned as the read is for a non-existent value.")
+        let expectation1 = expectation(description: "Error shoudl be returned as the read is for a non-existent resource.")
         
         Employee.read(id: 102) { (emp: Employee?, error: Error?) in
             
@@ -169,48 +192,51 @@ class PersistableTests: XCTestCase {
     func testDelete() {
         let expectation1 = expectation(description: "An employee is deleted successfully.")
         
-        Employee.delete(id: 5) { (error: Error?) -> Void in
-            if error != nil {
-                XCTFail("Failed to delete employee! \(error!)")
-                return
+        Employee.delete(id: 4) { (error: Error?) -> Void in
+            
+            if let error = error {
+                XCTFail("Failed to delete employee! \(error)")
+                expectation1.fulfill()
             }
+            
             expectation1.fulfill()
         }
         
         waitForExpectations(timeout: 3.0, handler: nil)
     }
     
-//    SwiftyRequest doesnt tell you if the delete was on an invalid resource as of 13-10-17, so can't test this method
-//
-//    func testDeleteInvalid() {
-//        let expectation1 = expectation(description: "Should return error because the item to delete doesn't exist.")
-//
-//        Employee.delete(id: 999) { (error: Error?) in
-//
-//            guard let error = error else {
-//                XCTFail("No error was returned, when it should have been")
-//                return
-//            }
-//            print("ERROR: \(error)")
-//            XCTAssertEqual(error, SafetyContracts.RouteHandlerError.notFound)
-//            expectation1.fulfill()
-//
-//        }
-//
-//        waitForExpectations(timeout: 3.0, handler: nil)
-//    }
+    //SwiftyRequest doesnt tell you if the delete was on an invalid resource as of 13-10-17, so can't test this method
+
+    func testDeleteInvalid() {
+        let expectation1 = expectation(description: "Should return error because the item to delete doesn't exist.")
+
+        Employee.delete(id: 999) { (error: Error?) in
+
+            guard let error = error else {
+                XCTFail("No error was returned, when it should have been")
+                return
+            }
+            
+            XCTAssertEqual(error as? RouteHandlerError, SafetyContracts.RouteHandlerError.notFound)
+            expectation1.fulfill()
+
+        }
+
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
     
     func testDeleteAll() {
         let expectation1 = expectation(description: "All employees are deleted successfully.")
         
         Employee.delete() { (error: Error?) -> Void in
-            if error != nil {
-                XCTFail("Failed to delete all employees! \(error!)")
-                return
+            
+             if let error = error {
+                XCTFail("Failed to delete all employees! \(error)")
+                expectation1.fulfill()
             }
+
             expectation1.fulfill()
         }
-        
         waitForExpectations(timeout: 3.0, handler: nil)
     }
 }

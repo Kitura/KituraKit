@@ -143,6 +143,19 @@ public class Controller {
             var data = Data()
             _ = try request.read(into: &data)
             let employee = try decoder.decode(Employee.self, from: data)
+            
+            let employees = employeeStore.map({ $0.value })
+            
+            for current in employees {
+                if current == employee {
+                    print("Current: \(current)")
+                    response.status(.conflict)
+                    return
+                }
+            }
+            
+            print("Escaped the loop")
+            
             employeeStore[String(employee.id)] = employee
             
             print("EMPST: \(employeeStore)")
@@ -180,7 +193,12 @@ public class Controller {
             return
         }
         
-        employeeStore[id] = nil
+        guard let _ = employeeStore[id] else {
+            response.status(.notFound)
+            return
+        }
+        
+        employeeStore.removeValue(forKey: id)
         response.status(.OK)
     }
 }
