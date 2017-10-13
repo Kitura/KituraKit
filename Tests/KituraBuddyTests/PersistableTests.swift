@@ -134,7 +134,7 @@ class PersistableTests: XCTestCase {
     }
     
     func testReadInvalid() {
-        let expectation1 = expectation(description: "Error shoudl be returned as the read is for a non-existent resource.")
+        let expectation1 = expectation(description: "Error should be returned as the read is for a non-existent resource.")
         
         Employee.read(id: 102) { (emp: Employee?, error: Error?) in
             
@@ -205,8 +205,6 @@ class PersistableTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
     
-    //SwiftyRequest doesnt tell you if the delete was on an invalid resource as of 13-10-17, so can't test this method
-
     func testDeleteInvalid() {
         let expectation1 = expectation(description: "Should return error because the item to delete doesn't exist.")
 
