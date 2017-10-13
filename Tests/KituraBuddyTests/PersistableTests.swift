@@ -30,12 +30,10 @@ import SafetyContracts
 extension Employee: Persistable {
     // Users of this library should only have to make their 
     // models conform to Persistable protocol by adding this extension
-    // and specify the concrete type for the Identifier
+    // AND specify the concrete type for the Identifier field.
     // Note that the Employee structure definition in a real
     // world case would be shared between the server and the client.
     public typealias Id = Int
-    
-    
 }
 
 class PersistableTests: XCTestCase {
@@ -77,7 +75,7 @@ class PersistableTests: XCTestCase {
         Employee.create(model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
 
             guard let emp = emp else {
-                XCTFail("Failed to create employee! \(String(describing: error!))")
+                XCTFail("Failed to create employee! \(String(describing: error))")
                 return
             }
             
@@ -117,13 +115,12 @@ class PersistableTests: XCTestCase {
         Employee.read(id: 3) { (emp: Employee?, error: Error?) -> Void in
 
             guard let emp = emp else {
-                if error != nil {
-                    XCTFail("Failed to read employee! \(error!)")
-                    return
-                } else {
-                    XCTFail("Emp didnt exist, and there was no error returned!")
+                guard let error = error else {
+                    XCTFail("Employee did not exist and there was no error returned!")
                     return
                 }
+                XCTFail("Failed to read employee! \(error)")
+                return
             }
             
             XCTAssertEqual(emp, expectedEmployee)
@@ -140,7 +137,7 @@ class PersistableTests: XCTestCase {
             
             guard let error = error else {
                 if emp != nil {
-                    XCTFail("An emp object was returned when it should not have been.")
+                    XCTFail("An Employee object was returned when it should not have been.")
                 }
                 return
             }
@@ -161,7 +158,11 @@ class PersistableTests: XCTestCase {
         Employee.read() { (emp: [Employee]?, error: Error?) -> Void in
             
             guard let emp = emp else {
-                XCTFail("Failed to read employees! \(error!)")
+                guard let error = error else {
+                    XCTFail("Failed to read employees and there was no error returned!")
+                    return
+                }
+                XCTFail("Failed to read employees! \(error)")
                 return
             }
             XCTAssertEqual(emp, expectedEmployees)
@@ -178,7 +179,11 @@ class PersistableTests: XCTestCase {
         Employee.update(id: 5, model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
 
             guard let emp = emp else {
-                XCTFail("Failed to update employees! \(error!)")
+                guard let error = error else {
+                    XCTFail("Failed to update employee and there was no error returned!")
+                    return
+                }
+                XCTFail("Failed to update employee! \(error)")
                 return
             }
 

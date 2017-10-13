@@ -61,6 +61,9 @@ public class Controller {
     }
 
     public func getUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
@@ -71,10 +74,13 @@ public class Controller {
             return
         }
 
-        try response.status(.OK).send(data: encoder.encode(user)).end()
+        try response.status(.OK).send(data: encoder.encode(user))
     }
 
     public func addUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         do {
             var data = Data()
             _ = try request.read(into: &data)
@@ -82,11 +88,14 @@ public class Controller {
             userStore[String(user.id)] = user
             response.status(.OK).send(data: data)
         } catch {
-            response.status(.internalServerError)
+            response.status(.unprocessableEntity)
         }
     }
 
     public func updateUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
@@ -98,7 +107,7 @@ public class Controller {
             userStore[id] = user
             response.status(.OK).send(data: data)
         } catch {
-            response.status(.internalServerError)
+            response.status(.unprocessableEntity)
         }
     }
 
@@ -108,6 +117,10 @@ public class Controller {
     }
 
     public func deleteUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
+
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
@@ -123,6 +136,9 @@ public class Controller {
     }
     
     public func getEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
@@ -135,10 +151,13 @@ public class Controller {
             return
         }
         
-        try response.status(.OK).send(data: encoder.encode(employee)).end()
+        try response.status(.OK).send(data: encoder.encode(employee))
     }
     
     public func addEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         do {
             var data = Data()
             _ = try request.read(into: &data)
@@ -156,11 +175,14 @@ public class Controller {
             
             response.status(.OK).send(data: data)
         } catch {
-            response.status(.internalServerError)
+            response.status(.unprocessableEntity)
         }
     }
     
     public func updateEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
@@ -172,16 +194,19 @@ public class Controller {
             employeeStore[id] = employee
             response.status(.OK).send(data: data)
         } catch {
-            response.status(.internalServerError)
+            response.status(.unprocessableEntity)
         }
     }
     
     public func deleteAllEmployees(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         employeeStore = [:]
-        response.status(.OK)
+        try response.status(.OK).end()
     }
     
     public func deleteEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        defer {
+            next()
+        }
         guard let id = request.parameters["id"] else {
             response.status(.badRequest)
             return
@@ -190,8 +215,7 @@ public class Controller {
         guard let _ = employeeStore[id] else {
             response.status(.notFound)
             return
-        }
-        
+        }        
         employeeStore.removeValue(forKey: id)
         response.status(.OK)
     }

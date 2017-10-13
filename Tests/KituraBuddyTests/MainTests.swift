@@ -42,7 +42,8 @@ class MainTests: XCTestCase {
             ("testClientPatch", testClientPatch),
             ("testClientPatchErrorPath", testClientPatchErrorPath),
             ("testClientDelete", testClientDelete),
-            ("testClientDeleteSingle", testClientDeleteSingle)
+            ("testClientDeleteSingle", testClientDeleteSingle),
+            ("testClientDeleteInvalid", testClientDeleteInvalid)
         ]
     }
 
@@ -64,17 +65,6 @@ class MainTests: XCTestCase {
         Kitura.stop()
         super.tearDown()
     }
-
-    // TODO: See test cases we implemented for Kitura-Starter (we may need something similar)
-    // https://github.com/IBM-Bluemix/Kitura-Starter/blob/master/Tests/ControllerTests/RouteTests.swift
-    // I don't see a way to specify test-only dependencies... they removed this capability
-    // Hence, we may need to add Kitura as a dependency just for testing...
-    // :-/ Not good to have to add a dependency to Package.swift when it is only neede for testing... but
-    // that may be the option unless we want to mockup our own server, which may create unnecessary work for us.
-
-    // Note that as of now, given how the tests are written, they will fail, UNLESS you have a kitura server running
-    // locally that can process the requests.
-    // Let's fully automated the test cases.
 
     func testClientGet() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
@@ -166,7 +156,7 @@ class MainTests: XCTestCase {
             if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
-                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                XCTFail("Failed to get expected error: \(String(describing: error))")
                 return
             }
         }
@@ -202,7 +192,7 @@ class MainTests: XCTestCase {
             if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
             } else {
-                XCTFail("Failed to get user! Error: \(String(describing: error))")
+                XCTFail("Failed to get expected error: \(String(describing: error))")
                 return
             }
         }
@@ -243,12 +233,6 @@ class MainTests: XCTestCase {
     }
 
      func testClientDeleteSingle() {
-        // Updated our library API since noticed that in the delete use cases,
-        // the user had no idea if his/her request failed or succeeded.
-        // See the changes below... with this chance, now the user gets an error
-        // in the closure if there was an error.
-        // Given this, we may need to adopt passing an Error object back to the user
-        // whenerver an error occurs in the other API methods as well just to be consistent.
         let expectation1 = expectation(description: "No error is received from the server")
 
         // Invoke GET operation on library
@@ -278,22 +262,18 @@ class MainTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
     
-//     Commenting out this test case for now...
-//     There seems to be a defect in the SwiftyRequest repo
-//     Aaron is looking into this. Stay tuned!
-//     func testClientDeleteInvalid() {
-//         let expectation1 = expectation(description: "An error is received from the server")
-//
-//         client.delete("/notAValidRoute") { error in
-//             guard error == nil else {
-//                 expectation1.fulfill()
-//                 return
-//             }
-//             XCTFail("Deleted user, but it doesn't exist! Error: \(String(describing: error))")
-//             expectation1.fulfill()
-//         }
-//         waitForExpectations(timeout: 3.0, handler: nil)
-//     }
+    func testClientDeleteInvalid() {
+        let expectation1 = expectation(description: "An error is received from the server")
 
+        client.delete("/notAValidRoute") { error in
+            if let err = error as? RouteHandlerError, case .notFound = err {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get expected error: \(String(describing: error))")
+                return
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 
 }
