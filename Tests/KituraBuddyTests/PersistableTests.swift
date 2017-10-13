@@ -34,6 +34,8 @@ extension Employee: Persistable {
     // Note that the Employee structure definition in a real
     // world case would be shared between the server and the client.
     public typealias Id = Int
+    
+    
 }
 
 class PersistableTests: XCTestCase {
@@ -42,6 +44,7 @@ class PersistableTests: XCTestCase {
             return [
                 ("testCreate", testCreate),
                 ("testRead", testRead),
+                ("testReadInvalid", testReadInvalid),
                 ("testReadAll", testReadAll),
                 ("testUpdate", testUpdate),
                 ("testDelete", testDelete),
@@ -71,14 +74,12 @@ class PersistableTests: XCTestCase {
         let newEmployee = Employee(id: "5", name: "Kye Maloy")
         
         Employee.create(model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
-            if error != nil {
-                XCTFail("Failed to create employee! \(error!)")
-                return
-            }
+
             guard let emp = emp else {
-                XCTFail("Failed to create employee! \(error!)")
+                XCTFail("Failed to create employee! \(String(describing: error!))")
                 return
             }
+            
             XCTAssertEqual(newEmployee, emp)
             expectation1.fulfill()
         }
@@ -88,36 +89,59 @@ class PersistableTests: XCTestCase {
     
     func testRead() {
         let expectation1 = expectation(description: "An employee is read successfully.")
+        let expectedEmployee = initialStoreEmployee["3".value]
         
-        Employee.read(id: 4) { (emp: Employee?, error: Error?) -> Void in
+        Employee.read(id: 3) { (emp: Employee?, error: Error?) -> Void in
+
+            guard let emp = emp else {
+                if error != nil {
+                    XCTFail("Failed to read employee! \(error!)")
+                    return
+                } else {
+                    XCTFail("Emp didnt exist, and there was no error returned!")
+                    return
+                }
+            }
             
-            if error != nil {
-                XCTFail("Failed to read employee! \(error!)")
-                return
-            }
-            guard emp != nil else {
-                XCTFail("Failed to read employee! \(error!)")
-                return
-            }
- 
+            XCTAssertEqual(emp, expectedEmployee)
             expectation1.fulfill()
         }
         
         waitForExpectations(timeout: 3.0, handler: nil)
     }
     
+    func testReadInvalid() {
+        let expectation1 = expectation(description: "Error returned as the read is for a non-existent value.")
+        
+        Employee.read(id: 102) { (emp: Employee?, error: Error?) in
+            
+            guard let error = error else {
+                if emp != nil {
+                    XCTFail("An emp object was returned when it should not have been.")
+                }
+                return
+            }
+            
+            //Should get bad request error, as the requested item doesn't exist
+            XCTAssertEqual(error as? RouteHandlerError, SafetyContracts.RouteHandlerError.badRequest)
+            expectation1.fulfill()
+
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
     func testReadAll() {
+
         let expectation1 = expectation(description: "All employees are read successfully.")
+        let expectedEmployees = initialStoreEmployee.map({ $0.value })
         
         Employee.read() { (emp: [Employee]?, error: Error?) -> Void in
-            if error != nil {
+            
+            guard let emp = emp else {
                 XCTFail("Failed to read employees! \(error!)")
                 return
             }
-            guard emp != nil else {
-                XCTFail("Failed to read employees! \(error!)")
-                return
-            }
+            XCTAssertEqual(emp, expectedEmployees)
             expectation1.fulfill()
         }
         
@@ -129,14 +153,13 @@ class PersistableTests: XCTestCase {
         let newEmployee = Employee(id: "5", name: "Kye Maloy")
         
         Employee.update(id: 5, model: newEmployee) { (emp: Employee?, error: Error?) -> Void in
-            if error != nil {
+
+            guard let emp = emp else {
                 XCTFail("Failed to update employees! \(error!)")
                 return
             }
-            guard emp != nil else {
-                XCTFail("Failed to update employees! \(error!)")
-                return
-            }
+
+            XCTAssertEqual(newEmployee, emp)
             expectation1.fulfill()
         }
         
@@ -156,6 +179,26 @@ class PersistableTests: XCTestCase {
         
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+    
+//    SwiftyRequest doesnt tell you if the delete was on an invalid resource as of 13-10-17, so can't test this method
+//
+//    func testDeleteInvalid() {
+//        let expectation1 = expectation(description: "Should return error because the item to delete doesn't exist.")
+//
+//        Employee.delete(id: 999) { (error: Error?) in
+//
+//            guard let error = error else {
+//                XCTFail("No error was returned, when it should have been")
+//                return
+//            }
+//            print("ERROR: \(error)")
+//            XCTAssertEqual(error, SafetyContracts.RouteHandlerError.notFound)
+//            expectation1.fulfill()
+//
+//        }
+//
+//        waitForExpectations(timeout: 3.0, handler: nil)
+//    }
     
     func testDeleteAll() {
         let expectation1 = expectation(description: "All employees are deleted successfully.")

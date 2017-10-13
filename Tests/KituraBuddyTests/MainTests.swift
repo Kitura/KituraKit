@@ -272,6 +272,7 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to delete user! Error: \(String(describing: error))")
                 return
             }
+            
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
