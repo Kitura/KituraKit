@@ -148,17 +148,11 @@ public class Controller {
             
             for current in employees {
                 if current == employee {
-                    print("Current: \(current)")
                     response.status(.conflict)
                     return
                 }
             }
-            
-            print("Escaped the loop")
-            
             employeeStore[String(employee.id)] = employee
-            
-            print("EMPST: \(employeeStore)")
             
             response.status(.OK).send(data: data)
         } catch {
