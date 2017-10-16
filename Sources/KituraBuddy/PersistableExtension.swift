@@ -19,15 +19,15 @@ import SafetyContracts
 
 // CRUD API - type safe routing
 extension Persistable {
-    
+
     static var client: KituraBuddy {
         return KituraBuddy.default
     }
-    
+
     // create
     static func create(model: Self, respondWith: @escaping (Self?, Error?) -> Void) {
         client.post(route, data: model) { (model: Self?, error: Error?) -> Void in
-            // First determine if error was not nil            
+            // First determine if error was not nil
             if let error = error {
                 respondWith(nil, error)
                 return
@@ -38,12 +38,12 @@ extension Persistable {
                 respondWith(nil, error)
                 return
             }
-            
+
             // If we get here, then model was not nil and error was nil
             respondWith(model, nil)
         }
     }
-    
+
     // read
     static func read(id: Id, respondWith: @escaping (Self?, Error?) -> Void) {
         client.get(route, identifier: id) { (model: Self?, error: Error?) -> Void in
@@ -56,15 +56,15 @@ extension Persistable {
                 respondWith(nil, error)
                 return
             }
-            
+
             respondWith(model, nil)
         }
     }
-    
+
     // read all
     static func read(respondWith: @escaping ([Self]?, Error?) -> Void) {
         client.get(route) { (model: [Self]?, error: Error?) -> Void in
-            
+
             if let error = error {
                 respondWith(nil, error)
                 return
@@ -74,7 +74,7 @@ extension Persistable {
                 respondWith(nil, error)
                 return
             }
-            
+
             respondWith(model, nil)
         }
     }
@@ -83,7 +83,7 @@ extension Persistable {
     // update
     static func update(id: Id, model: Self, respondWith: @escaping (Self?, Error?) -> Void) {
         client.put(route, identifier: id, data: model) { (model: Self?, error: Error?) -> Void in
-            
+
             if let error = error {
                 respondWith(nil, error)
                 return
@@ -93,7 +93,7 @@ extension Persistable {
                 respondWith(nil, error)
                 return
             }
-            
+
             respondWith(model, nil)
         }
     }
@@ -113,6 +113,5 @@ extension Persistable {
             respondWith(error)
         }
     }
-
 }
 
