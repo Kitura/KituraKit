@@ -144,7 +144,7 @@ public class Controller {
             return
         }
         
-        print("EMPSTORE - \(employeeStore)")
+        //print("employeeStore - \(employeeStore)")
         
         guard let employee = employeeStore[id] else {
             response.status(.badRequest)

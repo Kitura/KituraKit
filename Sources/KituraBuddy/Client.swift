@@ -21,9 +21,9 @@ import SafetyContracts
 
 public class KituraBuddy {
 
-    public typealias SimpleClosure = (Error?) -> Void
-    public typealias CodableClosure<O: Codable> = (O?, Error?) -> Void
-    public typealias ArrayCodableClosure<O: Codable> = ([O]?, Error?) -> Void
+    public typealias SimpleClosure = (ProcessHandlerError?) -> Void
+    public typealias CodableClosure<O: Codable> = (O?, ProcessHandlerError?) -> Void
+    public typealias ArrayCodableClosure<O: Codable> = ([O]?, ProcessHandlerError?) -> Void
 
     public static var defaultBaseURL: String = "http://localhost:8080"
     public static var `default`: KituraBuddy {
@@ -35,7 +35,7 @@ public class KituraBuddy {
     // Instance variables
     public let baseURL: String
 
-    // Initializers   
+    // Initializers
     public init(baseURL: String) {
         self.baseURL = baseURL
     }
@@ -49,12 +49,18 @@ public class KituraBuddy {
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                let items: [O]? = try? JSONDecoder().decode([O].self, from: data)
+                guard let items: [O] = try? JSONDecoder().decode([O].self, from: data) else {
+                    resultHandler(nil, ProcessHandlerError.clientDeserializationError)
+                    return
+                }
                 resultHandler(items, nil)
             case .failure(let error):
                 Log.error("GET failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(nil, err)
+                if let restError = error as? RestError {
+                    resultHandler(nil, ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(nil, .clientErrorUnknown)
+                }
             }
         }
     }
@@ -67,12 +73,18 @@ public class KituraBuddy {
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                let items: O? = try? JSONDecoder().decode(O.self, from: data)
+                guard let items: O = try? JSONDecoder().decode(O.self, from: data) else {
+                    resultHandler(nil, ProcessHandlerError.clientDeserializationError)
+                    return
+                }
                 resultHandler(items, nil)
             case .failure(let error):
                 Log.error("GET (single) failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(nil, err)
+                if let restError = error as? RestError {
+                    resultHandler(nil, ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(nil, .clientErrorUnknown)
+                }
             }
         }
     }
@@ -87,12 +99,18 @@ public class KituraBuddy {
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                let item: O? = try? JSONDecoder().decode(O.self, from: data)
+                guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
+                    resultHandler(nil, ProcessHandlerError.clientDeserializationError)
+                    return
+                }
                 resultHandler(item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(nil, err)
+                if let restError = error as? RestError {
+                    resultHandler(nil, ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(nil, .clientErrorUnknown)
+                }
             }
         }
     }
@@ -107,12 +125,18 @@ public class KituraBuddy {
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                let item: O? = try? JSONDecoder().decode(O.self, from: data)
+                guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
+                    resultHandler(nil, ProcessHandlerError.clientDeserializationError)
+                    return
+                }
                 resultHandler(item, nil)
             case .failure(let error):
                 Log.error("PUT failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(nil, err)
+                if let restError = error as? RestError {
+                    resultHandler(nil, ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(nil, .clientErrorUnknown)
+                }
             }
         }
     }
@@ -127,12 +151,18 @@ public class KituraBuddy {
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                let item: O? = try? JSONDecoder().decode(O.self, from: data)
+                guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
+                    resultHandler(nil, ProcessHandlerError.clientDeserializationError)
+                    return
+                }
                 resultHandler(item, nil)
             case .failure(let error):
                 Log.error("PATCH failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(nil, err)
+                if let restError = error as? RestError {
+                    resultHandler(nil, ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(nil, .clientErrorUnknown)
+                }
             }
         }
     }
@@ -147,8 +177,11 @@ public class KituraBuddy {
                 resultHandler(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(err)
+                if let restError = error as? RestError {
+                    resultHandler(ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(.clientErrorUnknown)
+                }
             }
         }
     }
@@ -163,18 +196,12 @@ public class KituraBuddy {
                 resultHandler(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                let err = self.process(error: error)
-                resultHandler(err)
+                if let restError = error as? RestError {
+                    resultHandler(ProcessHandlerError(restError: restError))
+                } else {
+                    resultHandler(.clientErrorUnknown)
+                }
             }
         }
     }
-
-    private func process(error: Error) -> Error {
-        if let rhError = RouteHandlerError(error) {
-            return rhError
-        } else {
-            return error
-        }
-    }
-
 }

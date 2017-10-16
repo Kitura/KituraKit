@@ -101,7 +101,7 @@ class PersistableTests: XCTestCase {
             }
 
             //Error is a conflict as the resource already exists.
-            XCTAssertEqual(error as? RouteHandlerError, SafetyContracts.RouteHandlerError.conflict)
+            XCTAssertEqual(error as? ProcessHandlerError, ProcessHandlerError.conflict)
             expecation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
@@ -143,7 +143,7 @@ class PersistableTests: XCTestCase {
             }
 
             //Should get bad request error, as the requested item doesn't exist
-            XCTAssertEqual(error as? RouteHandlerError, SafetyContracts.RouteHandlerError.badRequest)
+            XCTAssertEqual(error as? ProcessHandlerError, ProcessHandlerError.badRequest)
             expectation1.fulfill()
 
         }
@@ -220,7 +220,7 @@ class PersistableTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(error as? RouteHandlerError, SafetyContracts.RouteHandlerError.notFound)
+            XCTAssertEqual(error as? ProcessHandlerError, ProcessHandlerError.notFound)
             expectation1.fulfill()
 
         }
