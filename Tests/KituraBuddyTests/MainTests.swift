@@ -80,10 +80,10 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientGetErrorPath() {
         let expectation1 = expectation(description: "An error is received from the server")
-        
+
         // Invoke GET operation on library
         client.get("/notAValidRoute") { (users: [User]?, error: Error?) -> Void in
             if let err = error as? RouteHandlerError, case .notFound = err {
@@ -111,10 +111,10 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientGetSingleErrorPath() {
         let expectation1 = expectation(description: "An error is received from the server")
-        
+
         // Invoke GET operation on library
         let id = "1"
         client.get("/notAValidRoute", identifier: id) { (users: User?, error: Error?) -> Void in
@@ -145,13 +145,13 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientPostErrorPath() {
         let expectation1 = expectation(description: "An error is received from the server")
-        
+
         // Invoke POST operation on library
         let newUser = User(id: 5, name: "John Doe")
-        
+
         client.post("/notAValidRoute", data: newUser) { (users: User?, error: Error?) -> Void in
             if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
@@ -181,13 +181,13 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientPutErrorPath() {
         let expectation1 = expectation(description: "An error is received from the server")
-        
+
         // Invoke PUT operation on library
         let expectedUser = User(id: 5, name: "John Doe")
-        
+
         client.put("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
             if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
@@ -216,11 +216,11 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientPatchErrorPath() {
-        let expectation1 = expectation(description: "An error is received from the server")        
+        let expectation1 = expectation(description: "An error is received from the server")
         let expectedUser = User(id: 5, name: "John Doe")
-        
+
         client.patch("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: Error?) -> Void in
             if let err = error as? RouteHandlerError, case .notFound = err {
                 expectation1.fulfill()
@@ -256,12 +256,12 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to delete user! Error: \(String(describing: error))")
                 return
             }
-            
+
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientDeleteInvalid() {
         let expectation1 = expectation(description: "An error is received from the server")
 
