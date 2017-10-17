@@ -21,7 +21,7 @@ import SwiftyRequest
 extension ProcessHandlerError {
     
     init(clientErrorCode: Int) {
-        rawValue = clientErrorCode
+        self.init(rawValue: clientErrorCode)
     }
 
     public static var clientErrorUnknown = ProcessHandlerError(clientErrorCode: 600)
@@ -38,12 +38,7 @@ extension ProcessHandlerError {
 extension ProcessHandlerError {
     init(restError: RestError) {
         switch restError {
-        case .erroredResponseStatus(let errorMsg):
-            guard let httpCode = ProcessHandlerError.httpErrorCode(from: errorMsg) else {
-                self = .internalServerError // Is there a better default?
-                return
-            }
-            self = ProcessHandlerError(httpCode: httpCode)
+        case .erroredResponseStatus(let code): self = ProcessHandlerError(httpCode: code)
         case .noData: self = .clientNoData
         case .serializationError: self = .clientSerializationError
         case .encodingError: self = .clientEncodingError
@@ -51,12 +46,5 @@ extension ProcessHandlerError {
         case .invalidFile: self = .clientInvalidFile
         case .invalidSubstitution: self = .clientInvalidSubstitution
         }
-    }
-
-    private static func httpErrorCode(from message: String) -> Int? {
-        // Here is a sample error string from RestError (erroredResponseStatus): Error HTTP Response: `Optional(404)`
-        let errorStr = String(describing: message)
-        let httpErrorCode = errorStr.trimmingCharacters(in: CharacterSet(charactersIn: "01234567890").inverted)
-        return Int(httpErrorCode)
     }
 }
