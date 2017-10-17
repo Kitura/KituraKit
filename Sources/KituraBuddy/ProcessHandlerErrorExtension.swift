@@ -21,7 +21,7 @@ import SwiftyRequest
 extension ProcessHandlerError {
     
     init(clientErrorCode: Int) {
-        rawValue = clientErrorCode
+        self.init(rawValue: clientErrorCode)
     }
 
     public static var clientErrorUnknown = ProcessHandlerError(clientErrorCode: 600)
