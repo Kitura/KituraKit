@@ -23,9 +23,9 @@
         "package": "Kitura",
         "repositoryURL": "https://github.com/IBM-Swift/Kitura.git",
         "state": {
-          "branch": null,
-          "revision": "e02c756134c5b399cfc45f186bc2c6f1d51032d1",
-          "version": "1.7.9"
+          "branch": "issue.swift4",
+          "revision": "b5259f0c02f09e0b52d2de015cd1d7be2a4a5423",
+          "version": null
         }
       },
       {
