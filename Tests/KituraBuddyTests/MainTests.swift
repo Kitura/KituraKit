@@ -202,9 +202,9 @@ class MainTests: XCTestCase {
     func testClientPatch() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
-        let expectedUser = User(id: 5, name: "John Doe")
-
-        client.patch("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: ProcessHandlerError?) -> Void in
+        let expectedUser = User(id: 4, name: "John Doe")
+        
+        client.patch("/users", identifier: String(describing: expectedUser.id), data: expectedUser) { (user: User?, error: ProcessHandlerError?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to patch user! Error: \(String(describing: error))")
                 return
@@ -219,9 +219,9 @@ class MainTests: XCTestCase {
 
     func testClientPatchErrorPath() {
         let expectation1 = expectation(description: "An error is received from the server")
-        let expectedUser = User(id: 5, name: "John Doe")
+        let expectedUser = User(id: 4, name: "John Doe")
 
-        client.patch("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: ProcessHandlerError?) -> Void in
+        client.patch("/notAValidRoute", identifier: String(describing: expectedUser.id), data: expectedUser) { (users: UserOptional?, error: ProcessHandlerError?) -> Void in
             if case .notFound? = error {
                 expectation1.fulfill()
             } else {
@@ -236,7 +236,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "No error is received from the server")
 
         // Invoke GET operation on library
-        client.delete("/users", identifier: "0") { error in
+        client.delete("/users", identifier: "1") { error in
             guard error == nil else {
                 XCTFail("Failed to delete user! Error: \(String(describing: error))")
                 return

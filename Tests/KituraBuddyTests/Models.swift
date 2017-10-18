@@ -31,6 +31,20 @@ public struct User: Codable, Equatable {
 
 }
 
+public struct UserOptional: Codable, Equatable {
+    public let id: Int?
+    public let name: String?
+    public init(id: Int, name: String) {
+        self.id = id
+        self.name = name
+    }
+    
+    public static func ==(lhs: UserOptional, rhs: UserOptional) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.name == rhs.name)
+    }
+    
+}
+
 public struct Employee: Codable, Equatable {    
     public let id: String
     public let name: String
