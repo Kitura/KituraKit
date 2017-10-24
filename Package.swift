@@ -20,7 +20,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "KituraBuddy",
+    name: "KituraKit",
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", .upToNextMinor(from: "0.0.5")),
@@ -32,12 +32,12 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         // CRUD and CRUD tests removed until the files compile
         .target(
-            name: "KituraBuddy",
+            name: "KituraKit",
             dependencies: ["KituraContracts", "SwiftyRequest"]
         ),
         .testTarget(
-            name: "KituraBuddyTests",
-            dependencies: ["KituraContracts", "KituraBuddy", "Kitura"]
+            name: "KituraKitTests",
+            dependencies: ["KituraContracts", "KituraKit", "Kitura"]
         ),
     ]
 )

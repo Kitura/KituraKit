@@ -25,7 +25,7 @@ import Foundation
 import Kitura
 import KituraContracts
 
-@testable import KituraBuddy
+@testable import KituraKit
 
 extension Employee: Persistable {
     // Users of this library should only have to make their

@@ -25,7 +25,7 @@ import Foundation
 import Kitura
 import KituraContracts
 
-@testable import KituraBuddy
+@testable import KituraKit
 
 class MainTests: XCTestCase {
 
@@ -49,7 +49,7 @@ class MainTests: XCTestCase {
 
     private let controller = Controller(userStore: initialStore)
 
-    private let client = KituraBuddy(baseURL: "http://localhost:8080")
+    private let client = KituraKit.default
 
     override func setUp() {
         super.setUp()

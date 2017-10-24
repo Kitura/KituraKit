@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import KituraBuddyTests
+@testable import KituraKitTests
 
 XCTMain([
     testCase(MainTests.allTests),

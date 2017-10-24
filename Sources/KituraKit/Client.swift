@@ -19,16 +19,16 @@ import LoggerAPI
 import SwiftyRequest
 import KituraContracts
 
-public class KituraBuddy {
+public class KituraKit {
 
     public typealias SimpleClosure = (RequestError?) -> Void
     public typealias CodableClosure<O: Codable> = (O?, RequestError?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?, RequestError?) -> Void
 
     public static var defaultBaseURL: String = "http://localhost:8080"
-    public static var `default`: KituraBuddy {
+    public static var `default`: KituraKit {
         get {
-            return KituraBuddy(baseURL: defaultBaseURL)
+            return KituraKit(url: defaultBaseURL)
         }
     }
 
@@ -36,8 +36,17 @@ public class KituraBuddy {
     public let baseURL: String
 
     // Initializers
-    public init(baseURL: String) {
-        self.baseURL = baseURL
+    private init(url: String) {
+        self.baseURL = url
+    }
+
+    public init?(baseURL: String) {
+        guard URL(string: baseURL) != nil else {
+            return nil
+        }
+
+        // If necessary, trim extra back slash
+        self.baseURL = baseURL.last == "/" ? String(baseURL.dropLast()) : baseURL
     }
 
     // HTTP verb/action methods (basic type safe routing)

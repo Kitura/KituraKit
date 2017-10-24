@@ -20,8 +20,8 @@ import KituraContracts
 // CRUD API - type safe routing
 extension Persistable {
 
-    static var client: KituraBuddy {
-        return KituraBuddy.default
+    static var client: KituraKit {
+        return KituraKit.default
     }
 
     // create
