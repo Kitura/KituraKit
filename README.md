@@ -1,7 +1,9 @@
-# KituraBuddy
+# KituraKit
 
 [![Build Status](https://travis-ci.org/IBM-Swift/KituraBuddy.svg?branch=master)](https://travis-ci.org/IBM-Swift/KituraBuddy)
 
-Under construction... stay tuned!
+[Kitura](http://kitura.io) is a lightweight web framework for creating complex web routes for web applications.
 
-[//]: # (A library to implement client side safe routing for Kitura.)
+KituraKit allows developers to use Swift 4's Codable protocol in their front and back end applications and use the same code on the front and backend. 
+
+It also provides a Create, Read, Update and Delete (CRUD) API to make calls to servers easy and as swift-y as possible.
