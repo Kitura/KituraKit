@@ -15,30 +15,30 @@
  */
 
 import Foundation
-import SafetyContracts
+import KituraContracts
 import SwiftyRequest
 
-extension ProcessHandlerError {
+extension RequestError {
     
     init(clientErrorCode: Int) {
         self.init(rawValue: clientErrorCode)
     }
 
-    public static var clientErrorUnknown = ProcessHandlerError(clientErrorCode: 600)
-    public static var clientConnectionError = ProcessHandlerError(clientErrorCode: 601)
-    public static var clientNoData = ProcessHandlerError(clientErrorCode: 602)
-    public static var clientSerializationError = ProcessHandlerError(clientErrorCode: 603)
-    public static var clientDeserializationError = ProcessHandlerError(clientErrorCode: 604)
-    public static var clientEncodingError = ProcessHandlerError(clientErrorCode: 605)
-    public static var clientFileManagerError = ProcessHandlerError(clientErrorCode: 606)
-    public static var clientInvalidFile = ProcessHandlerError(clientErrorCode: 607)
-    public static var clientInvalidSubstitution = ProcessHandlerError(clientErrorCode: 608)
+    public static var clientErrorUnknown = RequestError(clientErrorCode: 600)
+    public static var clientConnectionError = RequestError(clientErrorCode: 601)
+    public static var clientNoData = RequestError(clientErrorCode: 602)
+    public static var clientSerializationError = RequestError(clientErrorCode: 603)
+    public static var clientDeserializationError = RequestError(clientErrorCode: 604)
+    public static var clientEncodingError = RequestError(clientErrorCode: 605)
+    public static var clientFileManagerError = RequestError(clientErrorCode: 606)
+    public static var clientInvalidFile = RequestError(clientErrorCode: 607)
+    public static var clientInvalidSubstitution = RequestError(clientErrorCode: 608)
 }
 
-extension ProcessHandlerError {
+extension RequestError {
     init(restError: RestError) {
         switch restError {
-        case .erroredResponseStatus(let code): self = ProcessHandlerError(httpCode: code)
+        case .erroredResponseStatus(let code): self = RequestError(httpCode: code)
         case .noData: self = .clientNoData
         case .serializationError: self = .clientSerializationError
         case .encodingError: self = .clientEncodingError

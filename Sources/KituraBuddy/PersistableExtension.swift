@@ -15,7 +15,7 @@
  */
 
 import Foundation
-import SafetyContracts
+import KituraContracts
 
 // CRUD API - type safe routing
 extension Persistable {
@@ -25,8 +25,8 @@ extension Persistable {
     }
 
     // create
-    static func create(model: Self, respondWith: @escaping (Self?, ProcessHandlerError?) -> Void) {
-        client.post(route, data: model) { (model: Self?, error: ProcessHandlerError?) -> Void in
+    static func create(model: Self, respondWith: @escaping (Self?, RequestError?) -> Void) {
+        client.post(route, data: model) { (model: Self?, error: RequestError?) -> Void in
             // First determine if error was not nil
             if let error = error {
                 respondWith(nil, error)
@@ -45,8 +45,8 @@ extension Persistable {
     }
 
     // read
-    static func read(id: Id, respondWith: @escaping (Self?, ProcessHandlerError?) -> Void) {
-        client.get(route, identifier: id) { (model: Self?, error: ProcessHandlerError?) -> Void in
+    static func read(id: Id, respondWith: @escaping (Self?, RequestError?) -> Void) {
+        client.get(route, identifier: id) { (model: Self?, error: RequestError?) -> Void in
             if let error = error {
                 respondWith(nil, error)
                 return
@@ -62,8 +62,8 @@ extension Persistable {
     }
 
     // read all
-    static func read(respondWith: @escaping ([Self]?, ProcessHandlerError?) -> Void) {
-        client.get(route) { (model: [Self]?, error: ProcessHandlerError?) -> Void in
+    static func read(respondWith: @escaping ([Self]?, RequestError?) -> Void) {
+        client.get(route) { (model: [Self]?, error: RequestError?) -> Void in
 
             if let error = error {
                 respondWith(nil, error)
@@ -80,8 +80,8 @@ extension Persistable {
     }
 
     // update
-    static func update(id: Id, model: Self, respondWith: @escaping (Self?, ProcessHandlerError?) -> Void) {
-        client.put(route, identifier: id, data: model) { (model: Self?, error: ProcessHandlerError?) -> Void in
+    static func update(id: Id, model: Self, respondWith: @escaping (Self?, RequestError?) -> Void) {
+        client.put(route, identifier: id, data: model) { (model: Self?, error: RequestError?) -> Void in
 
             if let error = error {
                 respondWith(nil, error)
@@ -98,17 +98,17 @@ extension Persistable {
     }
 
     // delete
-    static func delete(id: Id, respondWith: @escaping (ProcessHandlerError?) -> Void) {
+    static func delete(id: Id, respondWith: @escaping (RequestError?) -> Void) {
         // Perform delete REST call...
-        client.delete(route, identifier: id) { (error: ProcessHandlerError?) -> Void in
+        client.delete(route, identifier: id) { (error: RequestError?) -> Void in
             respondWith(error)
         }
     }
 
     // delete all
-    static func delete(respondWith: @escaping (ProcessHandlerError?) -> Void) {
+    static func delete(respondWith: @escaping (RequestError?) -> Void) {
         // Perform delete REST call...
-        client.delete("/") { (error: ProcessHandlerError?) -> Void in
+        client.delete("/") { (error: RequestError?) -> Void in
             respondWith(error)
         }
     }

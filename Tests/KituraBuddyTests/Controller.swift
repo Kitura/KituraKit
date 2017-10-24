@@ -16,7 +16,7 @@
 
 import Kitura
 import Foundation
-import SafetyContracts
+import KituraContracts
 
 public class Controller {
 
@@ -39,20 +39,20 @@ public class Controller {
 
     private func setupRoutes() {
         // users routes
-        router.get("/users")  { (resondWith: ([User]?, ProcessHandlerError?) -> Void) in
+        router.get("/users")  { (respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.map({ $0.value })
-            resondWith(users, nil)
+            respondWith(users, nil)
         }
         
-        router.get("/users") { (id: Int, resondWith: (User?, ProcessHandlerError?) -> Void) in
+        router.get("/users") { (id: Int, respondWith: (User?, RequestError?) -> Void) in
             guard let user = self.userStore[id.value] else {
-                resondWith(nil, .notFound)
+                respondWith(nil, .notFound)
                 return
             }
-            resondWith(user, nil)
+            respondWith(user, nil)
         }
         
-        router.post("/users") { (user: User?, respondWith: (User?, ProcessHandlerError?) -> Void) in
+        router.post("/users") { (user: User?, respondWith: (User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
                 return
@@ -60,11 +60,11 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user, nil)
         }
-        router.put("/users") { (id: Int, user: User?, respondWith: (User?, ProcessHandlerError?) -> Void) in
+        router.put("/users") { (id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)
         }
-        router.patch("/users") { (id: Int, user: UserOptional?, respondWith: (User?, ProcessHandlerError?) -> Void) in
+        router.patch("/users") { (id: Int, user: UserOptional?, respondWith: (User?, RequestError?) -> Void) in
             guard let exisitingUser = self.userStore[id.value] else {
                 respondWith(nil, .notFound)
                 return
@@ -78,7 +78,7 @@ public class Controller {
             }
         }
         
-        router.delete("/users") { (id: Int, respondWith: (ProcessHandlerError?) -> Void) in
+        router.delete("/users") { (id: Int, respondWith: (RequestError?) -> Void) in
             guard let _ = self.userStore.removeValue(forKey: id.value) else {
                 respondWith(.notFound)
                 return
@@ -86,7 +86,7 @@ public class Controller {
             respondWith(nil)
         }
         
-        router.delete("/users") { (respondWith: (ProcessHandlerError?) -> Void) in
+        router.delete("/users") { (respondWith: (RequestError?) -> Void) in
             self.userStore.removeAll()
             respondWith(nil)
         }

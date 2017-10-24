@@ -23,7 +23,7 @@
 import XCTest
 import Foundation
 import Kitura
-import SafetyContracts
+import KituraContracts
 
 @testable import KituraBuddy
 
@@ -101,7 +101,7 @@ class PersistableTests: XCTestCase {
             }
 
             //Error is a conflict as the resource already exists.
-            XCTAssertEqual(error as? ProcessHandlerError, ProcessHandlerError.conflict)
+            XCTAssertEqual(error as? RequestError, RequestError.conflict)
             expecation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
@@ -143,7 +143,7 @@ class PersistableTests: XCTestCase {
             }
 
             //Should get bad request error, as the requested item doesn't exist
-            XCTAssertEqual(error as? ProcessHandlerError, ProcessHandlerError.badRequest)
+            XCTAssertEqual(error as? RequestError, RequestError.badRequest)
             expectation1.fulfill()
 
         }
@@ -220,7 +220,7 @@ class PersistableTests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(error as? ProcessHandlerError, ProcessHandlerError.notFound)
+            XCTAssertEqual(error as? RequestError, RequestError.notFound)
             expectation1.fulfill()
 
         }

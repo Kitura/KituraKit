@@ -25,7 +25,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", .upToNextMinor(from: "0.0.5")),
         .package(url: "https://github.com/IBM-Swift/Kitura.git", .branch("issue.swift4")),
-        .package(url: "https://github.com/IBM-Swift/SafetyContracts.git", .exact("0.0.9"))
+        .package(url: "https://github.com/IBM-Swift/KituraContracts.git", .exact("0.0.10"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -33,11 +33,11 @@ let package = Package(
         // CRUD and CRUD tests removed until the files compile
         .target(
             name: "KituraBuddy",
-            dependencies: ["SafetyContracts", "SwiftyRequest"]
+            dependencies: ["KituraContracts", "SwiftyRequest"]
         ),
         .testTarget(
             name: "KituraBuddyTests",
-            dependencies: ["SafetyContracts", "KituraBuddy", "Kitura"]
+            dependencies: ["KituraContracts", "KituraBuddy", "Kitura"]
         ),
     ]
 )
