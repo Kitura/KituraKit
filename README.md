@@ -1,4 +1,4 @@
-# KituraKit
+# KituraKit -  A Kitura 2 Client Library
 
 [![Build Status](https://travis-ci.org/IBM-Swift/KituraBuddy.svg?branch=master)](https://travis-ci.org/IBM-Swift/KituraBuddy)
 
