@@ -302,9 +302,7 @@ class MainTests: XCTestCase {
         XCTAssertEqual(correctedURL, client?.baseURL)
         expectation1.fulfill()
         
-        waitForExpectations(timeout: 1.0, handler: nil)
-        
-        
+        waitForExpectations(timeout: 1.0, handler: nil) 
     }
 
         func testUrlAddingHttp() {
@@ -317,8 +315,6 @@ class MainTests: XCTestCase {
         expectation1.fulfill()
         
         waitForExpectations(timeout: 1.0, handler: nil)
-        
-        
     }
 
 }

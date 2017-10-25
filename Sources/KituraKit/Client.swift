@@ -42,7 +42,7 @@ public class KituraKit {
 
     public init?(baseURL: String) {
         let checkedUrl = checkMistypedURL(inputURL: baseURL)
-        guard URL(string: checkedUrl) != nil else {
+        guard let _ = URL(string: checkedUrl) else {
             return nil
         }
         self.baseURL = checkedUrl
@@ -211,14 +211,13 @@ public class KituraKit {
                 }
             }
         }
-    }
-    
-    //Check an input URL begins with http:// or https:// and fix common mistypes
+    }    
 }
 
-private func checkMistypedURL(inputURL: String) -> String{
+//Check an input URL begins with http:// or https:// and fix common mistypes
+private func checkMistypedURL(inputURL: String) -> String {
     let mistypes = ["http:/","http:","http","htp://","ttp://","htttp://","htpp://","http//","htt://","http:://","http:///","httpp://","hhttp://","htt:"]
-    // If necessary, trim extra back slash
+    //if necessary, trim extra back slash
     var noSlashUrl: String = inputURL.last == "/" ? String(inputURL.dropLast()) : inputURL
     if String(noSlashUrl.characters.prefix(7)).lowercased() == "http://" || String(noSlashUrl.characters.prefix(8)).lowercased() == "https://"{
         if String(noSlashUrl.characters.prefix(8)).lowercased() != "http:///" {

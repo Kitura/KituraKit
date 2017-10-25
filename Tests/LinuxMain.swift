@@ -19,5 +19,6 @@ import XCTest
 @testable import KituraKitTests
 
 XCTMain([
-    testCase(MainTests.allTests)
+    testCase(MainTests.allTests),
+    //testCase(PersistableTests.allTests)
 ])
