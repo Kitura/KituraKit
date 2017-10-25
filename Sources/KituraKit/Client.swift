@@ -41,13 +41,13 @@ public class KituraKit {
     }
 
     public init?(baseURL: String) {
-        guard URL(string: baseURL) != nil else {
+        let checkedUrl = checkMistypedURL(inputURL: baseURL)
+        guard URL(string: checkedUrl) != nil else {
             return nil
         }
-        
-        // If necessary, trim extra back slash
-        self.baseURL = baseURL.last == "/" ? String(baseURL.dropLast()) : baseURL
+        self.baseURL = checkedUrl
     }
+    
 
     // HTTP verb/action methods (basic type safe routing)
 
@@ -213,4 +213,28 @@ public class KituraKit {
             }
         }
     }
+    
+    //Check an input URL begins with http:// or https:// and fix common mistypes
+}
+
+private func checkMistypedURL(inputURL: String) -> String{
+    let mistypes = ["http:/","http:","http","htp://","ttp://","htttp://","htpp://","http//","htt://","http:://","http:///","httpp://","hhttp://","htt:"]
+    // If necessary, trim extra back slash
+    var noSlashUrl: String = inputURL.last == "/" ? String(inputURL.dropLast()) : inputURL
+    if String(noSlashUrl.characters.prefix(7)).lowercased() == "http://" || String(noSlashUrl.characters.prefix(8)).lowercased() == "https://"{
+        if String(noSlashUrl.characters.prefix(8)).lowercased() != "http:///" {
+            return noSlashUrl
+        }
+    }
+    //search the first 8 - 4 charecters for matching mistypes and replace with http://
+    for i in (4...8).reversed() {
+        for item in mistypes{
+            if String(noSlashUrl.characters.prefix(i)).lowercased() == item {
+                let processedUrl = noSlashUrl.dropFirst(i)
+                return "http://\(processedUrl)"
+            }
+        }
+    }
+    //if no matching mistypes just add http:// to the front
+    return "http://\(noSlashUrl)"
 }
