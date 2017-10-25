@@ -1,6 +1,6 @@
-# KituraKit -  A Kitura 2 Client Library
+# KituraKit -  A Kitura v2 Client Library
 
-[![Build Status](https://travis-ci.org/IBM-Swift/KituraBuddy.svg?branch=master)](https://travis-ci.org/IBM-Swift/KituraBuddy)
+[![Build Status](https://travis-ci.org/IBM-Swift/KituraKit.svg?branch=master)](https://travis-ci.org/IBM-Swift/KituraKit)
 
 [Kitura](http://kitura.io) is a lightweight web framework for creating complex web routes for web applications.
 

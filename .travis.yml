@@ -1,4 +1,4 @@
-# Travis CI build file for KituraBuddy.
+# Travis CI build file for KituraKit.
 
 branches:
   only:

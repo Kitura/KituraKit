@@ -1,7 +1,7 @@
 
-module: KituraBuddy
+module: KituraKit
 author: IBM
-github_url: https://github.com/IBM-Swift/KituraBuddy
+github_url: https://github.com/IBM-Swift/KituraKit
 
 theme: fullwidth
 clean: true
@@ -12,4 +12,4 @@ readme: README.md
 skip_undocumented: false
 hide_documentation_coverage: false
 
-xcodebuild_arguments: [-project, KituraBuddy.xcodeproj, -target, KituraBuddy, LIBRARY_SEARCH_PATHS=.build/debug]
+xcodebuild_arguments: [-project, KituraKit.xcodeproj, -target, KituraKit, LIBRARY_SEARCH_PATHS=.build/debug]
