@@ -47,35 +47,34 @@ public class KituraKit {
         }
         self.baseURL = checkedUrl
     }
-    
 
     // HTTP verb/action methods (basic type safe routing)
 
     // GET - basic type safe routing
-    public func get<O: Codable>(_ route: String, resultHandler: @escaping ArrayCodableClosure<O>) {
+    public func get<O: Codable>(_ route: String, respondWith: @escaping ArrayCodableClosure<O>) {
         let url: String = baseURL + route
         let request = RestRequest(url: url)
         request.responseData { response in
             switch response.result {
             case .success(let data):
                 guard let items: [O] = try? JSONDecoder().decode([O].self, from: data) else {
-                    resultHandler(nil, RequestError.clientDeserializationError)
+                    respondWith(nil, RequestError.clientDeserializationError)
                     return
                 }
-                resultHandler(items, nil)
+                respondWith(items, nil)
             case .failure(let error):
                 Log.error("GET failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(nil, RequestError(restError: restError))
+                    respondWith(nil, RequestError(restError: restError))
                 } else {
-                    resultHandler(nil, .clientErrorUnknown)
+                    respondWith(nil, .clientErrorUnknown)
                 }
             }
         }
     }
 
     // GET single - basic type safe routing
-    public func get<O: Codable>(_ route: String, identifier: Identifier, resultHandler: @escaping CodableClosure<O>) {
+    public func get<O: Codable>(_ route: String, identifier: Identifier, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(url: url)
 
@@ -83,23 +82,23 @@ public class KituraKit {
             switch response.result {
             case .success(let data):
                 guard let items: O = try? JSONDecoder().decode(O.self, from: data) else {
-                    resultHandler(nil, RequestError.clientDeserializationError)
+                    respondWith(nil, RequestError.clientDeserializationError)
                     return
                 }
-                resultHandler(items, nil)
+                respondWith(items, nil)
             case .failure(let error):
                 Log.error("GET (single) failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(nil, RequestError(restError: restError))
+                    respondWith(nil, RequestError(restError: restError))
                 } else {
-                    resultHandler(nil, .clientErrorUnknown)
+                    respondWith(nil, .clientErrorUnknown)
                 }
             }
         }
     }
 
     // POST - basic type safe routing
-    public func post<I: Codable, O: Codable>(_ route: String, data: I, resultHandler: @escaping CodableClosure<O>) {
+    public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url)
@@ -109,23 +108,23 @@ public class KituraKit {
             switch response.result {
             case .success(let data):
                 guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
-                    resultHandler(nil, RequestError.clientDeserializationError)
+                    respondWith(nil, RequestError.clientDeserializationError)
                     return
                 }
-                resultHandler(item, nil)
+                respondWith(item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(nil, RequestError(restError: restError))
+                    respondWith(nil, RequestError(restError: restError))
                 } else {
-                    resultHandler(nil, .clientErrorUnknown)
+                    respondWith(nil, .clientErrorUnknown)
                 }
             }
         }
     }
 
     // PUT - basic type safe routing
-    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, resultHandler: @escaping CodableClosure<O>) {
+    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url)
@@ -135,23 +134,23 @@ public class KituraKit {
             switch response.result {
             case .success(let data):
                 guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
-                    resultHandler(nil, RequestError.clientDeserializationError)
+                    respondWith(nil, RequestError.clientDeserializationError)
                     return
                 }
-                resultHandler(item, nil)
+                respondWith(item, nil)
             case .failure(let error):
                 Log.error("PUT failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(nil, RequestError(restError: restError))
+                    respondWith(nil, RequestError(restError: restError))
                 } else {
-                    resultHandler(nil, .clientErrorUnknown)
+                    respondWith(nil, .clientErrorUnknown)
                 }
             }
         }
     }
 
     // PATCH - basic type safe routing
-    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, resultHandler: @escaping CodableClosure<O>) {
+    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url)
@@ -161,54 +160,54 @@ public class KituraKit {
             switch response.result {
             case .success(let data):
                 guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
-                    resultHandler(nil, RequestError.clientDeserializationError)
+                    respondWith(nil, RequestError.clientDeserializationError)
                     return
                 }
-                resultHandler(item, nil)
+                respondWith(item, nil)
             case .failure(let error):
                 Log.error("PATCH failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(nil, RequestError(restError: restError))
+                    respondWith(nil, RequestError(restError: restError))
                 } else {
-                    resultHandler(nil, .clientErrorUnknown)
+                    respondWith(nil, .clientErrorUnknown)
                 }
             }
         }
     }
 
     // DELETE - basic type safe routing
-    public func delete(_ route: String, resultHandler: @escaping SimpleClosure) {
+    public func delete(_ route: String, respondWith: @escaping SimpleClosure) {
         let url: String = baseURL + route
         let request = RestRequest(method: .delete, url: url)
         request.responseData { response in
             switch response.result {
             case .success:
-                resultHandler(nil)
+                respondWith(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(RequestError(restError: restError))
+                    respondWith(RequestError(restError: restError))
                 } else {
-                    resultHandler(.clientErrorUnknown)
+                    respondWith(.clientErrorUnknown)
                 }
             }
         }
     }
 
     // DELETE single - basic type safe routing
-    public func delete(_ route: String, identifier: Identifier, resultHandler: @escaping SimpleClosure) {
+    public func delete(_ route: String, identifier: Identifier, respondWith: @escaping SimpleClosure) {
         let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(method: .delete, url: url)
         request.responseData { response in
             switch response.result {
             case .success:
-                resultHandler(nil)
+                respondWith(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
                 if let restError = error as? RestError {
-                    resultHandler(RequestError(restError: restError))
+                    respondWith(RequestError(restError: restError))
                 } else {
-                    resultHandler(.clientErrorUnknown)
+                    respondWith(.clientErrorUnknown)
                 }
             }
         }

@@ -19,7 +19,7 @@ import KituraContracts
 import SwiftyRequest
 
 extension RequestError {
-    
+
     init(clientErrorCode: Int) {
         self.init(rawValue: clientErrorCode)
     }
