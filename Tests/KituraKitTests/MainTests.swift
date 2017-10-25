@@ -43,7 +43,8 @@ class MainTests: XCTestCase {
             ("testClientPatchErrorPath", testClientPatchErrorPath),
             ("testClientDelete", testClientDelete),
             ("testClientDeleteSingle", testClientDeleteSingle),
-            ("testClientDeleteInvalid", testClientDeleteInvalid)
+            ("testClientDeleteInvalid", testClientDeleteInvalid),
+            ("testSlashRemoval", testSlashRemoval)
         ]
     }
 
@@ -274,6 +275,20 @@ class MainTests: XCTestCase {
             }
         }
         waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testSlashRemoval() {
+        let expectation1 = expectation(description: "A client is generated with the intentional ending slash being removed from the KituraKit baseURL.")
+        
+        let client = KituraKit(baseURL: "http://localhost:8080/")
+        let correctedURL = "http://localhost:8080"
+        
+        XCTAssertEqual(correctedURL, client?.baseURL)
+        expectation1.fulfill()
+        
+        waitForExpectations(timeout: 3.0, handler: nil)
+        
+        
     }
 
 }
