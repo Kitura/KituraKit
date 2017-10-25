@@ -44,7 +44,9 @@ class MainTests: XCTestCase {
             ("testClientDelete", testClientDelete),
             ("testClientDeleteSingle", testClientDeleteSingle),
             ("testClientDeleteInvalid", testClientDeleteInvalid),
-            ("testSlashRemoval", testSlashRemoval)
+            ("testSlashRemoval", testSlashRemoval),
+            ("testUrlErrorCorrecting",testUrlErrorCorrecting),
+            ("testUrlAddingHttp",testUrlAddingHttp)
         ]
     }
 
@@ -287,6 +289,34 @@ class MainTests: XCTestCase {
         expectation1.fulfill()
         
         waitForExpectations(timeout: 3.0, handler: nil)
+        
+        
+    }
+
+        func testUrlErrorCorrecting() {
+        let expectation1 = expectation(description: "A client is generated with the baseURL changed to http://")
+        
+        let client = KituraKit(baseURL: "htttp://localhost:8080")
+        let correctedURL = "http://localhost:8080"
+        
+        XCTAssertEqual(correctedURL, client?.baseURL)
+        expectation1.fulfill()
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        
+    }
+
+        func testUrlAddingHttp() {
+        let expectation1 = expectation(description: "A client is generated with http:// added to front of baseURL")
+        
+        let client = KituraKit(baseURL: "localhost:8080")
+        let correctedURL = "http://localhost:8080"
+        
+        XCTAssertEqual(correctedURL, client?.baseURL)
+        expectation1.fulfill()
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
         
         
     }
