@@ -7,3 +7,9 @@
 KituraKit allows developers to use Swift 4's Codable protocol in their front and back end applications and use the same code on the front and backend. 
 
 It also provides a Create, Read, Update and Delete (CRUD) API to make calls to servers easy and as swift-y as possible.
+
+### Usage
+
+To try out the sample iOS project for yourself, making use of KituraKit, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit).
+
+For more information on how to use KituraKit in your own iOS project, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit/blob/master/KituraiOS/KituraKit/README.md).
