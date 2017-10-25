@@ -44,7 +44,7 @@ public class KituraKit {
         guard URL(string: baseURL) != nil else {
             return nil
         }
-
+        
         // If necessary, trim extra back slash
         self.baseURL = baseURL.last == "/" ? String(baseURL.dropLast()) : baseURL
     }
