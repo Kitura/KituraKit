@@ -1,5 +1,0 @@
-version: "Apple Swift version 4.0 (swiftlang-900.0.65 clang-900.0.37)"
-options: "5acdfebba286a9cd74d9635ef3436459"
-build_time: [1509015637, 693454000]
-inputs:
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/.build/checkouts/KituraContracts.git--3897699854862625585/Sources/KituraContracts/Contracts.swift": [1509013079, 0]

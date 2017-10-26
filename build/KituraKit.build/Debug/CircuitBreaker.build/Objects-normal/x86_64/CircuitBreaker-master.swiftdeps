@@ -1,7 +1,0 @@
-version: "Apple Swift version 4.0 (swiftlang-900.0.65 clang-900.0.37)"
-options: "00f5647fe2bbfb15a19a6191dc2372c7"
-build_time: [1509015635, 220694000]
-inputs:
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/.build/checkouts/CircuitBreaker.git-2769702059765205370/Sources/CircuitBreaker/CircuitBreaker.swift": [1509013077, 0]
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/.build/checkouts/CircuitBreaker.git-2769702059765205370/Sources/CircuitBreaker/Stats.swift": [1509013077, 0]
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/.build/checkouts/CircuitBreaker.git-2769702059765205370/Sources/CircuitBreaker/Utils.swift": [1509013077, 0]

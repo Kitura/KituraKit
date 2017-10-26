@@ -1,7 +1,0 @@
-version: "Apple Swift version 4.0 (swiftlang-900.0.65 clang-900.0.37)"
-options: "8471a0c4f8cbbb4b25028e1dec2322f0"
-build_time: [1509015638, 184339000]
-inputs:
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/Sources/KituraKit/Client.swift": [1509015502, 0]
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/Sources/KituraKit/PersistableExtension.swift": [1509011537, 0]
-  "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/Sources/KituraKit/RequestErrorExtension.swift": [1509015628, 0]
