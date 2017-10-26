@@ -22,10 +22,6 @@ import KituraContracts
 /// A client side library for using REST requests in a web application.
 public class KituraKit {
     
-    public typealias SimpleClosure = (RequestError?) -> Void
-    public typealias CodableClosure<O: Codable> = (O?, RequestError?) -> Void
-    public typealias ArrayCodableClosure<O: Codable> = ([O]?, RequestError?) -> Void
-    
     /// Default URL used for setting up the routes when no URL is provided in the initializer.
     public static var defaultBaseURL = URL(string: "http://localhost:8080")!
     
@@ -71,7 +67,7 @@ public class KituraKit {
     /// * This declaration of get retrieves all items. There is another declaration for specific item retrieval.
     ///
     /// - Parameter route: The custom route KituraKit points to during REST requests.
-    public func get<O: Codable>(_ route: String, respondWith: @escaping ArrayCodableClosure<O>) {
+    public func get<O: Codable>(_ route: String, respondWith: @escaping CodableArrayResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         let request = RestRequest(url: url.absoluteString)
         request.responseData { response in
@@ -105,7 +101,7 @@ public class KituraKit {
     /// * This declaration of get retrieves single items. There is another declaration for all item retrieval.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
-    public func get<O: Codable>(_ route: String, identifier: Identifier, respondWith: @escaping CodableClosure<O>) {
+    public func get<O: Codable>(_ route: String, identifier: Identifier, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let request = RestRequest(url: url.absoluteString)
         request.responseData { response in
@@ -138,7 +134,7 @@ public class KituraKit {
     /// ````
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter data: The custom Codable object passed in to be sent.
-    public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableClosure<O>) {
+    public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
@@ -176,7 +172,7 @@ public class KituraKit {
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
     /// - Parameter data: The custom Codable object passed in to be sent.
-    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
+    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url.absoluteString)
@@ -213,7 +209,7 @@ public class KituraKit {
     /// * This declaration uses the patch method to update data.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
-    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
+    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url.absoluteString)
@@ -249,7 +245,7 @@ public class KituraKit {
     /// ````
     /// * This declaration of delete deletes all items. There is another declaration for single item deletion.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
-    public func delete(_ route: String, respondWith: @escaping SimpleClosure) {
+    public func delete(_ route: String, respondWith: @escaping ResultClosure) {
         let url = baseURL.appendingPathComponent(route)
         let request = RestRequest(method: .delete, url: url.absoluteString)
         request.responseData { response in
@@ -279,7 +275,7 @@ public class KituraKit {
     /// * This declaration of delete deletes single items. There is another declaration for all item deletion.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
-    public func delete(_ route: String, identifier: Identifier, respondWith: @escaping SimpleClosure) {
+    public func delete(_ route: String, identifier: Identifier, respondWith: @escaping ResultClosure) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let request = RestRequest(method: .delete, url: url.absoluteString)
         request.responseData { response in
