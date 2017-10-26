@@ -285,7 +285,7 @@ class MainTests: XCTestCase {
         let client = KituraKit(baseURL: "http://localhost:8080/")
         let correctedURL = "http://localhost:8080"
         
-        XCTAssertEqual(correctedURL, client?.baseURL)
+        XCTAssertEqual(correctedURL, client?.baseURL.absoluteString)
         expectation1.fulfill()
         
         waitForExpectations(timeout: 3.0, handler: nil)
@@ -299,7 +299,7 @@ class MainTests: XCTestCase {
         let client = KituraKit(baseURL: "htttp://localhost:8080")
         let correctedURL = "http://localhost:8080"
         
-        XCTAssertEqual(correctedURL, client?.baseURL)
+        XCTAssertEqual(correctedURL, client?.baseURL.absoluteString)
         expectation1.fulfill()
         
         waitForExpectations(timeout: 1.0, handler: nil) 
@@ -311,7 +311,7 @@ class MainTests: XCTestCase {
         let client = KituraKit(baseURL: "localhost:8080")
         let correctedURL = "http://localhost:8080"
         
-        XCTAssertEqual(correctedURL, client?.baseURL)
+        XCTAssertEqual(correctedURL, client?.baseURL.absoluteString)
         expectation1.fulfill()
         
         waitForExpectations(timeout: 1.0, handler: nil)
