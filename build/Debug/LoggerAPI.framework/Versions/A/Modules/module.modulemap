@@ -1,4 +1,0 @@
-framework module LoggerAPI {
-    header "LoggerAPI-Swift.h"
-    requires objc
-}

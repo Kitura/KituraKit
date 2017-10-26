@@ -1,4 +1,0 @@
-framework module CircuitBreaker {
-    header "CircuitBreaker-Swift.h"
-    requires objc
-}

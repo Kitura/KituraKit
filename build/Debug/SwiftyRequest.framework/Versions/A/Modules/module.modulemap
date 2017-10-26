@@ -1,4 +1,0 @@
-framework module SwiftyRequest {
-    header "SwiftyRequest-Swift.h"
-    requires objc
-}
