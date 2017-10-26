@@ -393,7 +393,7 @@ client.post("/", data: dataToSend) { (returnedItem: O?, error: Error?) -&gt; Voi
                               </td>
                               <td>
                                 <div>
-                                  <p>The custom Codable object passed in to be sent.</p>
+                                  <p>The custom Codable object passed in to the function, which will be sent to the server.</p>
                                 </div>
                               </td>
                             </tr>
@@ -425,7 +425,7 @@ client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Er
 </code></pre>
 
 <ul>
-<li>This declaration uses the put method to update data.</li>
+<li>This declaration uses the put method to update the entirety of the data object, replacing it.</li>
 </ul>
 
                       </div>
@@ -473,7 +473,7 @@ client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Er
                               </td>
                               <td>
                                 <div>
-                                  <p>The custom Codable object passed in to be sent.</p>
+                                  <p>The custom Codable object passed in to the function, which will be sent to the server.</p>
                                 </div>
                               </td>
                             </tr>
@@ -505,7 +505,7 @@ client.patch("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: 
 </code></pre>
 
 <ul>
-<li>This declaration uses the patch method to update data.</li>
+<li>This declaration uses the patch method to update specific changed elements of the data object.</li>
 </ul>
 
                       </div>
@@ -542,6 +542,18 @@ client.patch("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: 
                               <td>
                                 <div>
                                   <p>The custom Identifier object that is searched for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The custom Codable object passed in to the function, which will be sent to the server.</p>
                                 </div>
                               </td>
                             </tr>

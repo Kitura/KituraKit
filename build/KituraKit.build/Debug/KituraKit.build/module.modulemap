@@ -1,0 +1,4 @@
+framework module KituraKit {
+    header "KituraKit-Swift.h"
+    requires objc
+}
