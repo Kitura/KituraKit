@@ -20,6 +20,8 @@ import SwiftyRequest
 import KituraContracts
 
 /// A client side library for using REST requests in a web application.
+/// KituraKit allows developers to use Swift 4's Codable protocol in their front and back end applications and use the same code on the front and backend.
+/// It also provides a Create, Read, Update and Delete (CRUD) API to make calls to servers easy and as swift-y as possible
 public class KituraKit {
 
     public typealias SimpleClosure = (RequestError?) -> Void
@@ -170,7 +172,7 @@ public class KituraKit {
      ///     print(returnedItem)
      /// }
      /// ````
-     /// * This declaration uses the put method to update the entirety of the data object, replacing it.
+     /// * This declaration uses the put method to update the entirety of the data object.
      /// - Parameter route: The custom route KituraKit points to during REST requests.
      /// - Parameter identifier: The custom Identifier object that is searched for.
      /// - Parameter data: The custom Codable object passed in to the function, which will be sent to the server.
@@ -208,7 +210,7 @@ public class KituraKit {
      ///     print(returnedItem)
      /// }
      /// ````
-     /// * This declaration uses the patch method to update specific changed elements of the data object.
+     /// * This declaration uses the patch method to update any changed elements of the data object.
      /// - Parameter route: The custom route KituraKit points to during REST requests.
      /// - Parameter identifier: The custom Identifier object that is searched for.
      /// - Parameter data: The custom Codable object passed in to the function, which will be sent to the server.
