@@ -135,7 +135,7 @@ public class KituraKit {
      /// }
      /// ````
      /// - Parameter route: The custom route KituraKit points to during REST requests.
-     /// - Parameter data: The custom Codable object passed in to be sent.
+     /// - Parameter data: The custom Codable object passed in to the function, which will be sent to the server.
     public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route
         let encoded = try? JSONEncoder().encode(data)
@@ -170,10 +170,10 @@ public class KituraKit {
      ///     print(returnedItem)
      /// }
      /// ````
-     /// * This declaration uses the put method to update data.
+     /// * This declaration uses the put method to update the entirety of the data object, replacing it.
      /// - Parameter route: The custom route KituraKit points to during REST requests.
      /// - Parameter identifier: The custom Identifier object that is searched for.
-     /// - Parameter data: The custom Codable object passed in to be sent.
+     /// - Parameter data: The custom Codable object passed in to the function, which will be sent to the server.
     public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
@@ -208,9 +208,10 @@ public class KituraKit {
      ///     print(returnedItem)
      /// }
      /// ````
-     /// * This declaration uses the patch method to update data.
+     /// * This declaration uses the patch method to update specific changed elements of the data object.
      /// - Parameter route: The custom route KituraKit points to during REST requests.
      /// - Parameter identifier: The custom Identifier object that is searched for.
+     /// - Parameter data: The custom Codable object passed in to the function, which will be sent to the server.
     public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
