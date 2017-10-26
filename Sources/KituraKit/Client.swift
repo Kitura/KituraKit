@@ -24,7 +24,9 @@ public class KituraKit {
 
     public typealias SimpleClosure = (RequestError?) -> Void
     public typealias CodableClosure<O: Codable> = (O?, RequestError?) -> Void
+    public typealias IdentifierCodableClosure<Id: Identifier, O: Codable> = (Id?, O?, RequestError?) -> Void
     public typealias ArrayCodableClosure<O: Codable> = ([O]?, RequestError?) -> Void
+    
 
     /// Default URL used for setting up the routes when no URL is provided in the initializer.
     public static var defaultBaseURL: String = "http://localhost:8080"
@@ -156,6 +158,50 @@ public class KituraKit {
                     respondWith(nil, RequestError(restError: restError))
                 } else {
                     respondWith(nil, .clientErrorUnknown)
+                }
+            }
+        }
+    }
+    
+    /// Sends data to a designated route, allowing for the route to respond with an additional Identifier.
+    ///
+    /// ### Usage Example: ###
+    /// ````
+    /// let client = KituraKit.default
+    /// client.post("/", data: dataToSend) { (id: Id? returnedItem: O?, error: Error?) -> Void in
+    ///     print("\(id): \(returnedItem)")
+    /// }
+    /// ````
+    /// - Parameter route: The custom route KituraKit points to during REST requests.
+    /// - Parameter data: The custom Codable object passed in to be sent.
+    public func post<I: Codable, Id: Identifier, O: Codable>(_ route: String, data: I, respondWith: @escaping IdentifierCodableClosure<Id, O>) {
+        let url: String = baseURL + route
+        let encoded = try? JSONEncoder().encode(data)
+        let request = RestRequest(method: .post, url: url)
+        request.messageBody = encoded
+        
+        request.responseData { response in
+            switch response.result {
+            case .success(let data):
+                guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
+                    respondWith(nil, nil, RequestError.clientDeserializationError)
+                    return
+                }
+                guard let locationHeader = response.response?.allHeaderFields["Location"] as? String else {
+                    respondWith(nil, nil, RequestError.clientDeserializationError)
+                    return
+                }
+                guard let id = try? Id.init(value: locationHeader) else {
+                    respondWith(nil, nil, RequestError.clientDeserializationError)
+                    return
+                }
+                respondWith(id, item, nil)
+            case .failure(let error):
+                Log.error("POST failure: \(error)")
+                if let restError = error as? RestError {
+                    respondWith(nil, nil, RequestError(restError: restError))
+                } else {
+                    respondWith(nil, nil, .clientErrorUnknown)
                 }
             }
         }
