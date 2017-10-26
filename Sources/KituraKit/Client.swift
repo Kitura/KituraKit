@@ -168,7 +168,7 @@ public class KituraKit {
     /// ### Usage Example: ###
     /// ````
     /// let client = KituraKit.default
-    /// client.post("/", data: dataToSend) { (id: Id? returnedItem: O?, error: Error?) -> Void in
+    /// client.post("/", data: dataToSend) { (id: Id?, returnedItem: O?, error: Error?) -> Void in
     ///     print("\(id): \(returnedItem)")
     /// }
     /// ````
