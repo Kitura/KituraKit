@@ -36,6 +36,7 @@ class MainTests: XCTestCase {
             ("testClientGetSingle", testClientGetSingle),
             ("testClientGetSingleErrorPath", testClientGetSingleErrorPath),
             ("testClientPost", testClientPost),
+            ("testClientPostWithIdentifier", testClientPostWithIdentifier),
             ("testClientPostErrorPath", testClientPostErrorPath),
             ("testClientPut", testClientPut),
             ("testClientPutErrorPath", testClientPutErrorPath),
@@ -144,6 +145,30 @@ class MainTests: XCTestCase {
             }
 
             XCTAssertEqual(user, newUser)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testClientPostWithIdentifier() {
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+        
+        // Invoke POST operation on library
+        let userId = 5
+        let newUser = User(id: userId, name: "John Doe")
+        
+        client.post("/usersid", data: newUser) { (id: Int?, user: User?, error: RequestError?) -> Void in
+            guard let user = user else {
+                XCTFail("Failed to post user! Error: \(String(describing: error))")
+                return
+            }
+            guard let id = id else {
+                XCTFail("Failed to receive Identifier back from post")
+                return
+            }
+            
+            XCTAssertEqual(user, newUser)
+            XCTAssertEqual(userId, id)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)

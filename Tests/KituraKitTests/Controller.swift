@@ -60,6 +60,16 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user, nil)
         }
+        
+        router.post("/usersid") { (user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user.id, user, nil)
+        }
+        
         router.put("/users") { (id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)
