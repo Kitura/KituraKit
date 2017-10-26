@@ -1,0 +1,495 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "State"
+- "BreakerError"
+- "CircuitBreaker"
+provides-nominal:
+- "14CircuitBreaker5StateO"
+- "14CircuitBreaker0B5ErrorO"
+- "14CircuitBreakerAAC"
+provides-member:
+- ["14CircuitBreaker5StateO", ""]
+- ["14CircuitBreaker0B5ErrorO", ""]
+- ["14CircuitBreakerAAC", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "&&"
+- !private "+"
+- !private "<="
+- "=="
+- !private ">"
+- !private ">="
+- "AssignmentPrecedence"
+- !private "Bool"
+- !private "BooleanLiteralType"
+- "BreakerError"
+- "Bulkhead"
+- "CircuitBreaker"
+- !private "Date"
+- "DispatchQueue"
+- "DispatchSemaphore"
+- !private "DispatchSource"
+- "DispatchSourceTimer"
+- !private "DispatchTimeInterval"
+- "FailureQueue"
+- "Int"
+- "Invocation"
+- !private "Log"
+- "State"
+- "Stats"
+- "StringLiteralType"
+- !private "TernaryPrecedence"
+- !private "UInt64"
+- "Void"
+depends-member:
+- ["So13DispatchQueueC0A0E10AttributesV", "concurrent"]
+- ["s23BidirectionalCollectionP", "init"]
+- !private ["s19BinaryFloatingPointP", "milliseconds"]
+- !private ["s13BinaryIntegerP", "hashValue"]
+- !private ["s13BinaryIntegerP", "init"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- ["14CircuitBreaker0B5ErrorO", "__derived_enum_equals"]
+- ["14CircuitBreaker0B5ErrorO", "deinit"]
+- ["14CircuitBreaker0B5ErrorO", "fastFail"]
+- ["14CircuitBreaker0B5ErrorO", "hashValue"]
+- ["14CircuitBreaker0B5ErrorO", "timeout"]
+- !private ["14CircuitBreaker8BulkheadC", "enqueue"]
+- !private ["14CircuitBreaker8BulkheadC", "init"]
+- !private ["s7CVarArgP", "asyncAfter"]
+- !private ["s7CVarArgP", "hashValue"]
+- ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "makeTimerSource"]
+- !private ["s7CVarArgP", "milliseconds"]
+- !private ["s7CVarArgP", "signal"]
+- !private ["s7CVarArgP", "wait"]
+- ["14CircuitBreakerAAC", "A"]
+- ["14CircuitBreakerAAC", "AnyContextFunction"]
+- ["14CircuitBreakerAAC", "AnyFallback"]
+- ["14CircuitBreakerAAC", "AnyFunction"]
+- ["14CircuitBreakerAAC", "B"]
+- !private ["14CircuitBreakerAAC", "Bool"]
+- ["14CircuitBreakerAAC", "BreakerError"]
+- ["14CircuitBreakerAAC", "Bulkhead"]
+- ["14CircuitBreakerAAC", "C"]
+- !private ["14CircuitBreakerAAC", "Date"]
+- ["14CircuitBreakerAAC", "DispatchQueue"]
+- ["14CircuitBreakerAAC", "DispatchSemaphore"]
+- !private ["14CircuitBreakerAAC", "DispatchSource"]
+- ["14CircuitBreakerAAC", "DispatchSourceTimer"]
+- !private ["14CircuitBreakerAAC", "DispatchTimeInterval"]
+- ["14CircuitBreakerAAC", "FailureQueue"]
+- ["14CircuitBreakerAAC", "Int"]
+- ["14CircuitBreakerAAC", "Invocation"]
+- !private ["14CircuitBreakerAAC", "Log"]
+- ["14CircuitBreakerAAC", "State"]
+- ["14CircuitBreakerAAC", "Stats"]
+- !private ["14CircuitBreakerAAC", "UInt64"]
+- ["14CircuitBreakerAAC", "Void"]
+- ["14CircuitBreakerAAC", "breakerState"]
+- ["14CircuitBreakerAAC", "breakerStats"]
+- !private ["14CircuitBreakerAAC", "bulkhead"]
+- !private ["14CircuitBreakerAAC", "callFunction"]
+- !private ["14CircuitBreakerAAC", "close"]
+- !private ["14CircuitBreakerAAC", "command"]
+- !private ["14CircuitBreakerAAC", "contextCommand"]
+- ["14CircuitBreakerAAC", "deinit"]
+- !private ["14CircuitBreakerAAC", "failures"]
+- !private ["14CircuitBreakerAAC", "fallback"]
+- !private ["14CircuitBreakerAAC", "fastFail"]
+- ["14CircuitBreakerAAC", "forceClosed"]
+- ["14CircuitBreakerAAC", "forceHalfOpen"]
+- ["14CircuitBreakerAAC", "forceOpen"]
+- !private ["14CircuitBreakerAAC", "handleFailure"]
+- !private ["14CircuitBreakerAAC", "handleSuccess"]
+- ["14CircuitBreakerAAC", "init"]
+- ["14CircuitBreakerAAC", "maxFailures"]
+- ["14CircuitBreakerAAC", "notifyFailure"]
+- ["14CircuitBreakerAAC", "notifySuccess"]
+- ["14CircuitBreakerAAC", "numberOfFailures"]
+- !private ["14CircuitBreakerAAC", "open"]
+- !private ["14CircuitBreakerAAC", "queue"]
+- ["14CircuitBreakerAAC", "resetTimeout"]
+- !private ["14CircuitBreakerAAC", "resetTimer"]
+- ["14CircuitBreakerAAC", "rollingWindow"]
+- ["14CircuitBreakerAAC", "run"]
+- !private ["14CircuitBreakerAAC", "semaphoreCircuit"]
+- !private ["14CircuitBreakerAAC", "semaphoreCompleted"]
+- !private ["14CircuitBreakerAAC", "setTimeout"]
+- ["14CircuitBreakerAAC", "snapshot"]
+- !private ["14CircuitBreakerAAC", "startResetTimer"]
+- ["14CircuitBreakerAAC", "state"]
+- ["14CircuitBreakerAAC", "timeout"]
+- !private ["14CircuitBreaker10CollectionC", "add"]
+- !private ["14CircuitBreaker10CollectionC", "clear"]
+- !private ["14CircuitBreaker10CollectionC", "count"]
+- !private ["14CircuitBreaker10CollectionC", "currentTimeWindow"]
+- !private ["14CircuitBreaker10CollectionC", "init"]
+- ["s10CollectionP", "init"]
+- !private ["s10ComparableP", "currentTimeMillis"]
+- !private ["s10ComparableP", "hashValue"]
+- ["s10ComparableP", "init"]
+- !private ["s10ComparableP", "milliseconds"]
+- !private ["s10ComparableP", "now"]
+- !private ["s10ComparableP", "timeIntervalSince"]
+- !private ["s28CustomDebugStringConvertibleP", "asyncAfter"]
+- !private ["s28CustomDebugStringConvertibleP", "currentTimeMillis"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "makeTimerSource"]
+- !private ["s28CustomDebugStringConvertibleP", "milliseconds"]
+- !private ["s28CustomDebugStringConvertibleP", "signal"]
+- !private ["s28CustomDebugStringConvertibleP", "timeIntervalSince"]
+- !private ["s28CustomDebugStringConvertibleP", "wait"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "currentTimeMillis"]
+- !private ["s29CustomPlaygroundQuickLookableP", "hashValue"]
+- ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "milliseconds"]
+- !private ["s29CustomPlaygroundQuickLookableP", "timeIntervalSince"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "currentTimeMillis"]
+- !private ["s17CustomReflectableP", "hashValue"]
+- ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "milliseconds"]
+- !private ["s17CustomReflectableP", "timeIntervalSince"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "asyncAfter"]
+- !private ["s23CustomStringConvertibleP", "currentTimeMillis"]
+- !private ["s23CustomStringConvertibleP", "hashValue"]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "makeTimerSource"]
+- !private ["s23CustomStringConvertibleP", "milliseconds"]
+- !private ["s23CustomStringConvertibleP", "signal"]
+- !private ["s23CustomStringConvertibleP", "timeIntervalSince"]
+- !private ["s23CustomStringConvertibleP", "wait"]
+- !private ["10Foundation4DateV", "currentTimeMillis"]
+- !private ["10Foundation4DateV", "init"]
+- !private ["10Foundation4DateV", "timeIntervalSince"]
+- !private ["s9DecodableP", "_getBuiltinLogicValue"]
+- !private ["s9DecodableP", "currentTimeMillis"]
+- !private ["s9DecodableP", "hashValue"]
+- ["s9DecodableP", "init"]
+- !private ["s9DecodableP", "milliseconds"]
+- !private ["s9DecodableP", "timeIntervalSince"]
+- !private ["So14DispatchObjectC", "asyncAfter"]
+- ["So14DispatchObjectC", "init"]
+- !private ["So14DispatchObjectC", "makeTimerSource"]
+- !private ["So14DispatchObjectC", "signal"]
+- !private ["So14DispatchObjectC", "wait"]
+- !private ["So13DispatchQueueC", "asyncAfter"]
+- ["So13DispatchQueueC", "init"]
+- ["So17DispatchSemaphoreC", "init"]
+- !private ["So17DispatchSemaphoreC", "signal"]
+- !private ["So17DispatchSemaphoreC", "wait"]
+- !private ["So14DispatchSourceC", "makeTimerSource"]
+- !private ["So30DispatchSourceFileSystemObjectP", "makeTimerSource"]
+- !private ["So25DispatchSourceMachReceiveP", "makeTimerSource"]
+- !private ["So22DispatchSourceMachSendP", "makeTimerSource"]
+- !private ["So28DispatchSourceMemoryPressureP", "makeTimerSource"]
+- !private ["So21DispatchSourceProcessP", "makeTimerSource"]
+- !private ["So22DispatchSourceProtocolP", "cancel"]
+- !private ["So22DispatchSourceProtocolP", "makeTimerSource"]
+- !private ["So22DispatchSourceProtocolP", "resume"]
+- !private ["So22DispatchSourceProtocolP", "schedule"]
+- !private ["So22DispatchSourceProtocolP", "setEventHandler"]
+- !private ["So18DispatchSourceReadP", "makeTimerSource"]
+- !private ["So20DispatchSourceSignalP", "makeTimerSource"]
+- !private ["So19DispatchSourceTimerP", "cancel"]
+- !private ["So19DispatchSourceTimerP", "makeTimerSource"]
+- !private ["So19DispatchSourceTimerP", "resume"]
+- !private ["So19DispatchSourceTimerP", "schedule"]
+- !private ["So19DispatchSourceTimerP", "setEventHandler"]
+- !private ["So25DispatchSourceUserDataAddP", "makeTimerSource"]
+- !private ["So24DispatchSourceUserDataOrP", "makeTimerSource"]
+- !private ["So29DispatchSourceUserDataReplaceP", "makeTimerSource"]
+- !private ["So19DispatchSourceWriteP", "makeTimerSource"]
+- !private ["8Dispatch0A4TimeV", "now"]
+- !private ["8Dispatch0A12TimeIntervalO", "milliseconds"]
+- !private ["Sd", "milliseconds"]
+- !private ["s9EncodableP", "_getBuiltinLogicValue"]
+- !private ["s9EncodableP", "currentTimeMillis"]
+- !private ["s9EncodableP", "hashValue"]
+- ["s9EncodableP", "init"]
+- !private ["s9EncodableP", "milliseconds"]
+- !private ["s9EncodableP", "timeIntervalSince"]
+- !private ["s9EquatableP", "_getBuiltinLogicValue"]
+- !private ["s9EquatableP", "asyncAfter"]
+- ["s9EquatableP", "closed"]
+- ["s9EquatableP", "concurrent"]
+- !private ["s9EquatableP", "currentTimeMillis"]
+- !private ["s9EquatableP", "fastFail"]
+- !private ["s9EquatableP", "halfopen"]
+- ["s9EquatableP", "hashValue"]
+- ["s9EquatableP", "init"]
+- !private ["s9EquatableP", "makeTimerSource"]
+- !private ["s9EquatableP", "milliseconds"]
+- !private ["s9EquatableP", "now"]
+- !private ["s9EquatableP", "open"]
+- !private ["s9EquatableP", "signal"]
+- !private ["s9EquatableP", "timeIntervalSince"]
+- !private ["s9EquatableP", "timeout"]
+- !private ["s9EquatableP", "wait"]
+- ["s9EquatableP", ""]
+- ["s25ExpressibleByArrayLiteralP", "concurrent"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s25ExpressibleByFloatLiteralP", "milliseconds"]
+- !private ["s27ExpressibleByIntegerLiteralP", "hashValue"]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s27ExpressibleByIntegerLiteralP", "milliseconds"]
+- ["s26ExpressibleByStringLiteralP", "init"]
+- ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["14CircuitBreaker12FailureQueueC", "add"]
+- !private ["14CircuitBreaker12FailureQueueC", "clear"]
+- !private ["14CircuitBreaker12FailureQueueC", "count"]
+- !private ["14CircuitBreaker12FailureQueueC", "currentTimeWindow"]
+- !private ["14CircuitBreaker12FailureQueueC", "init"]
+- !private ["s17FixedWidthIntegerP", "hashValue"]
+- !private ["s17FixedWidthIntegerP", "init"]
+- !private ["s13FloatingPointP", "milliseconds"]
+- !private ["s8HashableP", "_getBuiltinLogicValue"]
+- !private ["s8HashableP", "asyncAfter"]
+- ["s8HashableP", "closed"]
+- !private ["s8HashableP", "currentTimeMillis"]
+- !private ["s8HashableP", "fastFail"]
+- !private ["s8HashableP", "halfopen"]
+- ["s8HashableP", "hashValue"]
+- ["s8HashableP", "init"]
+- !private ["s8HashableP", "makeTimerSource"]
+- !private ["s8HashableP", "milliseconds"]
+- !private ["s8HashableP", "open"]
+- !private ["s8HashableP", "signal"]
+- !private ["s8HashableP", "timeIntervalSince"]
+- !private ["s8HashableP", "timeout"]
+- !private ["s8HashableP", "wait"]
+- ["s8HashableP", ""]
+- !private ["Si", "hashValue"]
+- !private ["Si", "init"]
+- !private ["14CircuitBreaker10InvocationC", "completed"]
+- !private ["14CircuitBreaker10InvocationC", "init"]
+- !private ["14CircuitBreaker10InvocationC", "setTimedOut"]
+- !private ["9LoggerAPI3LogC", "verbose"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s25LosslessStringConvertibleP", "hashValue"]
+- ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "milliseconds"]
+- !private ["s10MirrorPathP", "hashValue"]
+- ["s10MirrorPathP", "init"]
+- ["So8NSCodingP", "init"]
+- ["So9NSCopyingP", "init"]
+- ["So21NSItemProviderReadingP", "init"]
+- ["So21NSItemProviderWritingP", "init"]
+- ["So16NSMutableCopyingP", "init"]
+- !private ["So8NSObjectC", "asyncAfter"]
+- ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "makeTimerSource"]
+- !private ["So8NSObjectC", "signal"]
+- !private ["So8NSObjectC", "wait"]
+- !private ["So16NSObjectProtocolP", "asyncAfter"]
+- !private ["So16NSObjectProtocolP", "cancel"]
+- ["So16NSObjectProtocolP", "init"]
+- !private ["So16NSObjectProtocolP", "makeTimerSource"]
+- !private ["So16NSObjectProtocolP", "resume"]
+- !private ["So16NSObjectProtocolP", "schedule"]
+- !private ["So16NSObjectProtocolP", "setEventHandler"]
+- !private ["So16NSObjectProtocolP", "signal"]
+- !private ["So16NSObjectProtocolP", "wait"]
+- ["So14NSSecureCodingP", "init"]
+- ["So8NSStringC", "init"]
+- !private ["s7NumericP", "hashValue"]
+- !private ["s7NumericP", "init"]
+- !private ["s7NumericP", "milliseconds"]
+- !private ["So9OS_objectC", "asyncAfter"]
+- ["So9OS_objectC", "init"]
+- !private ["So9OS_objectC", "makeTimerSource"]
+- !private ["So9OS_objectC", "signal"]
+- !private ["So9OS_objectC", "wait"]
+- ["s9OptionSetP", "concurrent"]
+- ["s26RangeReplaceableCollectionP", "init"]
+- ["s16RawRepresentableP", "concurrent"]
+- !private ["10Foundation20ReferenceConvertibleP", "currentTimeMillis"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "timeIntervalSince"]
+- ["s8SequenceP", "init"]
+- ["s10SetAlgebraP", "concurrent"]
+- !private ["s13SignedIntegerP", "hashValue"]
+- !private ["s13SignedIntegerP", "init"]
+- !private ["s13SignedNumericP", "hashValue"]
+- !private ["s13SignedNumericP", "init"]
+- !private ["s13SignedNumericP", "milliseconds"]
+- ["14CircuitBreaker5StateO", "__derived_enum_equals"]
+- ["14CircuitBreaker5StateO", "closed"]
+- ["14CircuitBreaker5StateO", "deinit"]
+- ["14CircuitBreaker5StateO", "halfopen"]
+- ["14CircuitBreaker5StateO", "hashValue"]
+- ["14CircuitBreaker5StateO", "open"]
+- ["14CircuitBreaker5StatsC", "init"]
+- !private ["14CircuitBreaker5StatsC", "snapshot"]
+- !private ["14CircuitBreaker5StatsC", "trackFailedResponse"]
+- !private ["14CircuitBreaker5StatsC", "trackLatency"]
+- !private ["14CircuitBreaker5StatsC", "trackRejected"]
+- !private ["14CircuitBreaker5StatsC", "trackRequest"]
+- !private ["14CircuitBreaker5StatsC", "trackSuccessfulResponse"]
+- !private ["14CircuitBreaker5StatsC", "trackTimeouts"]
+- !private ["s10StrideableP", "hashValue"]
+- !private ["s10StrideableP", "init"]
+- !private ["s10StrideableP", "milliseconds"]
+- ["SS", "init"]
+- ["s14StringProtocolP", "init"]
+- ["s16TextOutputStreamP", "init"]
+- ["s20TextOutputStreamableP", "init"]
+- !private ["s6UInt64V", "init"]
+- !private ["s15UnsignedIntegerP", "init"]
+- ["s23_BidirectionalIndexableP", "init"]
+- !private ["s18_BitwiseOperationsP", "hashValue"]
+- !private ["s18_BitwiseOperationsP", "init"]
+- !private ["s15_CVarArgAlignedP", "init"]
+- !private ["s15_CVarArgAlignedP", "milliseconds"]
+- !private ["s22_CVarArgPassedAsDoubleP", "milliseconds"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s33_ExpressibleByBuiltinFloatLiteralP", "milliseconds"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "hashValue"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "milliseconds"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- ["s33_ExpressibleByStringInterpolationP", "init"]
+- ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- ["s10_IndexableP", "init"]
+- ["s14_IndexableBaseP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "asyncAfter"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "makeTimerSource"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "signal"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "wait"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "currentTimeMillis"]
+- !private ["s21_ObjectiveCBridgeableP", "hashValue"]
+- ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "milliseconds"]
+- !private ["s21_ObjectiveCBridgeableP", "timeIntervalSince"]
+- ["s26_RangeReplaceableIndexableP", "init"]
+- !private ["s11_StrideableP", "hashValue"]
+- !private ["s11_StrideableP", "init"]
+- !private ["s11_StrideableP", "milliseconds"]
+- ["s16_SwiftStringViewP", "init"]
+depends-nominal:
+- "So13DispatchQueueC0A0E10AttributesV"
+- "s23BidirectionalCollectionP"
+- !private "s19BinaryFloatingPointP"
+- !private "s13BinaryIntegerP"
+- !private "Sb"
+- "14CircuitBreaker0B5ErrorO"
+- !private "14CircuitBreaker8BulkheadC"
+- "s7CVarArgP"
+- "14CircuitBreakerAAC"
+- !private "14CircuitBreaker10CollectionC"
+- "s10CollectionP"
+- "s10ComparableP"
+- "s28CustomDebugStringConvertibleP"
+- "s29CustomPlaygroundQuickLookableP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation4DateV"
+- "s9DecodableP"
+- "So14DispatchObjectC"
+- "So13DispatchQueueC"
+- "So17DispatchSemaphoreC"
+- !private "So14DispatchSourceC"
+- !private "So30DispatchSourceFileSystemObjectP"
+- !private "So25DispatchSourceMachReceiveP"
+- !private "So22DispatchSourceMachSendP"
+- !private "So28DispatchSourceMemoryPressureP"
+- !private "So21DispatchSourceProcessP"
+- !private "So22DispatchSourceProtocolP"
+- !private "So18DispatchSourceReadP"
+- !private "So20DispatchSourceSignalP"
+- !private "So19DispatchSourceTimerP"
+- !private "So25DispatchSourceUserDataAddP"
+- !private "So24DispatchSourceUserDataOrP"
+- !private "So29DispatchSourceUserDataReplaceP"
+- !private "So19DispatchSourceWriteP"
+- !private "8Dispatch0A4TimeV"
+- !private "8Dispatch0A12TimeIntervalO"
+- !private "Sd"
+- "s9EncodableP"
+- "s9EquatableP"
+- "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s25ExpressibleByFloatLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- "s26ExpressibleByStringLiteralP"
+- "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "14CircuitBreaker12FailureQueueC"
+- !private "s17FixedWidthIntegerP"
+- !private "s13FloatingPointP"
+- "s8HashableP"
+- !private "Si"
+- !private "14CircuitBreaker10InvocationC"
+- !private "9LoggerAPI3LogC"
+- "s25LosslessStringConvertibleP"
+- "s10MirrorPathP"
+- "So8NSCodingP"
+- "So9NSCopyingP"
+- "So21NSItemProviderReadingP"
+- "So21NSItemProviderWritingP"
+- "So16NSMutableCopyingP"
+- "So8NSObjectC"
+- "So16NSObjectProtocolP"
+- "So14NSSecureCodingP"
+- "So8NSStringC"
+- !private "s7NumericP"
+- "So9OS_objectC"
+- "s9OptionSetP"
+- "s26RangeReplaceableCollectionP"
+- "s16RawRepresentableP"
+- !private "10Foundation20ReferenceConvertibleP"
+- "s8SequenceP"
+- "s10SetAlgebraP"
+- !private "s13SignedIntegerP"
+- !private "s13SignedNumericP"
+- "14CircuitBreaker5StateO"
+- "14CircuitBreaker5StatsC"
+- !private "s10StrideableP"
+- "SS"
+- "s14StringProtocolP"
+- "s16TextOutputStreamP"
+- "s20TextOutputStreamableP"
+- !private "s6UInt64V"
+- !private "s15UnsignedIntegerP"
+- "s23_BidirectionalIndexableP"
+- !private "s18_BitwiseOperationsP"
+- !private "s15_CVarArgAlignedP"
+- !private "s22_CVarArgPassedAsDoubleP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s33_ExpressibleByBuiltinFloatLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- "s33_ExpressibleByStringInterpolationP"
+- "s35_HasCustomAnyHashableRepresentationP"
+- "s10_IndexableP"
+- "s14_IndexableBaseP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- "s21_ObjectiveCBridgeableP"
+- "s26_RangeReplaceableIndexableP"
+- !private "s11_StrideableP"
+- "s16_SwiftStringViewP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.apinotesc"
+- "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit/build/Debug/LoggerAPI.framework/Modules/LoggerAPI.swiftmodule/x86_64.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/IOKit.swiftmodule"
+- "/Applications/Xcode-9.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+interface-hash: "c20fe3890e6b28e2548a32cc841721d0"

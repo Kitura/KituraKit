@@ -1,0 +1,4 @@
+framework module KituraContracts {
+    header "KituraContracts-Swift.h"
+    requires objc
+}

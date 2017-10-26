@@ -49,8 +49,19 @@ public class KituraKit {
     }
 
     // HTTP verb/action methods (basic type safe routing)
-
-    // GET - basic type safe routing
+    
+    /**
+     Retrieves data from a designated route.
+  
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.get("/") { (returnedArray: [O]?, error: Error?) -> Void in
+         print(returnedArray)
+     }
+     ````
+     * This declaration of get retrieves all items. There is another declaration for specific item retrieval.
+     */
     public func get<O: Codable>(_ route: String, respondWith: @escaping ArrayCodableClosure<O>) {
         let url: String = baseURL + route
         let request = RestRequest(url: url)
@@ -73,7 +84,18 @@ public class KituraKit {
         }
     }
 
-    // GET single - basic type safe routing
+    /**
+     Retrieves data from a designated route with an Identifier.
+     
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.get("/", identifier: Id) { (returnedItem: O?, error: Error?) -> Void in
+         print(returnedItem)
+     }
+     ````
+     * This declaration of get retrieves single items. There is another declaration for all item retrieval.
+     */
     public func get<O: Codable>(_ route: String, identifier: Identifier, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(url: url)
@@ -97,7 +119,17 @@ public class KituraKit {
         }
     }
 
-    // POST - basic type safe routing
+    /**
+     Sends data to a designated route.
+     
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.post("/", data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+         print(returnedItem)
+     }
+     ````
+     */
     public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route
         let encoded = try? JSONEncoder().encode(data)
@@ -122,8 +154,19 @@ public class KituraKit {
             }
         }
     }
-
-    // PUT - basic type safe routing
+    
+    /**
+     Updates data for a designated route using an Identifier.
+     
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+         print(returnedItem)
+     }
+     ````
+     * This declaration uses the put method to update data.
+     */
     public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
@@ -148,8 +191,19 @@ public class KituraKit {
             }
         }
     }
-
-    // PATCH - basic type safe routing
+    
+    /**
+     Updates data for a designated route using an Identifier.
+     
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.patch("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+         print(returnedItem)
+     }
+     ````
+     * This declaration uses the patch method to update data.
+     */
     public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableClosure<O>) {
         let url: String = baseURL + route + "/\(identifier)"
         let encoded = try? JSONEncoder().encode(data)
@@ -174,8 +228,19 @@ public class KituraKit {
             }
         }
     }
-
-    // DELETE - basic type safe routing
+    
+    /**
+     Deletes data at a designated route.
+     
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.delete("/") { error in
+         print("Successfully deleted")
+     }
+     ````
+     * This declaration of delete deletes all items. There is another declaration for single item deletion.
+     */
     public func delete(_ route: String, respondWith: @escaping SimpleClosure) {
         let url: String = baseURL + route
         let request = RestRequest(method: .delete, url: url)
@@ -193,8 +258,19 @@ public class KituraKit {
             }
         }
     }
-
-    // DELETE single - basic type safe routing
+    
+    /**
+     Deletes data at a designated route using an Identifier.
+     
+     ### Usage Example: ###
+     ````
+     let client = KituraKit.default
+     client.delete("/", identifier: urlToSend) { error in
+         print("Successfully deleted")
+     }
+     ````
+     * This declaration of delete deletes single items. There is another declaration for all item deletion.
+     */
     public func delete(_ route: String, identifier: Identifier, respondWith: @escaping SimpleClosure) {
         let url: String = baseURL + route + "/\(identifier)"
         let request = RestRequest(method: .delete, url: url)
@@ -214,7 +290,14 @@ public class KituraKit {
     }    
 }
 
-//Check an input URL begins with http:// or https:// and fix common mistypes
+/**
+ Checks for mistyped URLs for the client route path.
+ 
+ ### Usage Example: ###
+ ````
+ let checkedUrl = checkMistypedURL(inputURL: baseURL)
+ ````
+ */
 private func checkMistypedURL(inputURL: String) -> String {
     let mistypes = ["http:/","http:","http","htp://","ttp://","htttp://","htpp://","http//","htt://","http:://","http:///","httpp://","hhttp://","htt:"]
     //if necessary, trim extra back slash
