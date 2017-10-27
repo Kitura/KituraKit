@@ -31,7 +31,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", .upToNextMinor(from: "0.0.5")),
-        .package(url: "https://github.com/IBM-Swift/KituraContracts.git", .upToNextMinor(from: "0.0.13")),
+        .package(url: "https://github.com/IBM-Swift/KituraContracts.git", .upToNextMinor(from: "0.0.14")),
         // Kitura is only needed for testing (test dependency :-/)
         .package(url: "https://github.com/IBM-Swift/Kitura.git", .branch("issue.swift4")),
     ],
