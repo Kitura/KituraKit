@@ -19,7 +19,7 @@ import KituraContracts
 import SwiftyRequest
 
 /// An extension to Kitura RequestErrors with additional error codes specifically for the client.
-extension RequestError {
+public extension RequestError {
 
     /// An initializer to set up the client error codes.
     /// - Parameter clientErrorCode: The custom error code for the client.
@@ -56,11 +56,11 @@ extension RequestError {
 }
 
 /// An extension to Kitura RequestErrors with additional error codes specifically for the client.
-extension RequestError {
+public extension RequestError {
     
     /// An initializer to switch between different error types.
     /// - Parameter restError: The custom error type for the client.
-    init(restError: RestError) {
+    public init(restError: RestError) {
         switch restError {
         case .erroredResponseStatus(let code): self = RequestError(httpCode: code)
         case .noData: self = .clientNoData
