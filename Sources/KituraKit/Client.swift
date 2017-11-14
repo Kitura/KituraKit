@@ -347,15 +347,15 @@ public class KituraKit {
 /// - Parameter inputURL: The string that is checked for mistypes.
 private func checkMistypedProtocol(inputURL: String) -> String {
     let mistypes = ["http:/","http:","http","htp://","ttp://","htttp://","htpp://","http//","htt://","http:://","http:///","httpp://","hhttp://","htt:"]
-    if String(inputURL.characters.prefix(7)).lowercased() == "http://" || String(inputURL.characters.prefix(8)).lowercased() == "https://"{
-        if String(inputURL.characters.prefix(8)).lowercased() != "http:///" {
+    if String(inputURL.prefix(7)).lowercased() == "http://" || String(inputURL.prefix(8)).lowercased() == "https://"{
+        if String(inputURL.prefix(8)).lowercased() != "http:///" {
             return inputURL
         }
     }
     //search the first 8 - 4 charecters for matching mistypes and replace with http://
     for i in (4...8).reversed() {
         for item in mistypes{
-            if String(inputURL.characters.prefix(i)).lowercased() == item {
+            if String(inputURL.prefix(i)).lowercased() == item {
                 let processedUrl = inputURL.dropFirst(i)
                 return "http://\(processedUrl)"
             }
