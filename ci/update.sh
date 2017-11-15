@@ -74,14 +74,6 @@ sed -i '/import LoggerAPI/d' Stats.swift
 
 rm -rf ../../../swift-4.0-RELEASE-ubuntu14.04/
 
-git add -A
-git commit -m "Updating pod branch to latest version"
-git push origin pod
-
-git checkout tempMaster
-
-cd ../../../ci
-
 if [ -f VERSION ]; then
     BASE_VERSION_STRING=`cat VERSION`
     BASE_VERSION_LIST=(`echo $BASE_VERSION_STRING | tr '.' ' '`)
@@ -91,8 +83,20 @@ if [ -f VERSION ]; then
 
     V_PATCH=$((V_PATCH + 1))
     NEW_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
-    
     echo $NEW_VERSION > VERSION
+fi
+
+git add -A
+git commit -m "Updating pod branch to latest version"
+git push origin pod
+
+git checkout tempMaster
+
+cd ../../../ci
+
+git checkout pod VERSION
+
+if [ -f VERSION ]; then
     git add VERSION
     git commit -m "New release of KituraKit at $NEW_VERSION"
     git tag -a -m "Tagging version $NEW_VERSION" "v$NEW_VERSION"
