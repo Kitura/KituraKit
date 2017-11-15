@@ -83,7 +83,7 @@ git checkout tempMaster
 cd ../../../ci
 
 if [ -f VERSION ]; then
-    BASE_VERSION_STRING='cat VERSION'
+    BASE_VERSION_STRING=`cat VERSION`
     BASE_VERSION_LIST=(`echo $BASE_VERSION_STRING | tr '.' ' '`)
     V_MAJOR=${BASE_VERSION_LIST[0]}
     V_MINOR=${BASE_VERSION_LIST[1]}
