@@ -79,7 +79,9 @@ git commit -m "Updating pod branch to latest version"
 git push origin pod
 
 git checkout tempMaster
-cd ci
+
+cd ../../../ci
+
 if [ -f VERSION ]; then
     BASE_VERSION_STRING='cat VERSION'
     BASE_VERSION_LIST=(`echo $BASE_VERSION_STRING | tr '.' ' '`)
