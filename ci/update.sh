@@ -84,6 +84,7 @@ if [ -f ../../../ci/VERSION ]; then
     V_PATCH=$((V_PATCH + 1))
     NEW_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
     echo $NEW_VERSION > VERSION
+    echo `cat VERSION`
 fi
 
 git add -A
@@ -98,6 +99,7 @@ git checkout pod VERSION
 
 if [ -f VERSION ]; then
     NEW_VERSION=`cat VERSION`
+    echo "$NEW_VERSION"
     git tag -a -m "Tagging version $NEW_VERSION" "v$NEW_VERSION"
     git push origin v$NEW_VERSION
 fi
