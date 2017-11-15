@@ -97,8 +97,7 @@ cd ../../../ci
 git checkout pod VERSION
 
 if [ -f VERSION ]; then
-    git add VERSION
-    git commit -m "New release of KituraKit at $NEW_VERSION"
+    NEW_VERSION=`cat VERSION`
     git tag -a -m "Tagging version $NEW_VERSION" "v$NEW_VERSION"
     git push origin v$NEW_VERSION
 fi
