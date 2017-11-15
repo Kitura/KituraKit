@@ -79,8 +79,8 @@ git commit -m "Updating pod branch to latest version"
 git push origin pod
 
 git checkout tempMaster
-
-# if [ -f VERSION ]; then
+cd ci
+if [ -f VERSION ]; then
     BASE_VERSION_STRING='cat VERSION'
     BASE_VERSION_LIST=(`echo $BASE_VERSION_STRING | tr '.' ' '`)
     V_MAJOR=${BASE_VERSION_LIST[0]}
@@ -95,4 +95,4 @@ git checkout tempMaster
     git commit -m "New release of KituraKit at $NEW_VERSION"
     git tag -a -m "Tagging version $NEW_VERSION" "v$NEW_VERSION"
     git push origin --tags
-# fi
+fi
