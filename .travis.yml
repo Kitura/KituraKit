@@ -21,5 +21,6 @@ script:
 
 jobs: 
     include: 
-      - stage: Release
-        script: ci/release.sh
+      - stage: Update
+        script: ci/update.sh
+	if type = push AND branch = tempMaster
