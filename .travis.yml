@@ -23,5 +23,5 @@ script:
 
 jobs: 
     include: 
-      - stage: Update
+      - stage: Release
         script: ci/release.sh
