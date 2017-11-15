@@ -40,7 +40,7 @@ git remote rm origin
 git remote add origin https://SwiftDevOps:${GH_TOKEN}@github.com/IBM-Swift/KituraKit
 git fetch
 git checkout pod
-git pull origin master 
+git pull origin tempMaster 
 
 swift package resolve
 
@@ -78,7 +78,7 @@ git add -A
 git commit -m "Updating pod branch to latest version"
 git push origin pod
 
-git checkout master
+git checkout tempMaster
 
 if [ -f VERSION ]; then
     BASE_VERSION_STRING='cat VERSION'

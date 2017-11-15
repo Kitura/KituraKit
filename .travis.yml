@@ -2,9 +2,7 @@
 
 branches:
   only:
-    - master
-    - develop
-    - /^issue.*$/
+     - tempMaster
 
 matrix:
   include:
