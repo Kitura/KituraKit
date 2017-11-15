@@ -74,7 +74,7 @@ sed -i '/import LoggerAPI/d' Stats.swift
 
 rm -rf ../../../swift-4.0-RELEASE-ubuntu14.04/
 
-if [ -f VERSION ]; then
+if [ -f ../../../ci/VERSION ]; then
     BASE_VERSION_STRING=`cat VERSION`
     BASE_VERSION_LIST=(`echo $BASE_VERSION_STRING | tr '.' ' '`)
     V_MAJOR=${BASE_VERSION_LIST[0]}
