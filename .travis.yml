@@ -23,4 +23,4 @@ jobs:
     include: 
       - stage: Update
         script: ci/update.sh
-        if: type = push AND branch = tempMaster
+        if: type = push AND branch = tempMaster AND platform = Linux
