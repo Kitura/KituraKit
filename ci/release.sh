@@ -18,5 +18,5 @@ if [ -f VERSION ]; then
     git commit -m "New release of KituraKit at $NEW_VERSION"
     git push origin tempMaster 
     git tag -a -m "Tagging version $NEW_VERSION" "v$NEW_VERSION"
-#    git push origin $NEW_VERSION
+    git push origin $NEW_VERSION
 fi
