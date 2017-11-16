@@ -74,32 +74,6 @@ sed -i '/import LoggerAPI/d' Stats.swift
 
 rm -rf ../../../swift-4.0-RELEASE-ubuntu14.04/
 
-if [ -f ../../../ci/VERSION ]; then
-    BASE_VERSION_STRING=`cat VERSION`
-    BASE_VERSION_LIST=(`echo $BASE_VERSION_STRING | tr '.' ' '`)
-    V_MAJOR=${BASE_VERSION_LIST[0]}
-    V_MINOR=${BASE_VERSION_LIST[1]}
-    V_PATCH=${BASE_VERSION_LIST[2]}
-
-    V_PATCH=$((V_PATCH + 1))
-    NEW_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
-    echo $NEW_VERSION > VERSION
-    echo `cat VERSION`
-fi
-
 git add -A
 git commit -m "Updating pod branch to latest version"
 git push origin pod
-
-git checkout tempMaster
-
-cd ../../../ci
-
-git checkout pod VERSION
-
-if [ -f VERSION ]; then
-    NEW_VERSION=`cat VERSION`
-    echo "$NEW_VERSION"
-#    git tag -a -m "Tagging version $NEW_VERSION" "v$NEW_VERSION"
-#    git push origin v$NEW_VERSION
-fi
