@@ -22,10 +22,23 @@ git checkout tempMaster
 
 cd ci
 
-create_new_tag() {
+update_git() {
+  update_version_file $1
+  update_tag $1
+}
+
+update_tag() {
   echo "Tagging version: v$1"
   git tag -a -m "Tagging version $1" "v$1"
   git push origin --tags
+}
+
+update_version_file() {
+  echo "Updating Version file: v$1"
+  echo $1 > VERSION
+  git add VERSION
+  git commit -m "[skip ci] New release of KituraKit at $1"
+  git push origin tempMaster
 }
 
 increment_patch () {
@@ -74,11 +87,11 @@ if [ -f VERSION ]; then
     # If git's current tag is greater than the file's version. Increment the patch by default.
     if [[ $SHOULD_INCREMENT_PATCH == 1 ]]; then
       echo "Auto-incrementing Patch"
-      create_new_tag $(increment_patch $NORMALIZED_CURRENT_VERSION_STRING)
+      update_git $(increment_patch $NORMALIZED_CURRENT_VERSION_STRING)
 
     # If the provided file's version is greater than we should use the version file
     else
       echo "Using File Version"
-      create_new_tag $BASE_VERSION_STRING
+      update_git $BASE_VERSION_STRING
     fi
 fi
