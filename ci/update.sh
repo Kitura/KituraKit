@@ -90,7 +90,7 @@ sed -i '/import LoggerAPI/d' CircuitBreaker.swift
 sed -i '/import LoggerAPI/d' Stats.swift
 
 rm -rf ../../../swift-4.0-RELEASE-ubuntu14.04/
-
+rm -rf ../../../Package-Builder/
 git add -A
 git commit -m "Updating pod branch to latest version"
 git push origin pod
