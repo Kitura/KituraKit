@@ -38,7 +38,7 @@ update_version_file() {
   echo $1 > VERSION
   git add VERSION
   git commit -m "[skip ci] New release of KituraKit at $1"
-  git push origin tempMaster
+  git push origin master
 }
 
 increment_patch () {
