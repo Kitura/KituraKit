@@ -15,9 +15,6 @@
  **/
 
 import Foundation
-import LoggerAPI
-import SwiftyRequest
-import KituraContracts
 
 /// A client side library for using REST requests in a web application.
 public class KituraKit {

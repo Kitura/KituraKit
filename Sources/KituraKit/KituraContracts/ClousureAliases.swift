@@ -37,7 +37,7 @@ The `IdentifierCodableResultClosure` is used by other `Codable` aliases when res
 public typealias IdentifierCodableResultClosure<Id: Identifier, O: Codable> = (Id?, O?, RequestError?) -> Void
 
 /**
-The `IdentifierCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier` and an object conforming to 'Codable', then responding with an object which conforms to `Codable`, which is of the same type as the object passed as a parameter, or responding with a `RequestError` in the form of a `CodableResultClosure`
+The `IdentifierCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier` and an object conforming to 'Codable', then respond with an object which conforms to `Codable`, which is of the same type as the object passed as a parameter, or responding with a `RequestError` in the form of a `CodableResultClosure`
 
 ### Usage Example: ###
 ````
@@ -68,7 +68,7 @@ router.put("/users") { (id: Int, user: User, respondWith: (User?, RequestError?)
 public typealias IdentifierCodableClosure<Id: Identifier, I: Codable, O: Codable> = (Id, I, @escaping CodableResultClosure<O>) -> Void
 
 /**
-The `CodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier` then responding with an object which conforms to `Codable`, which is of the same type as the object passed as a parameter, or responding with a `RequestError` in the form of a `CodableResultClosure`
+The `CodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier` then respond with an object which conforms to `Codable`, which is of the same type as the object passed as a parameter, or responding with a `RequestError` in the form of a `CodableResultClosure`
  
 ### Usage Example: ###
 ````
@@ -97,7 +97,7 @@ router.post("/users") { (user: User, respondWith: (User?, RequestError?) -> Void
 public typealias CodableClosure<I: Codable, O: Codable> = (I, @escaping CodableResultClosure<O>) -> Void
 
 /**
-The `CodableIdentifierClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier`, then responding with an object which conforms to `Codable`, and/or an object conforming to `Identifier` or responding with a `RequestError` in the form of a `IdentifierCodableResultClosure`
+The `CodableIdentifierClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier`, then respond with an object which conforms to `Codable`, and/or an object conforming to `Identifier` or responding with a `RequestError` in the form of a `IdentifierCodableResultClosure`
  
 ### Usage Example: ###
 ````
@@ -126,7 +126,7 @@ router.post("/users") { (user: User, respondWith: (Int?, User?, RequestError?) -
 public typealias CodableIdentifierClosure<I: Codable, Id: Identifier, O: Codable> = (I, @escaping IdentifierCodableResultClosure<Id, O>) -> Void
 
 /**
-The `NonCodableClosure` is for use in cases where you'd want to perform a series of actions then responding with a `RequestError` in the form of a `ResultClosure`
+The `NonCodableClosure` is for use in cases where you'd want to perform a series of actions then respond with a `RequestError` in the form of a `ResultClosure`
 
 ### Usage Example: ###
 ````
@@ -151,7 +151,7 @@ router.delete("/users") { (respondWith: (RequestError?) -> Void) in
 public typealias NonCodableClosure = (@escaping ResultClosure) -> Void
 
 /**
-The `IdentifierNonCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object which conforms to `Identifier` then responding with a `RequestError` in the form of a `ResultClosure`
+The `IdentifierNonCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object which conforms to `Identifier` then respond with a `RequestError` in the form of a `ResultClosure`
  
 ### Usage Example: ###
 ````
@@ -177,7 +177,7 @@ router.delete("/users") { (id: Int, respondWith: (RequestError?) -> Void) in
 public typealias IdentifierNonCodableClosure<Id: Identifier> = (Id, @escaping ResultClosure) -> Void
 
 /**
-The `CodableArrayClosure` is for use in cases where you'd want to perform a series of actions then responding with an array of objects conforming to `Codable` or a `RequestError` in the form of a `CodableArrayResultClosure`
+The `CodableArrayClosure` is for use in cases where you'd want to perform a series of actions then respond with an array of objects conforming to `Codable` or a `RequestError` in the form of a `CodableArrayResultClosure`
  
 ### Usage Example: ###
 ````
@@ -203,7 +203,24 @@ router.get("/users") { (respondWith: ([User]?, RequestError?) -> Void) in
 public typealias CodableArrayClosure<O: Codable> = (@escaping CodableArrayResultClosure<O>) -> Void
 
 /**
-The `IdentifierSimpleCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object which conforms to `Identifier` then responding with an object conforming to `Codable` or a `RequestError` in the form of a `CodableResultClosure`
+The `SimpleCodableClosure` is for use in cases where you'd want to perform a series of actions then respond with an object conforming to `Codable` or a `RequestError` in the form of a `CodableResultClosure`.
+
+### Usage Example: ###
+````
+public struct Status: Codable {
+  ...
+}
+
+router.get("/status") { (respondWith: (Status?, RequestError?) -> Void) in
+  ...
+  respondWith(status, nil)
+}
+````
+*/
+public typealias SimpleCodableClosure<O: Codable> = (@escaping CodableResultClosure<O>) -> Void
+
+/**
+The `IdentifierSimpleCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object which conforms to `Identifier` then respond with an object conforming to `Codable` or a `RequestError` in the form of a `CodableResultClosure`
  
 ### Usage Example: ###
 ````

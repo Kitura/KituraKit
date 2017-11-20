@@ -15,7 +15,6 @@
  **/
 
 import Foundation
-import CircuitBreaker
 
 /// Object containing everything needed to build HTTP requests and execute them
 public class RestRequest {

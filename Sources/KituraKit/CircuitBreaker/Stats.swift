@@ -15,7 +15,6 @@
 **/
 
 import Foundation
-import LoggerAPI
 
 public class Stats {
   internal(set) public var timeouts: Int = 0

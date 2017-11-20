@@ -40,16 +40,16 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
     /// Creates an error representing the given error code.
     public init(rawValue: Int) {
         self.rawValue = rawValue
-        self.reason = RequestError.reason(forCode: rawValue)
+        self.reason = "error_\(rawValue)"
     }
 
-    /// Creates an error representing a HTTP status code
-    /// - Parameter httpCode: a standard HTTP status code
-    public init(httpCode: Int) {
-        self.init(rawValue: httpCode)
+    /// Creates an error representing the given error code and reason string.
+    public init(rawValue: Int, reason: String) {
+        self.rawValue = rawValue
+        self.reason = reason
     }
 
-    // MARK: Accessing information about the error type
+    // MARK: Accessing information about the error.
 
     /// An error code representing the type of error that has occurred.
     /// The range of error codes from 100 up to 599 are reserved for HTTP status codes.
@@ -58,14 +58,6 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
 
     /// A human-readable description of the error code.
     public let reason: String
-
-    /// The HTTP status code for the error.
-    /// This value should be a valid HTTP status code if inside the range 100 to 599,
-    /// however, it may take a value outside that range when representing other types
-    /// of error.
-    public var httpCode: Int {
-        return rawValue
-    }
 
     // MARK: Comparing RequestErrors
 
@@ -76,23 +68,44 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
 
     /// Indicates whether two URLs are the same.
     public static func ==(lhs: RequestError, rhs: RequestError) -> Bool {
-        return lhs.rawValue == rhs.rawValue
+        return (lhs.rawValue == rhs.rawValue && lhs.reason == rhs.reason)
     }
 
     // MARK: Describing a RequestError
 
-    /// A textual description of the error containing the error code and reason.
+    /// A textual description of the RequestError instance containing the error code and reason.
     public var description: String {
         return "\(rawValue) : \(reason)"
     }
 
-    /// The computed hash value for the error.
+    /// The computed hash value for the RequestError instance.
     public var hashValue: Int {
+        let str = reason + String(rawValue)
+        return str.hashValue
+    }
+}
+
+/**
+ Extends `RequestError` to provide HTTP specific error code and reason values.
+ */
+public extension RequestError {
+
+    /// The HTTP status code for the error.
+    /// This value should be a valid HTTP status code if inside the range 100 to 599,
+    /// however, it may take a value outside that range when representing other types
+    /// of error.
+    public var httpCode: Int {
         return rawValue
     }
 
-    // MARK: Accessing constants representing HTTP status codes
+    /// Creates an error representing a HTTP status code.
+    /// - Parameter httpCode: a standard HTTP status code
+    public init(httpCode: Int) {
+        self.rawValue = httpCode
+        self.reason = RequestError.reason(forHTTPCode: httpCode)
+    }
 
+    // MARK: Accessing constants representing HTTP status codes
     /// HTTP code 100 - Continue
     public static let `continue` = RequestError(httpCode: 100)
     /// HTTP code 101 - Switching Protocols
@@ -210,7 +223,7 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
     /// HTTP code 511 - Network Authentication Required
     public static let networkAuthenticationRequired = RequestError(httpCode: 511)
 
-    private static func reason(forCode code: Int) -> String {
+    private static func reason(forHTTPCode code: Int) -> String {
         switch code {
             case 100: return "Continue"
             case 101: return "Switching Protocols"
@@ -273,7 +286,6 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
             default: return "http_\(code)"
         }
     }
-
 }
 
 /**
