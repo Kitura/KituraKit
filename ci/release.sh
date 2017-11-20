@@ -18,7 +18,7 @@
 git remote rm origin
 git remote add origin https://SwiftDevOps:${GH_TOKEN}@github.com/IBM-Swift/KituraKit
 git fetch
-git checkout tempMaster
+git checkout master
 
 cd ci
 
@@ -29,7 +29,6 @@ update_git() {
 
 update_tag() {
   echo "Tagging version: v$1"
-  git tag -l
 #  git tag -a -m "Tagging version $1" "v$1"
 #  git push origin --tags
 }
@@ -82,8 +81,6 @@ if [ -f VERSION ]; then
     CURRENT_VERSION_STRING="$( git describe --abbrev=0 --tags )"
     NORMALIZED_CURRENT_VERSION_STRING="$( echo $CURRENT_VERSION_STRING | sed "s/[a-zA-Z]*\([0-9\.]*\)[a-z]*$/\1/" )"
     BASE_VERSION_STRING=`cat VERSION`
-
-    echo "----------------------   $BASE_VERSION_STRING    ----------------"
 
     SHOULD_INCREMENT_PATCH=$(should_increment_patch $NORMALIZED_CURRENT_VERSION_STRING $BASE_VERSION_STRING)
 
