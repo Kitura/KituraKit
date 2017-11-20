@@ -83,6 +83,8 @@ if [ -f VERSION ]; then
     NORMALIZED_CURRENT_VERSION_STRING="$( echo $CURRENT_VERSION_STRING | sed "s/[a-zA-Z]*\([0-9\.]*\)[a-z]*$/\1/" )"
     BASE_VERSION_STRING=`cat VERSION`
 
+    echo "----------------------   $BASE_VERSION_STRING    ----------------"
+
     SHOULD_INCREMENT_PATCH=$(should_increment_patch $NORMALIZED_CURRENT_VERSION_STRING $BASE_VERSION_STRING)
 
     # If git's current tag is greater than the file's version. Increment the patch by default.
