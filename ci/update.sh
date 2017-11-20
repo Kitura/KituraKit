@@ -91,11 +91,9 @@ sed -i '/import LoggerAPI/d' Stats.swift
 
 cd ../../../
 
-#Remove .travis.yml for now
-rm .travis.yml
-
 rm -rf swift-4.0-RELEASE-ubuntu14.04/
 rm -rf Package-Builder/
 git add -A
-git commit -m "Updating pod branch to latest version"
+NEW_VERSION='cat 'ci/VERSION'
+git commit -m "Updating pod branch to version: $NEW_VERSION"
 git push origin pod

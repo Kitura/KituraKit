@@ -29,16 +29,16 @@ update_git() {
 
 update_tag() {
   echo "Tagging version: v$1"
-  git tag -a -m "Tagging version $1" "v$1"
-  git push origin --tags
+#  git tag -a -m "Tagging version $1" "v$1"
+#  git push origin --tags
 }
 
 update_version_file() {
   echo "Updating Version file: v$1"
   echo $1 > VERSION
   git add VERSION
-  git commit -m "[skip ci] New release of KituraKit at $1"
-  git push origin master
+#  git commit -m "[skip ci] New release of KituraKit at $1"
+#  git push origin master
 }
 
 increment_patch () {
