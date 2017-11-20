@@ -94,6 +94,6 @@ cd ../../../
 rm -rf swift-4.0-RELEASE-ubuntu14.04/
 rm -rf Package-Builder/
 git add -A
-NEW_VERSION='cat 'ci/VERSION'
+NEW_VERSION='cat ci/VERSION'
 git commit -m "Updating pod branch to version: $NEW_VERSION"
 git push origin pod
