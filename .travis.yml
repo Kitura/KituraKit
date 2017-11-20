@@ -20,3 +20,12 @@ before_install:
 
 script:
   - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR
+
+jobs: 
+    include: 
+      - stage: Update
+        script: ci/update.sh
+        if: type = push AND branch = master AND platform = Linux
+      - stage: Release
+        script: ci/release.sh
+        if: type = push AND branch = master AND platform = Linux
