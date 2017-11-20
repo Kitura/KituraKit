@@ -89,8 +89,13 @@ cd ../CircuitBreaker
 sed -i '/import LoggerAPI/d' CircuitBreaker.swift
 sed -i '/import LoggerAPI/d' Stats.swift
 
-rm -rf ../../../swift-4.0-RELEASE-ubuntu14.04/
-rm -rf ../../../Package-Builder/
+cd ../../../
+
+#Remove .travis.yml for now
+rm .travis.yml
+
+rm -rf swift-4.0-RELEASE-ubuntu14.04/
+rm -rf Package-Builder/
 git add -A
 git commit -m "Updating pod branch to latest version"
 git push origin pod
