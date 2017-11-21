@@ -38,7 +38,7 @@ update_tag() {
   curl -u SwiftDevOps:${GH_TOKEN} --data '{"tag_name": "v$1",
                 "target_commitish": "master",
                 "name": "v$1",
-                "body": $LAST_COMMIT_MESSAGE,
+                "body": "$LAST_COMMIT_MESSAGE",
                 "draft": false,
                 "prerelease": false}' \
       https://api.github.com/repos/$OWNER/$REPOSITORY/releases
