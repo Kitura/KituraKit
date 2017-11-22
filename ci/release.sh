@@ -35,10 +35,10 @@ update_tag() {
   echo "Tagging version: v$1"
 
   ## Create New Tag / Release of latest code on master
-  curl -u SwiftDevOps:${GH_TOKEN} --data '{"tag_name": "v$1",
+  curl -u SwiftDevOps:${GH_TOKEN} --data '{"tag_name": "'"v$1"'",
                 "target_commitish": "master",
-                "name": "v$1",
-                "body": "$LAST_COMMIT_MESSAGE",
+                "name": "'"v$1"'",
+                "body": "'"$LAST_COMMIT_MESSAGE"'",
                 "draft": false,
                 "prerelease": false}' \
       https://api.github.com/repos/$OWNER/$REPOSITORY/releases
