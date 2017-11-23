@@ -88,6 +88,7 @@ sed -i '/import LoggerAPI/d' Stats.swift
 
 cd ../../../
 
+rm -rf swift-4.0-RELEASE-ubuntu14.04/
 rm -rf Package-Builder/
 git add -A
 NEW_VERSION='cat ci/VERSION'
