@@ -15,8 +15,6 @@
 # limitations under the License.
 ##
 
-# Install swift for SPM
-
 osName="linux"
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then osName="osx"; fi
 export osName
@@ -32,13 +30,13 @@ export UBUNTU_VERSION=`echo $version | awk -F. '{print $1"."$2}'`
 export UBUNTU_VERSION_NO_DOTS=`echo $version | awk -F. '{print $1$2}'`
 
 if [[ ${SWIFT_SNAPSHOT} =~ ^.*RELEASE.*$ ]]; then
-	SNAPSHOT_TYPE=$(echo "$SWIFT_SNAPSHOT" | tr '[:upper:]' '[:lower:]')
+        SNAPSHOT_TYPE=$(echo "$SWIFT_SNAPSHOT" | tr '[:upper:]' '[:lower:]')
 elif [[ ${SWIFT_SNAPSHOT} =~ ^swift-.*-DEVELOPMENT.*$ ]]; then
   SNAPSHOT_TYPE=${SWIFT_SNAPSHOT%-DEVELOPMENT*}-branch
 elif [[ ${SWIFT_SNAPSHOT} =~ ^.*DEVELOPMENT.*$ ]]; then
-	SNAPSHOT_TYPE=development
+        SNAPSHOT_TYPE=development
 else
-	SNAPSHOT_TYPE="$(echo "$SWIFT_SNAPSHOT" | tr '[:upper:]' '[:lower:]')-release"
+        SNAPSHOT_TYPE="$(echo "$SWIFT_SNAPSHOT" | tr '[:upper:]' '[:lower:]')-release"
   SWIFT_SNAPSHOT="${SWIFT_SNAPSHOT}-RELEASE"
 fi
 
@@ -49,7 +47,6 @@ wget https://swift.org/builds/$SNAPSHOT_TYPE/$UBUNTU_VERSION_NO_DOTS/$SWIFT_SNAP
 tar xzf $SWIFT_SNAPSHOT-$UBUNTU_VERSION.tar.gz
 export PATH=$projectFolder/$SWIFT_SNAPSHOT-$UBUNTU_VERSION/usr/bin:$PATH
 rm $SWIFT_SNAPSHOT-$UBUNTU_VERSION.tar.gz
-
 
 # Actions after Swift installation
 
