@@ -51,7 +51,7 @@ rm $SWIFT_SNAPSHOT-$UBUNTU_VERSION.tar.gz
 # Actions after Swift installation
 
 git remote rm origin
-git remote add origin https://SwiftDevOps:${GH_TOKEN}@github.com/IBM-Swift/KituraKit
+git remote add origin https://SwiftDevOps:${GITHUB_TOKEN}@github.com/IBM-Swift/KituraKit
 git fetch
 git checkout pod
 git pull origin master 
