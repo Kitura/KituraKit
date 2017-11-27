@@ -20,7 +20,7 @@ REPOSITORY=KituraKit
 LAST_COMMIT_MESSAGE="$( git log -1 --pretty=%B )"
 
 git remote rm origin
-git remote add origin https://SwiftDevOps:${GH_TOKEN}@github.com/IBM-Swift/KituraKit
+git remote add origin https://SwiftDevOps:${GITHUB_TOKEN}@github.com/IBM-Swift/KituraKit
 git fetch
 git checkout master
 
@@ -35,7 +35,7 @@ update_tag() {
   echo "Tagging version: v$1"
 
   ## Create New Tag / Release of latest code on master
-  curl -u SwiftDevOps:${GH_TOKEN} --data '{"tag_name": "'"v$1"'",
+  curl -u SwiftDevOps:${GITHUB_TOKEN} --data '{"tag_name": "'"v$1"'",
                 "target_commitish": "master",
                 "name": "'"v$1"'",
                 "body": "'"$LAST_COMMIT_MESSAGE"'",
