@@ -39,6 +39,8 @@ pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch =
 
 ### Examples
 
+To run through a FoodTracker tutorial which covers various components of Kitura, including KituraKit, [click here](https://github.com/IBM/FoodTrackerBackend)
+
 To try out the sample iOS project for yourself, making use of KituraKit, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit).
 
 ## Swift version
