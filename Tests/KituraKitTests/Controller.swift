@@ -100,6 +100,27 @@ public class Controller {
             self.userStore.removeAll()
             respondWith(nil)
         }
+
+        router.delete("/usersWithQueryParams") { (queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
+            self.userStore.forEach {
+                if $1.name == queryParams.name {
+                    self.userStore[$0] = nil
+                }
+            }
+            respondWith(nil)
+        }
+        
+        router.get("/usersWithQueryParams") { (queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.reduce([User]()) { acc, el in
+                var acc = acc
+                if el.value.name == queryParams.name {
+                    acc.append(el.value)
+                }
+                return acc
+            }
+            respondWith(users, nil)
+        }
+    
         // employees routes
         router.get("/employees", handler: getEmployees)
         router.get("/employees/:id", handler: getEmployee)

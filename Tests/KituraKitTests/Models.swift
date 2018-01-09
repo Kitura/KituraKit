@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import KituraContracts
 
 // Models/entities (application/use case specific)
 public struct User: Codable, Equatable {
@@ -54,16 +55,22 @@ public struct Employee: Codable, Equatable {
     }
 }
 
+public struct UserQuery: QueryParams {
+    let name: String
+}
+
 let initialStore = [
     "1": User(id: 1, name: "Mike"),
     "2": User(id: 2, name: "Chris"),
     "3": User(id: 3, name: "Ricardo"),
-    "4": User(id: 4, name: "Aaron")
+    "4": User(id: 4, name: "Aaron"),
+    "5": User(id: 5, name: "Mike")
 ]
 
 let initialStoreEmployee = [
     "1": Employee(id: "1", name: "Mike"),
     "2": Employee(id: "2", name: "Chris"),
     "3": Employee(id: "3", name: "Ricardo"),
-    "4": Employee(id: "4", name: "Aaron")
+    "4": Employee(id: "4", name: "Aaron"),
+    "5": Employee(id: "5", name: "Mike")
 ]

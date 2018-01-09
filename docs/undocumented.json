@@ -1,6 +1,12 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/AaronLiberatore/Documents/KituraKit/Sources/KituraKit/Client.swift",
+      "line": 39,
+      "symbol": "KituraKit.init(baseURL:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
   ],
-  "source_directory": "/Users/shihab.mehboob1@ibm.com/Documents/KituraKit/KituraKit"
+  "source_directory": "/Users/AaronLiberatore/Documents/KituraKit"
 }

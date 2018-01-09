@@ -51,18 +51,17 @@ class MainTests: XCTestCase {
         ]
     }
 
-    private let controller = Controller(userStore: initialStore)
-
     private let client = KituraKit.default
 
     override func setUp() {
         super.setUp()
 
         continueAfterFailure = false
-
+        
+        let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
-
+        
     }
 
     override func tearDown() {
@@ -79,7 +78,7 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
             }
-            XCTAssertEqual(users.count, 4)
+            XCTAssertEqual(users.count, 5)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
@@ -285,6 +284,39 @@ class MainTests: XCTestCase {
                 return
             }
 
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testClientGetByQuery() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        let myQuery = UserQuery(name: "Mike")
+        
+        // Invoke GET operation on library
+        client.get("/usersWithQueryParams", query: myQuery) { (users: [User]?, error: RequestError?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(users.count, 2)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientDeleteByQuery() {
+        let expectation1 = expectation(description: "No error is received from the server")
+        
+        let myQuery = UserQuery(name: "Mike")
+
+        client.delete("/usersWithQueryParams", query: myQuery) { error in
+            guard error == nil else {
+                XCTFail("Failed to delete users! Error: \(String(describing: error))")
+                return
+            }
+            
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
