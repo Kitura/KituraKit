@@ -294,18 +294,8 @@ extension RestRequest {
     fileprivate func handle<O: Codable>(_ respondWith: @escaping (O?, RequestError?) -> (), queryItems: [URLQueryItem]? = nil, onSuccess: ((Data) -> ())? = nil, onFailure: ((Error) -> ())? = nil) {
         self.responseData(queryItems: queryItems) { response in
             switch response.result {
-            case .success(let data):
-                if let onSuccess = onSuccess {
-                    onSuccess(data)
-                } else {
-                    self.defaultCodableHandler(data, respondWith: respondWith)
-                }
-            case .failure(let error):
-                if let onFailure = onFailure {
-                    onFailure(error)
-                } else {
-                    self.defaultErrorHandler(error, respondWith: respondWith)
-                }
+            case .success(let data) : onSuccess?(data) ?? self.defaultCodableHandler(data, respondWith: respondWith)
+            case .failure(let error): onFailure?(error) ?? self.defaultErrorHandler(error, respondWith: respondWith)
             }
         }
     }
@@ -335,7 +325,7 @@ extension RestRequest {
         }
         respondWith(items, nil)
     }
-    
+
     /// Default failure response handler for CodableArrayResultClosures and CodableResultClosures
     private func defaultErrorHandler<T: Codable>(_ error: Error, respondWith: (T?, RequestError?) -> ()) {
         if let restError = error as? RestError {
