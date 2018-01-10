@@ -38,11 +38,11 @@ public struct UserOptional: Codable, Equatable {
         self.id = id
         self.name = name
     }
-    
+
     public static func ==(lhs: UserOptional, rhs: UserOptional) -> Bool {
         return (lhs.id == rhs.id) && (lhs.name == rhs.name)
     }
-    
+
 }
 
 public struct Employee: Codable, Equatable {    
@@ -67,3 +67,10 @@ let initialStoreEmployee = [
     "3": Employee(id: "3", name: "Ricardo"),
     "4": Employee(id: "4", name: "Aaron")
 ]
+
+public struct Status: Codable {
+    let description: String
+    init(_ desc: String) {
+        description = desc
+    }
+}

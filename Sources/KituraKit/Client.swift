@@ -24,22 +24,22 @@ public class KituraKit {
 
     /// Default URL used for setting up the routes when no URL is provided in the initializer.
     public static var defaultBaseURL = URL(string: "http://localhost:8080")!
-    
+
     /// Default route used for setting up the paths based on the URL provided in the initializer.
     public static var `default`: KituraKit {
         get {
             return KituraKit(baseURL: defaultBaseURL)
         }
     }
-    
+
     /// Customisable URL used for setting up the routes when initializing a new KituraKit instance.
     public let baseURL: URL
-    
+
     // Initializers
     public init(baseURL: URL) {
         self.baseURL = baseURL
     }
-    
+
     /// An initializer to set up a custom KituraKit instance on a specified route.
     /// - Parameter baseURL: The custom route KituraKit points to during REST requests.
     /// - Returns: nil if invalid URL. Otherwise return a KituraKit object
@@ -52,28 +52,32 @@ public class KituraKit {
         }
         self.init(baseURL: url)
     }
-    
+
     // HTTP verb/action methods (basic type safe routing)
-    
+
     /// Retrieves data from a designated route.
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.get("/") { (returnedArray: [O]?, error: Error?) -> Void in
+    /// client.get("/") { (returnedArray: [User]?, error: Error?) -> Void in
     ///    print(returnedArray)
     /// }
     /// ````
     /// * This declaration of get retrieves all items. There is another declaration for specific item retrieval.
     ///
     /// - Parameter route: The custom route KituraKit points to during REST requests.
-    public func get<O: Codable>(_ route: String, respondWith: @escaping CodableArrayResultClosure<O>) {
+    public func get<O: Codable>(_ route: String, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         let request = RestRequest(url: url.absoluteString)
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                guard let items: [O] = try? JSONDecoder().decode([O].self, from: data) else {
+                guard let items: O = try? JSONDecoder().decode(O.self, from: data) else {
                     respondWith(nil, RequestError.clientDeserializationError)
                     return
                 }
@@ -88,13 +92,18 @@ public class KituraKit {
             }
         }
     }
-    
+
     /// Retrieves data from a designated route with an Identifier.
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.get("/", identifier: Id) { (returnedItem: O?, error: Error?) -> Void in
+    /// let idOfUserToRetrieve: Int = ...
+    /// client.get("/", identifier: idOfUserToRetrieve) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -122,13 +131,18 @@ public class KituraKit {
             }
         }
     }
-    
+
     /// Sends data to a designated route.
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.post("/", data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+    /// let userToSend: User = ...
+    /// client.post("/", data: userToSend) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -139,7 +153,7 @@ public class KituraKit {
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
         request.messageBody = encoded
-        
+
         request.responseData { response in
             switch response.result {
             case .success(let data):
@@ -158,13 +172,18 @@ public class KituraKit {
             }
         }
     }
-    
+
     /// Sends data to a designated route, allowing for the route to respond with an additional Identifier.
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.post("/", data: dataToSend) { (id: Id?, returnedItem: O?, error: Error?) -> Void in
+    /// let userToSend: User = ...
+    /// client.post("/", data: userToSend) { (id: Int?, returnedItem: User?, error: Error?) -> Void in
     ///     print("\(id): \(returnedItem)")
     /// }
     /// ````
@@ -175,7 +194,7 @@ public class KituraKit {
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
         request.messageBody = encoded
-        
+
         request.responseData { response in
             switch response.result {
             case .success(let data):
@@ -202,13 +221,19 @@ public class KituraKit {
             }
         }
     }
-    
+
     /// Updates data for a designated route using an Identifier.
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+    /// let idOfUserToUpdate: Int = ...
+    /// let userToSend: User = ...
+    /// client.put("/", identifier: idOfUserToUpdate, data: userToSend) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -221,7 +246,7 @@ public class KituraKit {
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url.absoluteString)
         request.messageBody = encoded
-        
+
         request.responseData { response in
             switch response.result {
             case .success(let data):
@@ -245,8 +270,21 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     let name: String
+    ///     let address: String
+    ///     ...
+    /// }
+    /// struct OptionalUser: Codable {
+    ///     let name: String?
+    ///     let address: String?
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.patch("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+    /// let idOfUserToUpdate: Int = ...
+    /// let userUpdates = OptionalUser(name: "New Name", address: nil, ...)
+    /// client.patch("/", identifier: idOfUserToUpdate, data: userUpdates) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -258,7 +296,7 @@ public class KituraKit {
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url.absoluteString)
         request.messageBody = encoded
-        
+
         request.responseData { response in
             switch response.result {
             case .success(let data):
@@ -277,7 +315,7 @@ public class KituraKit {
             }
         }
     }
-    
+
     /// Deletes data at a designated route.
     ///
     /// ### Usage Example: ###
@@ -306,7 +344,7 @@ public class KituraKit {
             }
         }
     }
-    
+
     /// Deletes data at a designated route using an Identifier.
     ///
     /// ### Usage Example: ###
