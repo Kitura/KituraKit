@@ -59,15 +59,19 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.get("/") { (returnedArray: [O]?, error: Error?) -> Void in
+    /// client.get("/") { (returnedArray: [User]?, error: Error?) -> Void in
     ///    print(returnedArray)
     /// }
     /// ````
     /// * This declaration of get retrieves all items. There is another declaration for specific item retrieval.
     ///
     /// - Parameter route: The custom route KituraKit points to during REST requests.
-    public func get<O: Codable>(_ route: String, respondWith: @escaping CodableArrayResultClosure<O>) {
+    public func get<O: Codable>(_ route: String, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         RestRequest(url: url.absoluteString)
           .handle(respondWith)
@@ -77,8 +81,13 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.get("/", identifier: Id) { (returnedItem: O?, error: Error?) -> Void in
+    /// let idOfUserToRetrieve: Int = ...
+    /// client.get("/", identifier: idOfUserToRetrieve) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -95,8 +104,13 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.post("/", data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+    /// let userToSend: User = ...
+    /// client.post("/", data: userToSend) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -114,8 +128,13 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.post("/", data: dataToSend) { (id: Id?, returnedItem: O?, error: Error?) -> Void in
+    /// let userToSend: User = ...
+    /// client.post("/", data: userToSend) { (id: Int?, returnedItem: User?, error: Error?) -> Void in
     ///     print("\(id): \(returnedItem)")
     /// }
     /// ````
@@ -158,8 +177,14 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+    /// let idOfUserToUpdate: Int = ...
+    /// let userToSend: User = ...
+    /// client.put("/", identifier: idOfUserToUpdate, data: userToSend) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -179,8 +204,21 @@ public class KituraKit {
     ///
     /// ### Usage Example: ###
     /// ````
+    /// struct User: Codable {
+    ///     let name: String
+    ///     let address: String
+    ///     ...
+    /// }
+    /// struct OptionalUser: Codable {
+    ///     let name: String?
+    ///     let address: String?
+    ///     ...
+    /// }
+    ///
     /// let client = KituraKit.default
-    /// client.patch("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -> Void in
+    /// let idOfUserToUpdate: Int = ...
+    /// let userUpdates = OptionalUser(name: "New Name", address: nil, ...)
+    /// client.patch("/", identifier: idOfUserToUpdate, data: userUpdates) { (returnedItem: User?, error: Error?) -> Void in
     ///     print(returnedItem)
     /// }
     /// ````
@@ -288,6 +326,7 @@ public class KituraKit {
     }
 }
 
+/// RestRequest Codable Handler Extension
 extension RestRequest {
 
     /// Helper method to handle the given request for CodableArrayResultClosures and CodableResultClosures
