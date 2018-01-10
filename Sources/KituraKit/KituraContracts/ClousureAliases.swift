@@ -69,7 +69,7 @@ public typealias IdentifierCodableClosure<Id: Identifier, I: Codable, O: Codable
 
 /**
 The `CodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier` then respond with an object which conforms to `Codable`, which is of the same type as the object passed as a parameter, or responding with a `RequestError` in the form of a `CodableResultClosure`
- 
+
 ### Usage Example: ###
 ````
 public struct User: Codable {
@@ -98,7 +98,7 @@ public typealias CodableClosure<I: Codable, O: Codable> = (I, @escaping CodableR
 
 /**
 The `CodableIdentifierClosure` is for use in cases where you'd want to perform a series of actions utilising an object conforming to `Identifier`, then respond with an object which conforms to `Codable`, and/or an object conforming to `Identifier` or responding with a `RequestError` in the form of a `IdentifierCodableResultClosure`
- 
+
 ### Usage Example: ###
 ````
 public struct User: Codable {
@@ -152,7 +152,7 @@ public typealias NonCodableClosure = (@escaping ResultClosure) -> Void
 
 /**
 The `IdentifierNonCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object which conforms to `Identifier` then respond with a `RequestError` in the form of a `ResultClosure`
- 
+
 ### Usage Example: ###
 ````
 router.delete("/users") { (id: Int, respondWith: (RequestError?) -> Void) in
@@ -178,7 +178,7 @@ public typealias IdentifierNonCodableClosure<Id: Identifier> = (Id, @escaping Re
 
 /**
 The `CodableArrayClosure` is for use in cases where you'd want to perform a series of actions then respond with an array of objects conforming to `Codable` or a `RequestError` in the form of a `CodableArrayResultClosure`
- 
+
 ### Usage Example: ###
 ````
 router.get("/users") { (respondWith: ([User]?, RequestError?) -> Void) in
@@ -221,7 +221,7 @@ public typealias SimpleCodableClosure<O: Codable> = (@escaping CodableResultClos
 
 /**
 The `IdentifierSimpleCodableClosure` is for use in cases where you'd want to perform a series of actions utilising an object which conforms to `Identifier` then respond with an object conforming to `Codable` or a `RequestError` in the form of a `CodableResultClosure`
- 
+
 ### Usage Example: ###
 ````
 public struct User: Codable {

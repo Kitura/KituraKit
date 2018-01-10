@@ -289,6 +289,11 @@ public extension RequestError {
 }
 
 /**
+ An identifier for a query parameter object
+ */
+public protocol QueryParams: Codable {}
+
+/**
  An error representing a failure to create an `Identifier`.
  */
 public enum IdentifierError: Error {
