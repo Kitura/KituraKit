@@ -43,7 +43,7 @@ public class Controller {
             let users = self.userStore.map({ $0.value })
             respondWith(users, nil)
         }
-        
+
         router.get("/users") { (id: Int, respondWith: (User?, RequestError?) -> Void) in
             guard let user = self.userStore[id.value] else {
                 respondWith(nil, .notFound)
@@ -51,7 +51,7 @@ public class Controller {
             }
             respondWith(user, nil)
         }
-        
+
         router.post("/users") { (user: User?, respondWith: (User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
@@ -60,7 +60,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user, nil)
         }
-        
+
         router.post("/usersid") { (user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, nil, .badRequest)
@@ -69,7 +69,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user.id, user, nil)
         }
-        
+
         router.put("/users") { (id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)
@@ -87,7 +87,7 @@ public class Controller {
                 respondWith(exisitingUser, nil)
             }
         }
-        
+
         router.delete("/users") { (id: Int, respondWith: (RequestError?) -> Void) in
             guard let _ = self.userStore.removeValue(forKey: id.value) else {
                 respondWith(.notFound)
@@ -95,7 +95,7 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.delete("/users") { (respondWith: (RequestError?) -> Void) in
             self.userStore.removeAll()
             respondWith(nil)
@@ -108,6 +108,10 @@ public class Controller {
         router.patch("/employees/:id", handler: updateEmployee)
         router.delete("/employees/:id", handler: deleteEmployee)
         router.delete("/employees", handler: deleteAllEmployees)
+        // health route
+        router.get("/health") { (respondWith: (Status?, RequestError?) -> Void) in
+            respondWith(Status("GOOD"), nil)
+        }
     }
 
 
@@ -134,7 +138,7 @@ public class Controller {
         let employees = employeeStore.map { $1 }
         try response.status(.OK).send(data: encoder.encode(employees)).end()
     }
-    
+
     public func getEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
@@ -143,17 +147,17 @@ public class Controller {
             response.status(.badRequest)
             return
         }
-        
+
         //print("employeeStore - \(employeeStore)")
-        
+
         guard let employee = employeeStore[id] else {
             response.status(.badRequest)
             return
         }
-        
+
         try response.status(.OK).send(data: encoder.encode(employee))
     }
-    
+
     public func addEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
@@ -162,9 +166,9 @@ public class Controller {
             var data = Data()
             _ = try request.read(into: &data)
             let employee = try decoder.decode(Employee.self, from: data)
-            
+
             let employees = employeeStore.map({ $0.value })
-            
+
             for current in employees {
                 if current == employee {
                     response.status(.conflict)
@@ -172,13 +176,13 @@ public class Controller {
                 }
             }
             employeeStore[String(employee.id)] = employee
-            
+
             response.status(.OK).send(data: data)
         } catch {
             response.status(.unprocessableEntity)
         }
     }
-    
+
     public func updateEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
@@ -197,12 +201,12 @@ public class Controller {
             response.status(.unprocessableEntity)
         }
     }
-    
+
     public func deleteAllEmployees(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         employeeStore = [:]
         try response.status(.OK).end()
     }
-    
+
     public func deleteEmployee(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
@@ -211,11 +215,11 @@ public class Controller {
             response.status(.badRequest)
             return
         }
-        
+
         guard let _ = employeeStore[id] else {
             response.status(.notFound)
             return
-        }        
+        }
         employeeStore.removeValue(forKey: id)
         response.status(.OK)
     }

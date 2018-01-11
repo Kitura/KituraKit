@@ -33,6 +33,7 @@ class MainTests: XCTestCase {
         return [
             ("testClientGet", testClientGet),
             ("testClientGetErrorPath", testClientGetErrorPath),
+            ("testClientGetSingleNoId", testClientGetSingleNoId),
             ("testClientGetSingle", testClientGetSingle),
             ("testClientGetSingleErrorPath", testClientGetSingleErrorPath),
             ("testClientPost", testClientPost),
@@ -96,6 +97,21 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientGetSingleNoId() {
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+
+        // Invoke GET operation on library
+        client.get("/health") { (status: Status?, error: RequestError?) -> Void in
+            guard let status = status else {
+                XCTFail("Failed to get status! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(status.description, "GOOD")
+            expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
