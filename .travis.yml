@@ -22,7 +22,7 @@ script:
 jobs:
     include:
       - stage: Update
-        if: branch = master AND type = push AND platform = Linux
+        if: branch = master
         script: ci/update.sh
         
       - stage: Release
