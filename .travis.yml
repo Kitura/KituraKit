@@ -7,10 +7,11 @@ branches:
     - develop
     - feature
 
-os:
-- linux
-- osx
-dist: trusty
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
 
 before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
