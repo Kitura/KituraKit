@@ -5,7 +5,7 @@ branches:
   only:
     - master
     - develop
-    - /^issue.*$/
+    - feature
 
 os:
 - linux
@@ -17,13 +17,15 @@ before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
 
 script:
-  - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR
+  - echo "DONE"
 
 jobs:
     include:
       - stage: Update
+        if: type = push AND branch = master
         script: ci/update.sh
-        if: type = push AND branch = master AND platform = Linux
+        
       - stage: Release
+        if: type = push AND branch = master
         script: ci/release.sh
-        if: type = push AND branch = master AND platform = Linux
+        
