@@ -1,6 +1,12 @@
 # Travis CI build file for KituraKit.
 
 sudo: required
+branches:
+  only:
+    - master
+    - develop
+    - feature
+
 os:
 - linux
 - osx
