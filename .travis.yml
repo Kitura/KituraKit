@@ -17,7 +17,7 @@ before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
 
 script:
-  - echo "Done"
+  - echo "Done1"
 
 jobs:
     include:
