@@ -26,6 +26,6 @@ jobs:
         script: ci/update.sh
         
       - stage: Release
-        if: branch = master
+        if: type = push AND branch = master
         script: ci/release.sh
         
