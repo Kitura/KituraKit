@@ -23,7 +23,7 @@ jobs:
     include:
       - stage: Update
         script: ci/update.sh
-        if: type = push AND branch = master AND platform = Linux
+        if: type = push AND branch = master
       - stage: Release
         script: ci/release.sh
-        if: type = push AND branch = master AND platform = Linux
+        if: type = push AND branch = master
