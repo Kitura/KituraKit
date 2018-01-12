@@ -249,9 +249,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC3getySS_ySayxGSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF"></a>
+                    <a name="/s:9KituraKitAAC3getySS_yxSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF"></a>
                     <a name="//apple_ref/swift/Method/get(_:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC3getySS_ySayxGSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF">get(_:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC3getySS_yxSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF">get(_:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -261,8 +261,12 @@
                       <div class="abstract">
                         <p>Retrieves data from a designated route.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
-<pre class="highlight plaintext"><code>let client = KituraKit.default
-client.get("/") { (returnedArray: [O]?, error: Error?) -&gt; Void in
+<pre class="highlight plaintext"><code>struct User: Codable {
+    ...
+}
+
+let client = KituraKit.default
+client.get("/") { (returnedArray: [User]?, error: Error?) -&gt; Void in
    print(returnedArray)
 }
 </code></pre>
@@ -276,7 +280,7 @@ client.get("/") { (returnedArray: [O]?, error: Error?) -&gt; Void in
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="k">get</span><span class="o">&lt;</span><span class="kt">O</span><span class="p">:</span> <span class="kt">Codable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">route</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">respondWith</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">CodableArrayResultClosure</span><span class="o">&lt;</span><span class="kt">O</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="k">get</span><span class="o">&lt;</span><span class="kt">O</span><span class="p">:</span> <span class="kt">Codable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">route</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">respondWith</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">CodableResultClosure</span><span class="o">&lt;</span><span class="kt">O</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -317,8 +321,13 @@ client.get("/") { (returnedArray: [O]?, error: Error?) -&gt; Void in
                       <div class="abstract">
                         <p>Retrieves data from a designated route with an Identifier.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
-<pre class="highlight plaintext"><code>let client = KituraKit.default
-client.get("/", identifier: Id) { (returnedItem: O?, error: Error?) -&gt; Void in
+<pre class="highlight plaintext"><code>struct User: Codable {
+    ...
+}
+
+let client = KituraKit.default
+let idOfUserToRetrieve: Int = ...
+client.get("/", identifier: idOfUserToRetrieve) { (returnedItem: User?, error: Error?) -&gt; Void in
     print(returnedItem)
 }
 </code></pre>
@@ -385,8 +394,13 @@ client.get("/", identifier: Id) { (returnedItem: O?, error: Error?) -&gt; Void i
                       <div class="abstract">
                         <p>Sends data to a designated route.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
-<pre class="highlight plaintext"><code>let client = KituraKit.default
-client.post("/", data: dataToSend) { (returnedItem: O?, error: Error?) -&gt; Void in
+<pre class="highlight plaintext"><code>struct User: Codable {
+    ...
+}
+
+let client = KituraKit.default
+let userToSend: User = ...
+client.post("/", data: userToSend) { (returnedItem: User?, error: Error?) -&gt; Void in
     print(returnedItem)
 }
 </code></pre>
@@ -449,8 +463,13 @@ client.post("/", data: dataToSend) { (returnedItem: O?, error: Error?) -&gt; Voi
                       <div class="abstract">
                         <p>Sends data to a designated route, allowing for the route to respond with an additional Identifier.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
-<pre class="highlight plaintext"><code>let client = KituraKit.default
-client.post("/", data: dataToSend) { (id: Id?, returnedItem: O?, error: Error?) -&gt; Void in
+<pre class="highlight plaintext"><code>struct User: Codable {
+    ...
+}
+
+let client = KituraKit.default
+let userToSend: User = ...
+client.post("/", data: userToSend) { (id: Int?, returnedItem: User?, error: Error?) -&gt; Void in
     print("\(id): \(returnedItem)")
 }
 </code></pre>
@@ -513,8 +532,14 @@ client.post("/", data: dataToSend) { (id: Id?, returnedItem: O?, error: Error?) 
                       <div class="abstract">
                         <p>Updates data for a designated route using an Identifier.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
-<pre class="highlight plaintext"><code>let client = KituraKit.default
-client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -&gt; Void in
+<pre class="highlight plaintext"><code>struct User: Codable {
+    ...
+}
+
+let client = KituraKit.default
+let idOfUserToUpdate: Int = ...
+let userToSend: User = ...
+client.put("/", identifier: idOfUserToUpdate, data: userToSend) { (returnedItem: User?, error: Error?) -&gt; Void in
     print(returnedItem)
 }
 </code></pre>
@@ -593,8 +618,21 @@ client.put("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Er
                       <div class="abstract">
                         <p>Updates data for a designated route using an Identifier.</p>
 <h3 id='usage-example' class='heading'>Usage Example:</h3>
-<pre class="highlight plaintext"><code>let client = KituraKit.default
-client.patch("/", identifier: Id, data: dataToSend) { (returnedItem: O?, error: Error?) -&gt; Void in
+<pre class="highlight plaintext"><code>struct User: Codable {
+    let name: String
+    let address: String
+    ...
+}
+struct OptionalUser: Codable {
+    let name: String?
+    let address: String?
+    ...
+}
+
+let client = KituraKit.default
+let idOfUserToUpdate: Int = ...
+let userUpdates = OptionalUser(name: "New Name", address: nil, ...)
+client.patch("/", identifier: idOfUserToUpdate, data: userUpdates) { (returnedItem: User?, error: Error?) -&gt; Void in
     print(returnedItem)
 }
 </code></pre>
@@ -923,7 +961,7 @@ client.delete("/users", query: myQuery) { error in
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-01-09)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-01-12)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.4</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

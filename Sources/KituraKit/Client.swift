@@ -366,7 +366,7 @@ extension RestRequest {
     }
 
     /// Default failure response handler for CodableArrayResultClosures and CodableResultClosures
-    private func defaultErrorHandler<T: Codable>(_ error: Error, respondWith: (T?, RequestError?) -> ()) {
+    private func defaultErrorHandler<O: Codable>(_ error: Error, respondWith: (O?, RequestError?) -> ()) {
         if let restError = error as? RestError {
             respondWith(nil, RequestError(restError: restError))
         } else {
