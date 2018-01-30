@@ -43,7 +43,7 @@ public class KituraKit {
     /// An initializer to set up a custom KituraKit instance on a specified route.
     /// - Parameter baseURL: The custom route KituraKit points to during REST requests.
     /// - Returns: nil if invalid URL. Otherwise return a KituraKit object
-    public convenience init?(baseURL: String) {
+  public convenience init?(baseURL: String) {
         //if necessary, trim extra back slash
         let noSlashUrl: String = baseURL.last == "/" ? String(baseURL.dropLast()) : baseURL
         let checkedUrl = checkMistypedProtocol(inputURL: noSlashUrl)
