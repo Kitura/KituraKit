@@ -7,21 +7,21 @@
 
 [Kitura](http://kitura.io) is a lightweight web framework for creating complex web routes for web applications.
 
-KituraKit allows developers to use the Swift 4 Codable protocol in their front and back end applications and use the same code on the front and backend. 
+KituraKit allows developers to use the Swift 4 Codable protocol in their front and back end applications and use the same code on the front and backend.
 
 ## Usage
 
-### Cocoapod Installation 
+### Cocoapod Installation
 
 #### Using an existing Podfile
 
 1. Open your Podfile with your preferred text editor
 
-2. Find the list of your currently installed pods and add to that list the following: 
+2. Find the list of your currently installed pods and add to that list the following:
 ```
 pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch => 'pod'
-```  
-3. Run `pod install` to install KituraKit. 
+```
+3. Run `pod install` to install KituraKit.
 
 #### Creating a new Podfile
 
@@ -32,7 +32,7 @@ pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch =
 3. Open the Podfile with your preferred text editer and under the "# Pods for 'your_project_name'>" line add:
 ```
 pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch => 'pod'
-```  
+```
 4. Install KituraKit by running the command: `pod install`
 
 5. As well as installing KituraKit the `pod install` also creates an Xcode workspace which contains all of your installed pods. So you'll need to open the .xcworkspace (not .xcodeproj) to have access to those pods. This is the default behaviour of [Cocoapods](https://guides.cocoapods.org/using/getting-started.html).
