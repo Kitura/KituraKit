@@ -15,37 +15,50 @@
  **/
 
 import Foundation
+import LoggerAPI
 
 /// Object containing everything needed to build HTTP requests and execute them
-public class RestRequest {
+public class RestRequest: NSObject  {
+
+    // Check if there exists a self-signed certificate and whether it's a secure connection
+    private let isSecure: Bool
+    private let isSelfSigned: Bool
 
     /// A default `URLSession` instance
-    private let session = URLSession(configuration: URLSessionConfiguration.default)
+    private var session: URLSession {
+        var session = URLSession(configuration: URLSessionConfiguration.default)
+        if isSecure && isSelfSigned {
+            let config = URLSessionConfiguration.default
+            config.requestCachePolicy = .reloadIgnoringLocalCacheData
+            session = URLSession(configuration: config, delegate: self, delegateQueue: .main)
+        }
+        return session
+    }
 
     // The HTTP Request
     private var request: URLRequest
 
     /// `CircuitBreaker` instance for this `RestRequest`
-    public var circuitBreaker: CircuitBreaker<(Data?, HTTPURLResponse?, Error?) -> Void, Void, String>?
+    public var circuitBreaker: CircuitBreaker<(Data?, HTTPURLResponse?, Error?) -> Void, String>?
 
     /// Parameters for a `CircuitBreaker` instance.
     /// When set, a new circuitBreaker instance is created
     public var circuitParameters: CircuitParameters<String>? = nil {
         didSet {
             if let params = circuitParameters {
-                circuitBreaker = CircuitBreaker(timeout: params.timeout,
+                circuitBreaker = CircuitBreaker(name: params.name,
+                                                timeout: params.timeout,
                                                 resetTimeout: params.resetTimeout,
                                                 maxFailures: params.maxFailures,
                                                 rollingWindow: params.rollingWindow,
                                                 bulkhead: params.bulkhead,
-                                                contextCommand: handleInvocation,
+                                                command: handleInvocation,
                                                 fallback: params.fallback)
             }
         }
     }
 
     // MARK: HTTP Request Paramters
-
     /// URL `String` used to store a url containing replacable template values
     private var urlTemplate: String?
 
@@ -159,7 +172,10 @@ public class RestRequest {
     ///
     /// - Parameters:
     ///   - url: URL string to use for network request
-    public init(method: HTTPMethod = .get, url: String) {
+    public init(method: HTTPMethod = .get, url: String, containsSelfSignedCert: Bool? = false) {
+
+        self.isSecure = url.contains("https")
+        self.isSelfSigned = containsSelfSignedCert ?? false
 
         // Instantiate basic mutable request
         let urlComponents = URLComponents(string: url) ?? URLComponents(string: "")!
@@ -168,6 +184,9 @@ public class RestRequest {
 
         // Set inital fields
         self.url = url
+
+        super.init()
+
         self.method = method
         self.acceptType = "application/json"
         self.contentType = "application/json"
@@ -179,7 +198,6 @@ public class RestRequest {
     }
 
     // MARK: Response methods
-
     /// Request response method that either invokes `CircuitBreaker` or executes the HTTP request
     ///
     /// - Parameter completionHandler: Callback used on completion of operation
@@ -298,7 +316,7 @@ public class RestRequest {
             // parse json object
             let result: Result<T>
             do {
-                let json = try JSON(data: data)
+                let json = try JSONWrapper(data: data)
                 let object: T
                 if let path = path {
                     switch path.count {
@@ -308,11 +326,64 @@ public class RestRequest {
                     case 3: object = try json.decode(at: path[0], path[1], path[2])
                     case 4: object = try json.decode(at: path[0], path[1], path[2], path[3])
                     case 5: object = try json.decode(at: path[0], path[1], path[2], path[3], path[4])
-                    default: throw JSON.Error.keyNotFound(key: "ExhaustedVariadicParameterEncoding")
+                    default: throw JSONWrapper.Error.keyNotFound(key: "ExhaustedVariadicParameterEncoding")
                     }
                 } else {
                     object = try json.decode()
                 }
+                result = .success(object)
+            } catch {
+                result = .failure(error)
+            }
+
+            // execute callback
+            let dataResponse = RestResponse(request: self.request, response: response, data: data, result: result)
+            completionHandler(dataResponse)
+        }
+    }
+
+    /// Request response method with the expected result of an array of type `T` specified
+    ///
+    /// - Parameters:
+    ///   - responseToError: Error callback closure in case of request failure
+    ///   - path: Array of Json keys leading to desired Json
+    ///   - templateParams: URL templating parameters used for substituion if possible
+    ///   - queryItems: array containing `URLQueryItem` objects that will be appended to the request's URL
+    ///   - completionHandler: Callback used on completion of operation
+    public func responseObject<T: Decodable>(
+        responseToError: ((HTTPURLResponse?, Data?) -> Error?)? = nil,
+        templateParams: [String: String]? = nil,
+        queryItems: [URLQueryItem]? = nil,
+        completionHandler: @escaping (RestResponse<T>) -> Void) {
+
+        if  let error = performSubstitutions(params: templateParams) {
+            let result = Result<T>.failure(error)
+            let dataResponse = RestResponse(request: request, response: nil, data: nil, result: result)
+            completionHandler(dataResponse)
+            return
+        }
+
+        response { data, response, error in
+
+            if let error = error ?? responseToError?(response, data) {
+                let result = Result<T>.failure(error)
+                let dataResponse = RestResponse(request: self.request, response: response, data: data, result: result)
+                completionHandler(dataResponse)
+                return
+            }
+
+            // ensure data is not nil
+            guard let data = data else {
+                let result = Result<T>.failure(RestError.noData)
+                let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
+                completionHandler(dataResponse)
+                return
+            }
+
+            // parse json object
+            let result: Result<T>
+            do {
+                let object = try JSONDecoder().decode(T.self, from: data)
                 result = .success(object)
             } catch {
                 result = .failure(error)
@@ -351,24 +422,24 @@ public class RestRequest {
         response { data, response, error in
 
             if let error = error {
-               let result = Result<[T]>.failure(error)
-               let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
+                let result = Result<[T]>.failure(error)
+                let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
                 completionHandler(dataResponse)
                 return
             }
 
             if let responseToError = responseToError,
-               let error = responseToError(response, data) {
-               let result = Result<[T]>.failure(error)
-               let dataResponse = RestResponse(request: self.request, response: response, data: data, result: result)
+                let error = responseToError(response, data) {
+                let result = Result<[T]>.failure(error)
+                let dataResponse = RestResponse(request: self.request, response: response, data: data, result: result)
                 completionHandler(dataResponse)
                 return
             }
 
             // ensure data is not nil
             guard let data = data else {
-                  let result = Result<[T]>.failure(RestError.noData)
-                  let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
+                let result = Result<[T]>.failure(RestError.noData)
+                let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
                 completionHandler(dataResponse)
                 return
             }
@@ -376,8 +447,8 @@ public class RestRequest {
             // parse json object
             let result: Result<[T]>
             do {
-                let json = try JSON(data: data)
-                var array: [JSON]
+                let json = try JSONWrapper(data: data)
+                var array: [JSONWrapper]
                 if let path = path {
                     switch path.count {
                     case 0: array = try json.getArray()
@@ -386,7 +457,7 @@ public class RestRequest {
                     case 3: array = try json.getArray(at: path[0], path[1], path[2])
                     case 4: array = try json.getArray(at: path[0], path[1], path[2], path[3])
                     case 5: array = try json.getArray(at: path[0], path[1], path[2], path[3], path[4])
-                    default: throw JSON.Error.keyNotFound(key: "ExhaustedVariadicParameterEncoding")
+                    default: throw JSONWrapper.Error.keyNotFound(key: "ExhaustedVariadicParameterEncoding")
                     }
                 } else {
                     array = try json.getArray()
@@ -428,8 +499,8 @@ public class RestRequest {
         response { data, response, error in
 
             if let error = error {
-               let result = Result<String>.failure(error)
-               let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
+                let result = Result<String>.failure(error)
+                let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
                 completionHandler(dataResponse)
                 return
             }
@@ -450,8 +521,11 @@ public class RestRequest {
                 return
             }
 
+            // Retrieve string encoding type
+            let encoding = self.getCharacterEncoding(from: response?.allHeaderFields["Content-Type"] as? String)
+
             // parse data as a string
-            guard let string = String(data: data, encoding: .utf8) else {
+            guard let string = String(data: data, encoding: encoding) else {
                 let result = Result<String>.failure(RestError.serializationError)
                 let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
                 completionHandler(dataResponse)
@@ -490,8 +564,8 @@ public class RestRequest {
         response { data, response, error in
 
             if let error = error {
-               let result = Result<Void>.failure(error)
-               let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
+                let result = Result<Void>.failure(error)
+                let dataResponse = RestResponse(request: self.request, response: response, data: nil, result: result)
                 completionHandler(dataResponse)
                 return
             }
@@ -536,10 +610,10 @@ public class RestRequest {
     /// Method used by `CircuitBreaker` as the contextCommand
     ///
     /// - Parameter invocation: `Invocation` contains a command argument, Void return type, and a String fallback arguement
-    private func handleInvocation(invocation: Invocation<(Data?, HTTPURLResponse?, Error?) -> Void, Void, String>) {
+    private func handleInvocation(invocation: Invocation<(Data?, HTTPURLResponse?, Error?) -> Void, String>) {
         let task = session.dataTask(with: request) { (data, response, error) in
             if error != nil {
-                invocation.notifyFailure()
+                invocation.notifyFailure(error: BreakerError(reason: error?.localizedDescription))
             } else {
                 invocation.notifySuccess()
             }
@@ -571,32 +645,57 @@ public class RestRequest {
 
         return nil
     }
+
+    /// Method to identify the charset encoding defined by the Content-Type header
+    /// - Defaults set to .utf8
+    /// - Parameter contentType: The content-type header string
+    /// - Returns: returns the defined or default String.Encoding.Type
+    private func getCharacterEncoding(from contentType: String? = nil) -> String.Encoding {
+        guard let text = contentType,
+              let regex = try? NSRegularExpression(pattern: "(?<=charset=).*?(?=$|;|\\s)", options: [.caseInsensitive]),
+              let match = regex.matches(in: text, range: NSRange(text.startIndex..., in: text)).last,
+              let range = Range(match.range, in: text) else {
+            return .utf8
+        }
+
+        /// Strip whitespace and quotes
+        let charset = String(text[range]).trimmingCharacters(in: CharacterSet(charactersIn: "\"").union(.whitespaces))
+
+        switch String(charset).lowercased() {
+        case "iso-8859-1": return .isoLatin1
+        default: return .utf8
+        }
+    }
 }
 
 /// Encapsulates properties needed to initialize a `CircuitBreaker` object within the `RestRequest` init.
 /// `A` is the type of the fallback's parameter
 public struct CircuitParameters<A> {
 
+    /// The circuit name: defaults to '1000'test'
+    let name: String
+
     /// The circuit timeout: defaults to 1000
-    let timeout: Int
+    public let timeout: Int
 
     /// The circuit timeout: defaults to 60000
-    let resetTimeout: Int
+    public let resetTimeout: Int
 
     /// Max failures allowed: defaults to 5
-    let maxFailures: Int
+    public let maxFailures: Int
 
     /// Rolling Window: defaults to 10000
-    let rollingWindow: Int
+    public let rollingWindow: Int
 
     /// Bulkhead: defaults to 0
-    let bulkhead: Int
+    public let bulkhead: Int
 
     /// The error fallback callback
-    let fallback: (BreakerError, A) -> Void
+    public let fallback: (BreakerError, A) -> Void
 
     /// Initialize a `CircuitPrameters` instance
-    init(timeout: Int = 1000, resetTimeout: Int = 60000, maxFailures: Int = 5, rollingWindow: Int = 10000, bulkhead: Int = 0, fallback: @escaping (BreakerError, A) -> Void) {
+    public init(name: String = "circuitName", timeout: Int = 2000, resetTimeout: Int = 60000, maxFailures: Int = 5, rollingWindow: Int = 10000, bulkhead: Int = 0, fallback: @escaping (BreakerError, A) -> Void) {
+        self.name = name
         self.timeout = timeout
         self.resetTimeout = resetTimeout
         self.maxFailures = maxFailures
@@ -685,4 +784,41 @@ public enum RestError: Error, CustomStringConvertible {
         default: return nil
         }
     }
+}
+
+// URL Session extension
+extension RestRequest: URLSessionDelegate {
+
+    /// URL session function to allow trusting certain URLs
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        let method = challenge.protectionSpace.authenticationMethod
+        let host = challenge.protectionSpace.host
+
+        guard let url = URLComponents(string: self.url), let baseHost = url.host else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+
+        let warning = "Attempting to establish a secure connection; This is only supported by macOS 10.6 or higher. Resorting to default handling."
+
+        switch (method, host) {
+        case (NSURLAuthenticationMethodServerTrust, baseHost):
+            #if !os(Linux)
+            guard #available(iOS 3.0, macOS 10.6, *), let trust = challenge.protectionSpace.serverTrust else {
+                Log.warning(warning)
+                fallthrough
+            }
+
+            let credential = URLCredential(trust: trust)
+            completionHandler(.useCredential, credential)
+
+            #else
+            Log.warning(warning)
+            fallthrough
+            #endif
+        default:
+            completionHandler(.performDefaultHandling, nil)
+        }
+    }
+
 }

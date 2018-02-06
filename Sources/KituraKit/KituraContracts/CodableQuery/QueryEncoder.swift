@@ -46,6 +46,18 @@ public class QueryEncoder: Coder, Encoder {
         return "?" + String(desc.dropFirst())
     }
 
+    /// Encodes an Encodable object to a URLQueryItem array
+    ///
+    /// - Parameter _ value: The Encodable object to encode to its [URLQueryItem] representation
+    public func encode<T: Encodable>(_ value: T) throws -> [URLQueryItem] {
+        let dict: [String : String] = try encode(value)
+        return dict.reduce([URLQueryItem]()) { array, element in
+            var array = array
+            array.append(URLQueryItem(name: element.key, value: element.value))
+            return array
+        }
+    }
+
     /// Encodes an Encodable object to a String -> String dictionary
     ///
     /// - Parameter _ value: The Encodable object to encode to its [String: String] representation
