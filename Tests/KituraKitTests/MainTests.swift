@@ -33,6 +33,7 @@ class MainTests: XCTestCase {
         return [
             ("testClientGet", testClientGet),
             ("testClientGetErrorPath", testClientGetErrorPath),
+            ("testClientGetSingleNoId", testClientGetSingleNoId),
             ("testClientGetSingle", testClientGetSingle),
             ("testClientGetSingleErrorPath", testClientGetSingleErrorPath),
             ("testClientPost", testClientPost),
@@ -51,8 +52,6 @@ class MainTests: XCTestCase {
         ]
     }
 
-    private let controller = Controller(userStore: initialStore)
-
     private let client = KituraKit.default
 
     override func setUp() {
@@ -60,6 +59,7 @@ class MainTests: XCTestCase {
 
         continueAfterFailure = false
 
+        let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
 
@@ -79,7 +79,7 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
             }
-            XCTAssertEqual(users.count, 4)
+            XCTAssertEqual(users.count, 5)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
@@ -96,6 +96,21 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientGetSingleNoId() {
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+
+        // Invoke GET operation on library
+        client.get("/health") { (status: Status?, error: RequestError?) -> Void in
+            guard let status = status else {
+                XCTFail("Failed to get status! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(status.description, "GOOD")
+            expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
@@ -149,14 +164,14 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testClientPostWithIdentifier() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
-        
+
         // Invoke POST operation on library
         let userId = 5
         let newUser = User(id: userId, name: "John Doe")
-        
+
         client.post("/usersid", data: newUser) { (id: Int?, user: User?, error: RequestError?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to post user! Error: \(String(describing: error))")
@@ -166,7 +181,7 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to receive Identifier back from post")
                 return
             }
-            
+
             XCTAssertEqual(user, newUser)
             XCTAssertEqual(userId, id)
             expectation1.fulfill()
@@ -231,7 +246,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
         let expectedUser = User(id: 4, name: "John Doe")
-        
+
         client.patch("/users", identifier: String(describing: expectedUser.id), data: expectedUser) { (user: User?, error: RequestError?) -> Void in
             guard let user = user else {
                 XCTFail("Failed to patch user! Error: \(String(describing: error))")
@@ -290,6 +305,39 @@ class MainTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
 
+    func testClientGetByQuery() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+
+        let myQuery = UserQuery(name: "Mike")
+
+        // Invoke GET operation on library
+        client.get("/usersWithQueryParams", query: myQuery) { (users: [User]?, error: RequestError?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(users.count, 2)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientDeleteByQuery() {
+        let expectation1 = expectation(description: "No error is received from the server")
+
+        let myQuery = UserQuery(name: "Mike")
+
+        client.delete("/usersWithQueryParams", query: myQuery) { error in
+            guard error == nil else {
+                XCTFail("Failed to delete users! Error: \(String(describing: error))")
+                return
+            }
+
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
     func testClientDeleteInvalid() {
         let expectation1 = expectation(description: "An error is received from the server")
 
@@ -303,42 +351,42 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testSlashRemoval() {
         let expectation1 = expectation(description: "A client is generated with the intentional ending slash being removed from the KituraKit baseURL.")
-        
+
         let client = KituraKit(baseURL: "http://localhost:8080/")
         let correctedURL = "http://localhost:8080"
-        
+
         XCTAssertEqual(correctedURL, client?.baseURL.absoluteString)
         expectation1.fulfill()
-        
+
         waitForExpectations(timeout: 3.0, handler: nil)
-        
-        
+
+
     }
 
-        func testUrlErrorCorrecting() {
+    func testUrlErrorCorrecting() {
         let expectation1 = expectation(description: "A client is generated with the baseURL changed to http://")
-        
+
         let client = KituraKit(baseURL: "htttp://localhost:8080")
         let correctedURL = "http://localhost:8080"
-        
+
         XCTAssertEqual(correctedURL, client?.baseURL.absoluteString)
         expectation1.fulfill()
-        
-        waitForExpectations(timeout: 1.0, handler: nil) 
+
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 
-        func testUrlAddingHttp() {
+    func testUrlAddingHttp() {
         let expectation1 = expectation(description: "A client is generated with http:// added to front of baseURL")
-        
+
         let client = KituraKit(baseURL: "localhost:8080")
         let correctedURL = "http://localhost:8080"
-        
+
         XCTAssertEqual(correctedURL, client?.baseURL.absoluteString)
         expectation1.fulfill()
-        
+
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 
