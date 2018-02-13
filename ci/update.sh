@@ -82,6 +82,7 @@ sed -i '/import KituraContracts/d' RequestErrorExtension.swift
 sed -i '/import SwiftyRequest/d' RequestErrorExtension.swift
 cd SwiftyRequest/
 sed -i '/import CircuitBreaker/d' RestRequest.swift
+sed -i '/import LoggerAPI/d' RestRequest.swift
 cd ../CircuitBreaker
 sed -i '/import LoggerAPI/d' CircuitBreaker.swift
 sed -i '/import LoggerAPI/d' Stats.swift
