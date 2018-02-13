@@ -66,6 +66,7 @@ cp -r Sources/CircuitBreaker ../../../Sources/KituraKit
 
 cd ../KituraContracts*
 cp -r  Sources/KituraContracts ../../../Sources/KituraKit
+mv ../../../Sources/KituraKit/CodableQuery/*.swift ../
 
 cd ../SwiftyRequest*
 cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
@@ -82,9 +83,14 @@ sed -i '/import KituraContracts/d' RequestErrorExtension.swift
 sed -i '/import SwiftyRequest/d' RequestErrorExtension.swift
 cd SwiftyRequest/
 sed -i '/import CircuitBreaker/d' RestRequest.swift
+sed -i '/import LoggerAPI/d' RestRequest.swift
 cd ../CircuitBreaker
 sed -i '/import LoggerAPI/d' CircuitBreaker.swift
 sed -i '/import LoggerAPI/d' Stats.swift
+cd ../KituraContracts
+sed -i '/import LoggerAPI/d' Extensions.swift
+sed -i '/import LoggerAPI/d' QueryEncoder.swift
+sed -i '/import LoggerAPI/d' QueryDecoder.swift
 
 cd ../../../
 
