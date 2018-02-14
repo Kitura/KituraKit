@@ -10,6 +10,9 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/IBM-Swift/KituraKit", :branch => "pod", :submodules => true }
   s.subspec 'KituraContracts' do |kituracontracts|
     kituracontracts.source_files = 'Sources/KituraKit/KituraContracts/*.swift'
+    kituracontracts.subspec 'LoggerAPI' do |loggerapi|
+        loggerapi.source_files = 'Sources/KituraKit/LoggerAPI/*.swift'
+    end
   end
   s.subspec 'CircuitBreaker' do |circuitbreaker|
     circuitbreaker.source_files = 'Sources/KituraKit/CircuitBreaker/*.swift'
