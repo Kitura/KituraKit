@@ -15,7 +15,6 @@
  */
 
 import Foundation
-import LoggerAPI
 
 extension CharacterSet {
     static let customURLQueryAllowed = CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~=:&")

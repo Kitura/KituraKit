@@ -15,7 +15,6 @@
  */
 
 import Foundation
-import LoggerAPI
 
 /// Query Parameter Decoder
 /// Decodes a [String: String] object to a Decodable object instance

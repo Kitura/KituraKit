@@ -15,7 +15,6 @@
  */
 
 import Foundation
-import LoggerAPI
 
 /// Codable String Conversion Extension
 extension String {

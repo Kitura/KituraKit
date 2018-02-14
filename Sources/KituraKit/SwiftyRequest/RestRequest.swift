@@ -15,7 +15,6 @@
  **/
 
 import Foundation
-import LoggerAPI
 
 /// Object containing everything needed to build HTTP requests and execute them
 public class RestRequest: NSObject  {
