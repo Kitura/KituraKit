@@ -66,7 +66,7 @@ cp -r Sources/CircuitBreaker ../../../Sources/KituraKit
 
 cd ../KituraContracts*
 cp -r  Sources/KituraContracts ../../../Sources/KituraKit
-mv ../../../Sources/KituraKit/CodableQuery/*.swift ../
+mv ../../../Sources/KituraKit/KituraContracts/CodableQuery/*.swift ../../../Sources/KituraKit/KituraContracts/
 
 cd ../SwiftyRequest*
 cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
