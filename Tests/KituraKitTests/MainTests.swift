@@ -48,7 +48,9 @@ class MainTests: XCTestCase {
             ("testClientDeleteInvalid", testClientDeleteInvalid),
             ("testSlashRemoval", testSlashRemoval),
             ("testUrlErrorCorrecting",testUrlErrorCorrecting),
-            ("testUrlAddingHttp",testUrlAddingHttp)
+            ("testUrlAddingHttp",testUrlAddingHttp),
+            ("testCustomJSONDecoderStrategy",testCustomJSONDecoderStrategy),
+            ("testCustomJSONEncoderStrategy",testCustomJSONEncoderStrategy)
         ]
     }
 
@@ -362,8 +364,6 @@ class MainTests: XCTestCase {
         expectation1.fulfill()
 
         waitForExpectations(timeout: 3.0, handler: nil)
-
-
     }
 
     func testUrlErrorCorrecting() {
@@ -388,6 +388,57 @@ class MainTests: XCTestCase {
         expectation1.fulfill()
 
         waitForExpectations(timeout: 1.0, handler: nil)
+    }
+
+    func testCustomJSONDecoderStrategy() {
+        let expectation1 = expectation(description: "A codable date object response is received from the server decoded with custom strategy.")
+
+        client.customJSONDecoder = {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            return decoder
+        }
+
+        // Invoke GET operation on library
+        client.get("/customJSONDecoding") { (date: CodableDate?, error: RequestError?) -> Void in
+            guard let object = date else {
+                XCTFail("Failed to get custom encoded codable date object! Error: \(String(describing: error))")
+                return
+            }
+            let expectedDate = Date(timeIntervalSince1970: 1519206456)
+            XCTAssertEqual(object.date.description, expectedDate.description)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testCustomJSONEncoderStrategy() {
+        let expectation1 = expectation(description: "A response is received from the server -> user")
+
+        client.customJSONEncoder = {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .secondsSince1970
+            return encoder
+        }
+
+        client.customJSONDecoder = {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            return decoder
+        }
+
+        let expectedDate = Date(timeIntervalSince1970: 1519206456)
+        let newDate = CodableDate(date: expectedDate)
+
+        client.post("/customJSONEncoding", data: newDate) { (date: CodableDate?, error: RequestError?) -> Void in
+            guard let object = date else {
+                XCTFail("Failed to post custom encoded date! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(object.date.description, expectedDate.description)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
 }

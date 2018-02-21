@@ -46,12 +46,20 @@ public struct UserOptional: Codable, Equatable {
 
 }
 
-public struct Employee: Codable, Equatable {    
+public struct Employee: Codable, Equatable {
     public let id: String
     public let name: String
 
     public static func ==(lhs: Employee, rhs: Employee) -> Bool {
         return (lhs.id == rhs.id) && (lhs.name == rhs.name)
+    }
+}
+
+public struct CodableDate: Codable {
+    public let date: Date
+
+    public init(date: Date) {
+        self.date = date
     }
 }
 

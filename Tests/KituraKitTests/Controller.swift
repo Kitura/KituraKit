@@ -129,12 +129,29 @@ public class Controller {
         router.patch("/employees/:id", handler: updateEmployee)
         router.delete("/employees/:id", handler: deleteEmployee)
         router.delete("/employees", handler: deleteAllEmployees)
+        router.get("/customJSONDecoding", handler: customJSONDecoding)
+
+        router.post("/customJSONEncoding") { (date: CodableDate?, respondWith: (CodableDate?, RequestError?) -> Void) in
+            guard let date = date else {
+                respondWith(nil, .badRequest)
+                return
+            }
+            respondWith(date, nil)
+        }
+
         // health route
         router.get("/health") { (respondWith: (Status?, RequestError?) -> Void) in
             respondWith(Status("GOOD"), nil)
         }
     }
 
+    public func customJSONDecoding(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        let date = Date(timeIntervalSince1970: 1519206456)
+
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .secondsSince1970
+        try response.status(.OK).send(data: encoder.encode(CodableDate(date: date))).end()
+    }
 
     public func updateUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {

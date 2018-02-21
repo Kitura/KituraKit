@@ -32,6 +32,16 @@ public class KituraKit {
         }
     }
 
+    ///Returns the JSONEncoder instance used for encoding Codable objects
+    public var customJSONEncoder: (() -> JSONEncoder) = {
+        return JSONEncoder()
+    }
+
+    ///Returns the JSONDecoder instance used for decoding Codable objects
+    public var customJSONDecoder: (() -> JSONDecoder) = {
+        return JSONDecoder()
+    }
+
     /// Customisable URL used for setting up the routes when initializing a new KituraKit instance.
     public let baseURL: URL
 
@@ -74,7 +84,7 @@ public class KituraKit {
     public func get<O: Codable>(_ route: String, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         RestRequest(url: url.absoluteString)
-          .handle(respondWith)
+          .handle(respondWith, decoder: self.customJSONDecoder())
     }
 
     /// Retrieves data from a designated route with an Identifier.
@@ -97,7 +107,7 @@ public class KituraKit {
     public func get<O: Codable>(_ route: String, identifier: Identifier, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         RestRequest(url: url.absoluteString)
-          .handle(respondWith)
+          .handle(respondWith, decoder: self.customJSONDecoder())
     }
 
     /// Sends data to a designated route.
@@ -118,10 +128,10 @@ public class KituraKit {
     /// - Parameter data: The custom Codable object passed in to be sent.
     public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
-        let encoded = try? JSONEncoder().encode(data)
+        let encoded = try? self.customJSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
         request.messageBody = encoded
-        request.handle(respondWith)
+        request.handle(respondWith, decoder: self.customJSONDecoder())
     }
 
     /// Sends data to a designated route, allowing for the route to respond with an additional Identifier.
@@ -142,14 +152,14 @@ public class KituraKit {
     /// - Parameter data: The custom Codable object passed in to be sent.
     public func post<I: Codable, Id: Identifier, O: Codable>(_ route: String, data: I, respondWith: @escaping IdentifierCodableResultClosure<Id, O>) {
         let url = baseURL.appendingPathComponent(route)
-        let encoded = try? JSONEncoder().encode(data)
+        let encoded = try? self.customJSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
         request.messageBody = encoded
 
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
+                guard let item: O = try? self.customJSONDecoder().decode(O.self, from: data) else {
                     respondWith(nil, nil, RequestError.clientDeserializationError)
                     return
                 }
@@ -194,10 +204,10 @@ public class KituraKit {
     /// - Parameter data: The custom Codable object passed in to be sent.
     public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
-        let encoded = try? JSONEncoder().encode(data)
+        let encoded = try? self.customJSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url.absoluteString)
         request.messageBody = encoded
-        request.handle(respondWith)
+        request.handle(respondWith, decoder: self.customJSONDecoder())
     }
 
     /// Updates data for a designated route using an Identifier.
@@ -227,10 +237,10 @@ public class KituraKit {
     /// - Parameter identifier: The custom Identifier object that is searched for.
     public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
-        let encoded = try? JSONEncoder().encode(data)
+        let encoded = try? self.customJSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url.absoluteString)
         request.messageBody = encoded
-        request.handle(respondWith)
+        request.handle(respondWith, decoder: self.customJSONDecoder())
     }
 
     /// Deletes data at a designated route.
@@ -295,7 +305,7 @@ public class KituraKit {
             return
         }
         RestRequest(method: .get, url: baseURL.appendingPathComponent(route).absoluteString)
-            .handle(respondWith, queryItems: queryItems)
+            .handle(respondWith, decoder: self.customJSONDecoder(), queryItems: queryItems)
     }
 
     /// Deletes data at a designated route using a the specified Query Parameters.
@@ -330,10 +340,11 @@ public class KituraKit {
 extension RestRequest {
 
     /// Helper method to handle the given request for CodableArrayResultClosures and CodableResultClosures
-    fileprivate func handle<O: Codable>(_ respondWith: @escaping (O?, RequestError?) -> (), queryItems: [URLQueryItem]? = nil, onSuccess: ((Data) -> ())? = nil, onFailure: ((Error) -> ())? = nil) {
+    fileprivate func handle<O: Codable>(_ respondWith: @escaping (O?, RequestError?) -> (), decoder: JSONDecoder, queryItems: [URLQueryItem]? = nil,
+                                        onSuccess: ((Data) -> ())? = nil, onFailure: ((Error) -> ())? = nil) {
         self.responseData(queryItems: queryItems) { response in
             switch response.result {
-            case .success(let data) : onSuccess?(data) ?? self.defaultCodableHandler(data, respondWith: respondWith)
+            case .success(let data) : onSuccess?(data) ?? self.defaultCodableHandler(data, decoder: decoder, respondWith: respondWith)
             case .failure(let error): onFailure?(error) ?? self.defaultErrorHandler(error, respondWith: respondWith)
             }
         }
@@ -357,8 +368,8 @@ extension RestRequest {
     }
 
     /// Default success response handler for CodableArrayResultClosures and CodableResultClosures
-    private func defaultCodableHandler<O: Codable>(_ data: Data, respondWith: (O?, RequestError?) -> ()) {
-        guard let items: O = try? JSONDecoder().decode(O.self, from: data) else {
+    private func defaultCodableHandler<O: Codable>(_ data: Data, decoder: JSONDecoder, respondWith: (O?, RequestError?) -> ()) {
+        guard let items: O = try? decoder.decode(O.self, from: data) else {
             respondWith(nil, .clientDeserializationError)
             return
         }
