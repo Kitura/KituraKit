@@ -440,5 +440,4 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-
 }
