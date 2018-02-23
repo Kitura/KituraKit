@@ -33,7 +33,6 @@ class MainTests: XCTestCase {
         return [
             ("testClientGet", testClientGet),
             ("testClientGetErrorPath", testClientGetErrorPath),
-            ("testClientGetErrorWithBodyPath", testClientGetErrorWithBodyPath),
             ("testClientGetSingleNoId", testClientGetSingleNoId),
             ("testClientGetSingle", testClientGetSingle),
             ("testClientGetSingleErrorPath", testClientGetSingleErrorPath),
@@ -49,7 +48,14 @@ class MainTests: XCTestCase {
             ("testClientDeleteInvalid", testClientDeleteInvalid),
             ("testSlashRemoval", testSlashRemoval),
             ("testUrlErrorCorrecting",testUrlErrorCorrecting),
-            ("testUrlAddingHttp",testUrlAddingHttp)
+            ("testUrlAddingHttp",testUrlAddingHttp),
+            ("testClientGetErrorWithBodyPath", testClientGetErrorWithBodyPath),
+            ("testClientGetSingleErrorWithBodyPath", testClientGetSingleErrorWithBodyPath),
+            ("testClientPostErrorWithBodyPath", testClientPostErrorWithBodyPath),
+            ("testClientPutErrorWithBodyPath", testClientPutErrorWithBodyPath),
+            ("testClientPatchErrorWithBodyPath", testClientPatchErrorWithBodyPath),
+            ("testClientDeleteSingleErrorWithBodyPath", testClientDeleteSingleErrorWithBodyPath),
+            ("testClientDeleteErrorWithBodyPath", testClientDeleteErrorWithBodyPath)
         ]
     }
 
@@ -97,26 +103,6 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
-        }
-        waitForExpectations(timeout: 3.0, handler: nil)
-    }
-
-    func testClientGetErrorWithBodyPath() {
-        let expectation1 = expectation(description: "An error with body is received from the server")
-
-        // Invoke GET operation on library
-        client.get("/bodyerror") { (users: [User]?, error: RequestError?) -> Void in
-            XCTAssertNotNil(error, "Expected error but no error given")
-            XCTAssertNil(users, "Unexpected success value given: \(users)")
-            if let error = error {
-                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
-                let body = error.bodyAs(Status.self)
-                XCTAssertNotNil(body, "No body or body is not a Status")
-                if let conflict = body {
-                    XCTAssertEqual(Status("Boo"), conflict)
-                }
-            }
-	    expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
@@ -411,4 +397,130 @@ class MainTests: XCTestCase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 
+    func testClientGetErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        client.get("/bodyerror") { (users: [User]?, error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            XCTAssertNil(users, "Unexpected success value given: \(String(describing: users))")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientGetSingleErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        client.get("/bodyerror", identifier: "1") { (user: User?, error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientPostErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        let newUser = User(id: 5, name: "John Doe")
+        client.post("/bodyerror", data: newUser) { (user: User?, error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientPutErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        let userToUpdate = User(id: 5, name: "John Doe")
+        client.put("/bodyerror",identifier: String(userToUpdate.id), data: userToUpdate) { (user: User?, error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientPatchErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        let userToUpdate = User(id: 4, name: "John Doe")
+        client.patch("/bodyerror", identifier: String(describing: userToUpdate.id), data: userToUpdate) { (user: User?, error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientDeleteSingleErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        client.delete("/bodyerror", identifier: "1") { (error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientDeleteErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+        client.delete("/bodyerror") { (error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+        expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
 }
