@@ -121,9 +121,6 @@ public class Controller {
             respondWith(users, nil)
         }
 
-        // bodyerror routes
-        router.get("/bodyerror") { (respondsWith: (User?, RequestError?) -> Void) in respondsWith(nil, RequestError(.conflict, body: Status("Boo"))) }
-
         // employees routes
         router.get("/employees", handler: getEmployees)
         router.get("/employees/:id", handler: getEmployee)
@@ -136,6 +133,15 @@ public class Controller {
         router.get("/health") { (respondWith: (Status?, RequestError?) -> Void) in
             respondWith(Status("GOOD"), nil)
         }
+
+        // bodyerror routes
+        router.get("/bodyerror") { (respondWith: ([User]?, RequestError?) -> Void) in respondWith(nil, RequestError(.conflict, body: Status("Boo"))) }
+        router.get("/bodyerror") { (id: Int, respondWith: (User?, RequestError?) -> Void) in respondWith(nil, RequestError(.conflict, body: Status("Boo"))) }
+        router.post("/bodyerror") { (user: User, respondWith: (User?, RequestError?) -> Void) in respondWith(nil, RequestError(.conflict, body: Status("Boo"))) }
+        router.put("/bodyerror") { (id: Int, user: User, respondWith: (User?, RequestError?) -> Void) in respondWith(nil, RequestError(.conflict, body: Status("Boo"))) }
+        router.patch("/bodyerror") { (id: Int, user: UserOptional, respondWith: (User?, RequestError?) -> Void) in respondWith(nil, RequestError(.conflict, body: Status("Boo"))) }
+        router.delete("/bodyerror") { (id: Int, respondWith: (RequestError?) -> Void) in respondWith(RequestError(.conflict, body: Status("Boo"))) }
+        router.delete("/bodyerror") { (respondWith: (RequestError?) -> Void) in respondWith(RequestError(.conflict, body: Status("Boo"))) }
     }
 
 
