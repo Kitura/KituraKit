@@ -121,6 +121,9 @@ public class Controller {
             respondWith(users, nil)
         }
 
+        // bodyerror routes
+        router.get("/bodyerror") { (respondsWith: (User?, RequestError?) -> Void) in respondsWith(nil, RequestError(.conflict, body: Status("Boo"))) }
+
         // employees routes
         router.get("/employees", handler: getEmployees)
         router.get("/employees/:id", handler: getEmployee)

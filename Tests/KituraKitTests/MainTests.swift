@@ -33,6 +33,7 @@ class MainTests: XCTestCase {
         return [
             ("testClientGet", testClientGet),
             ("testClientGetErrorPath", testClientGetErrorPath),
+            ("testClientGetErrorWithBodyPath", testClientGetErrorWithBodyPath),
             ("testClientGetSingleNoId", testClientGetSingleNoId),
             ("testClientGetSingle", testClientGetSingle),
             ("testClientGetSingleErrorPath", testClientGetSingleErrorPath),
@@ -96,6 +97,26 @@ class MainTests: XCTestCase {
                 XCTFail("Failed to get expected error from server: \(String(describing: error))")
                 return
             }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testClientGetErrorWithBodyPath() {
+        let expectation1 = expectation(description: "An error with body is received from the server")
+
+        // Invoke GET operation on library
+        client.get("/bodyerror") { (users: [User]?, error: RequestError?) -> Void in
+            XCTAssertNotNil(error, "Expected error but no error given")
+            XCTAssertNil(users, "Unexpected success value given: \(users)")
+            if let error = error {
+                XCTAssertEqual(RequestError.conflict.rawValue, error.rawValue)
+                let body = error.bodyAs(Status.self)
+                XCTAssertNotNil(body, "No body or body is not a Status")
+                if let conflict = body {
+                    XCTAssertEqual(Status("Boo"), conflict)
+                }
+            }
+	    expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
