@@ -167,7 +167,7 @@ public class KituraKit {
                 if let restError = error as? RestError {
                     respondWith(nil, nil, RequestError(restError: restError))
                 } else {
-                    respondWith(nil, nil, .clientErrorUnknown)
+                    respondWith(nil, nil, .clientConnectionError)
                 }
             }
         }
@@ -350,7 +350,7 @@ extension RestRequest {
                 if let restError = error as? RestError {
                     respondWith(RequestError(restError: restError))
                 } else {
-                    respondWith(.clientErrorUnknown)
+                    respondWith(.clientConnectionError)
                 }
             }
         }
@@ -370,7 +370,7 @@ extension RestRequest {
         if let restError = error as? RestError {
             respondWith(nil, RequestError(restError: restError))
         } else {
-            respondWith(nil, .clientErrorUnknown)
+            respondWith(nil, .clientConnectionError)
         }
     }
 }
