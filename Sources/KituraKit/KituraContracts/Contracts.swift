@@ -14,6 +14,8 @@
  * limitations under the License.
  **/
 
+ import Foundation
+
 // MARK
 
 /**
@@ -35,6 +37,13 @@
 public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, Error, CustomStringConvertible {
     public typealias RawValue = Int
 
+    /// Representation of the error body
+    /// May be a type-erased Codable object or a Data (in a particular format)
+    public enum ErrorBody {
+        case codable(Codable)
+        case data(Data, BodyFormat)
+    }
+
     // MARK: Creating a RequestError from a numeric code
 
     /// Creates an error representing the given error code.
@@ -49,6 +58,35 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
         self.reason = reason
     }
 
+    /// Creates an error representing the given base error, with a custom
+    /// response body given as a Codable
+    public init<Body: Codable>(_ base: RequestError, body: Body) {
+        self.rawValue = base.rawValue
+        self.reason = base.reason
+        self.body = .codable(body)
+        self.bodyDataEncoder = { format in
+            switch format {
+                case .json: return try JSONEncoder().encode(body)
+                default: throw UnsupportedBodyFormatError(format)
+            }
+        }
+    }
+
+    /// Creates an error respresenting the given base error, with a custom
+    /// response body given as Data and a BodyFormat
+    ///
+    /// - throws an `UnsupportedBodyFormatError` if the provided `BodyFormat`
+    ///          is not supported
+    public init(_ base: RequestError, bodyData: Data, format: BodyFormat) throws {
+        self.rawValue = base.rawValue
+        self.reason = base.reason
+        self.body = .data(bodyData, format)
+        switch format {
+            case .json: break
+            default: throw UnsupportedBodyFormatError(format)
+        }
+    }
+
     // MARK: Accessing information about the error.
 
     /// An error code representing the type of error that has occurred.
@@ -59,15 +97,144 @@ public struct RequestError: RawRepresentable, Equatable, Hashable, Comparable, E
     /// A human-readable description of the error code.
     public let reason: String
 
+    /**
+     Representation of the error body-an object representing further
+     details of the failure.
+
+     The value may be:
+     - `nil` if there is no body
+     - a (type-erased) Codable object if the error was initialized with `init(_:body:)`
+     - bytes of data and a signifier of the format in which they are stored (eg: JSON)
+       if the error was initialized with `init(_:bodyData:format:)`
+
+     ### Usage example: ###
+     ````
+     if let errorBody = error.body {
+         switch error.body {
+            case let .codable(body): ... // body is Codable
+            case let .data(bytes, format): ... // bytes is Data, format is BodyFormat
+         }
+     }
+     ````
+
+     - Note: If you need a Codable representation and the body is data, you
+             can call the `bodyAs(_:)` function to get the converted value
+     */
+    public private(set) var body: ErrorBody? = nil
+
+    // A closure used to hide the generic type of the Codable body
+    // for later encoding to Data
+    private var bodyDataEncoder: ((BodyFormat) throws -> Data)? = nil
+
+    /**
+     Returns the Codable error body encoded into bytes in a given format (eg: JSON).
+
+     This function should be used if the RequestError was created using
+     `init(_:body:)`, otherwise it will return `nil`.
+
+     - Note: This function is primarily intended for use by the Kitura Router so
+             that it can encode and send a custom error body returned from
+             a codable route.
+
+     ### Usage Example: ###
+     ````
+     do {
+         if let errorBodyData = try error.encodeBody(.json) {
+             ...
+         }
+     } catch {
+         // Handle the failure to encode
+     }
+     ````
+     - parameter `BodyFormat` describes the format that should be used
+                 (for example: `BodyFormat.json`)
+     - returns the `Data` object or `nil` if there is no body, or if the
+               error was not initialized with `init(_:body:)`
+     - throws an `EncodingError` if the encoding fails
+     - throws an `UnsupportedBodyFormatError` if the provided `BodyFormat`
+              is not supported
+     */
+    public func encodeBody(_ format: BodyFormat) throws -> Data? {
+        guard case .codable? = body else { return nil }
+        return try bodyDataEncoder?(format)
+    }
+
+    /**
+     Returns the Data error body as the requested `Codable` type.
+
+     This function should be used if the RequestError was created using
+     `init(_:bodyData:format:)`, otherwise it will return `nil`.
+
+     This function throws; you can use `bodyAs(_:)` instead if you want
+     to ignore DecodingErrors.
+
+     - Note: This function is primarily intended for use by users of KituraKit
+             or similar client-side code that needs to convert a custom error
+             response from `Data` to a `Codable` type.
+
+     ### Usage Example: ###
+     ```
+     do {
+         if let errorBody = try error.decodeBody(MyCodableType.self) {
+             ...
+         }
+     } catch {
+         // Handle failure to decode
+     }
+     ```
+     - parameter the type of the value to decode from the body data
+                 (for example: `MyCodableType.self`)
+     - returns the `Codable` object or `nil` if there is no body or if the
+               error was not initialized with `init(_:bodyData:format:)`
+     - throws a `DecodingError` if decoding fails
+     */
+    public func decodeBody<Body: Codable>(_ type: Body.Type) throws -> Body? {
+        guard case let .data(bodyData, format)? = body else { return nil }
+        switch format {
+            case .json: return try JSONDecoder().decode(type, from: bodyData)
+            default: throw UnsupportedBodyFormatError(format)
+        }
+    }
+
+    /**
+     Returns the Data error body as the requested `Codable` type.
+
+     This function should be used if the RequestError was created using
+     `init(_:bodyData:format:)`, otherwise it will return `nil`.
+
+     This function ignores DecodingErrors, and returns `nil` if decoding
+     fails. If you want DecodingErrors to be thrown, use `decodeBody(_:)`
+     instead.
+
+     - Note: This function is primarily intended for use by users of KituraKit
+             or similar client-side code that needs to convert a custom error
+             response from `Data` to a `Codable` type.
+
+     ### Usage Example: ###
+     ```
+     if let errorBody = error.bodyAs(MyCodableType.self) {
+         ...
+     }
+     ```
+     - parameter the type of the value to decode from the body data
+                 (for example: `MyCodableType.self`)
+     - returns the `Codable` object or `nil` if there is no body, or if the
+               error was not initialized with `init(_:bodyData:format:)`, or
+               if decoding fails
+     */
+    public func bodyAs<Body: Codable>(_ type: Body.Type) -> Body? {
+        return (try? decodeBody(type)) ?? nil
+    }
+
     // MARK: Comparing RequestErrors
 
     /// Returns a Boolean value indicating whether the value of the first argument is less than that of the second argument.
-    public static func <(lhs: RequestError, rhs: RequestError) -> Bool {
+    public static func < (lhs: RequestError, rhs: RequestError) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }
 
     /// Indicates whether two URLs are the same.
-    public static func ==(lhs: RequestError, rhs: RequestError) -> Bool {
+    public static func == (lhs: RequestError, rhs: RequestError) -> Bool {
         return (lhs.rawValue == rhs.rawValue && lhs.reason == rhs.reason)
     }
 
