@@ -59,16 +59,20 @@ git pull origin master
 swift package resolve
 
 cd .build/checkouts/LoggerAPI*
+rm -rf ../../../Sources/KituraKit/LoggerAPI
 cp -r Sources/LoggerAPI ../../../Sources/KituraKit
 
 cd ../CircuitBreaker*
+rm -rf ../../../Sources/KituraKit/CircuitBreaker
 cp -r Sources/CircuitBreaker ../../../Sources/KituraKit
 
 cd ../KituraContracts*
+rm -rf ../../../Sources/KituraKit/KituraContracts
 cp -r  Sources/KituraContracts ../../../Sources/KituraKit
 mv ../../../Sources/KituraKit/KituraContracts/CodableQuery/*.swift ../../../Sources/KituraKit/KituraContracts/
 
 cd ../SwiftyRequest*
+rm -rf ../../../Sources/KituraKit/SwiftyRequest
 cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
 
 cd ../../../Sources/KituraKit
