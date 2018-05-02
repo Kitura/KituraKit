@@ -30,10 +30,10 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", .upToNextMinor(from: "1.1.0")),
-        .package(url: "https://github.com/IBM-Swift/KituraContracts.git", .upToNextMinor(from: "0.0.18")),
+        .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", from: "1.1.0"),
+        .package(url: "https://github.com/IBM-Swift/KituraContracts.git", from: "0.0.19"),
         // Kitura is only needed for testing (test dependency :-/)
-        .package(url: "https://github.com/IBM-Swift/Kitura.git", .upToNextMinor(from: "2.2.0")),
+        .package(url: "https://github.com/IBM-Swift/Kitura.git", from: "2.3.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
