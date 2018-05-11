@@ -75,9 +75,12 @@ let initialStoreEmployee = [
     "5": Employee(id: "5", name: "Mike")
 ]
 
-public struct Status: Codable {
+public struct Status: Codable, Equatable {
     let description: String
     init(_ desc: String) {
         description = desc
+    }
+    public static func == (lhs: Status, rhs: Status) -> Bool {
+        return lhs.description == rhs.description
     }
 }
