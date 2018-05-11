@@ -410,7 +410,7 @@ class MainTests: XCTestCase {
                     XCTAssertEqual(Status("Boo"), conflict)
                 }
             }
-        expectation1.fulfill()
+            expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
