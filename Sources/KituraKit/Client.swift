@@ -149,26 +149,17 @@ public class KituraKit {
         request.responseData { response in
             switch response.result {
             case .success(let data):
-                guard let item: O = try? JSONDecoder().decode(O.self, from: data) else {
-                    respondWith(nil, nil, RequestError.clientDeserializationError)
-                    return
-                }
-                guard let locationHeader = response.response?.allHeaderFields["Location"] as? String else {
-                    respondWith(nil, nil, RequestError.clientDeserializationError)
-                    return
-                }
-                guard let id = try? Id.init(value: locationHeader) else {
+                guard let item: O = try? JSONDecoder().decode(O.self, from: data),
+                      let locationHeader = response.response?.allHeaderFields["Location"] as? String,
+                      let id = try? Id.init(value: locationHeader)
+                else {
                     respondWith(nil, nil, RequestError.clientDeserializationError)
                     return
                 }
                 respondWith(id, item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
-                if let restError = error as? RestError {
-                    respondWith(nil, nil, RequestError(restError: restError))
-                } else {
-                    respondWith(nil, nil, .clientConnectionError)
-                }
+                respondWith(nil, nil, constructRequestError(from: error, data: response.data))
             }
         }
     }
@@ -334,7 +325,7 @@ extension RestRequest {
         self.responseData(queryItems: queryItems) { response in
             switch response.result {
             case .success(let data) : onSuccess?(data) ?? self.defaultCodableHandler(data, respondWith: respondWith)
-            case .failure(let error): onFailure?(error) ?? self.defaultErrorHandler(error, respondWith: respondWith)
+            case .failure(let error): onFailure?(error) ?? self.defaultErrorHandler(error, data: response.data, respondWith: respondWith)
             }
         }
     }
@@ -347,11 +338,7 @@ extension RestRequest {
                 respondWith(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                if let restError = error as? RestError {
-                    respondWith(RequestError(restError: restError))
-                } else {
-                    respondWith(.clientConnectionError)
-                }
+                respondWith(constructRequestError(from: error, data: response.data))
             }
         }
     }
@@ -366,13 +353,27 @@ extension RestRequest {
     }
 
     /// Default failure response handler for CodableArrayResultClosures and CodableResultClosures
-    private func defaultErrorHandler<O: Codable>(_ error: Error, respondWith: (O?, RequestError?) -> ()) {
-        if let restError = error as? RestError {
-            respondWith(nil, RequestError(restError: restError))
-        } else {
-            respondWith(nil, .clientConnectionError)
+    private func defaultErrorHandler<O: Codable>(_ error: Error, data: Data?, respondWith: (O?, RequestError?) -> ()) {
+        respondWith(nil, constructRequestError(from: error, data: data))
+    }
+}
+
+// Convert an Error to a RequestError, mapping HTTP error codes over if given a
+// SwiftyRequest.RestError. Decorate the RequestError with Data if provided
+fileprivate func constructRequestError(from error: Error, data: Data?) -> RequestError {
+    var requestError = RequestError.clientConnectionError
+    if let restError = error as? RestError {
+        requestError = RequestError(restError: restError)
+    }
+    if let data = data {
+        do {
+            // TODO: Check Content-Type for format, assuming JSON for now
+            requestError = try RequestError(requestError, bodyData: data, format: .json)
+        } catch {
+            // Do nothing, format not supported
         }
     }
+    return requestError
 }
 
 /// Checks for mistyped URLs for the client route path.

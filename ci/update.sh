@@ -59,38 +59,33 @@ git pull origin master
 swift package resolve
 
 cd .build/checkouts/LoggerAPI*
+rm -rf ../../../Sources/KituraKit/LoggerAPI
 cp -r Sources/LoggerAPI ../../../Sources/KituraKit
 
 cd ../CircuitBreaker*
+rm -rf ../../../Sources/KituraKit/CircuitBreaker
 cp -r Sources/CircuitBreaker ../../../Sources/KituraKit
 
 cd ../KituraContracts*
+rm -rf ../../../Sources/KituraKit/KituraContracts
 cp -r  Sources/KituraContracts ../../../Sources/KituraKit
 mv ../../../Sources/KituraKit/KituraContracts/CodableQuery/*.swift ../../../Sources/KituraKit/KituraContracts/
 
 cd ../SwiftyRequest*
+rm -rf ../../../Sources/KituraKit/SwiftyRequest
 cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
 
 cd ../../../Sources/KituraKit
 
 # Remove all the import statements that aren't needed 
-
-sed -i '/import LoggerAPI/d' Client.swift
-sed -i '/import KituraContracts/d' Client.swift
-sed -i '/import SwiftyRequest/d' Client.swift
-sed -i '/import KituraContracts/d' PersistableExtension.swift
-sed -i '/import KituraContracts/d' RequestErrorExtension.swift
-sed -i '/import SwiftyRequest/d' RequestErrorExtension.swift
-cd SwiftyRequest/
-sed -i '/import CircuitBreaker/d' RestRequest.swift
-sed -i '/import LoggerAPI/d' RestRequest.swift
-cd ../CircuitBreaker
-sed -i '/import LoggerAPI/d' CircuitBreaker.swift
-sed -i '/import LoggerAPI/d' Stats.swift
-cd ../KituraContracts
-sed -i '/import LoggerAPI/d' Extensions.swift
-sed -i '/import LoggerAPI/d' QueryEncoder.swift
-sed -i '/import LoggerAPI/d' QueryDecoder.swift
+read -a SWIFTFILES <<< $(find .. -name "*.swift")
+for file in "${SWIFTFILES[@]}"
+do
+	tempfile=$(mktemp)
+	python ../../ci/filter_imports.py $file > $tempfile
+	mv $tempfile $file
+	chmod a+r $file
+done
 
 cd ../../../
 
