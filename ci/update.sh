@@ -15,6 +15,9 @@
 # limitations under the License.
 ##
 
+# Store the absolute path of the project root directory in a variable.
+projectDir=$(pwd)
+
 osName="linux"
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then osName="osx"; fi
 export osName
@@ -56,31 +59,28 @@ git fetch
 git checkout pod
 git pull origin master 
 
-DIR=$(pwd)
-
 swift package resolve
 
 cd .build/checkouts/LoggerAPI*
-rm -rf ../../../Sources/KituraKit/LoggerAPI
-cp -r Sources/LoggerAPI ../../../Sources/KituraKit
+rm -rf $projectDir/Sources/KituraKit/LoggerAPI
+cp -r Sources/LoggerAPI $projectDir/Sources/KituraKit
 
 cd ../CircuitBreaker*
-rm -rf ../../../Sources/KituraKit/CircuitBreaker
-cp -r Sources/CircuitBreaker ../../../Sources/KituraKit
+rm -rf $projectDir/Sources/KituraKit/CircuitBreaker
+cp -r Sources/CircuitBreaker $projectDir/Sources/KituraKit
 
 cd ../KituraContracts*
-rm -rf ../../../Sources/KituraKit/KituraContracts
-cp -r  Sources/KituraContracts ../../../Sources/KituraKit
-mv ../../../Sources/KituraKit/KituraContracts/CodableQuery/*.swift ../../../Sources/KituraKit/KituraContracts/
+rm -rf $projectDir/Sources/KituraKit/KituraContracts
+cp -r  Sources/KituraContracts $projectDir/Sources/KituraKit
+mv $projectDir/Sources/KituraKit/KituraContracts/CodableQuery/*.swift $projectDir/Sources/KituraKit/KituraContracts/
 
 cd ../SwiftyRequest*
-rm -rf ../../../Sources/KituraKit/SwiftyRequest
-cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
+rm -rf $projectDir/Sources/KituraKit/SwiftyRequest
+cp -r Sources/SwiftyRequest $projectDir/Sources/KituraKit
 
-cd $DIR/Sources/KituraKit
 
 # Remove all the import statements that aren't needed 
-read -a SWIFTFILES <<< $(find .. -name "*.swift")
+read -a SWIFTFILES <<< $(find $projectDir/Sources -name "*.swift")
 for file in "${SWIFTFILES[@]}"
 do
 	tempfile=$(mktemp)
