@@ -56,6 +56,8 @@ git fetch
 git checkout pod
 git pull origin master 
 
+DIR=$(pwd)
+
 swift package resolve
 
 cd .build/checkouts/LoggerAPI*
@@ -75,7 +77,7 @@ cd ../SwiftyRequest*
 rm -rf ../../../Sources/KituraKit/SwiftyRequest
 cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
 
-cd ../../../Sources/KituraKit
+cd $DIR/Sources/KituraKit
 
 # Remove all the import statements that aren't needed 
 read -a SWIFTFILES <<< $(find .. -name "*.swift")
@@ -87,7 +89,7 @@ do
 	chmod a+r $file
 done
 
-cd ../../../
+cd $DIR
 
 rm -rf swift-4.0-RELEASE-ubuntu14.04/
 rm -rf Package-Builder/
