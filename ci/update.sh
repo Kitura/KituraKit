@@ -61,22 +61,18 @@ git pull origin master
 
 swift package resolve
 
-cd .build/checkouts/LoggerAPI*
 rm -rf $projectDir/Sources/KituraKit/LoggerAPI
-cp -r Sources/LoggerAPI $projectDir/Sources/KituraKit
+cd .build/checkouts/LoggerAPI* && cp -r Sources/LoggerAPI $projectDir/Sources/KituraKit
 
-cd ../CircuitBreaker*
 rm -rf $projectDir/Sources/KituraKit/CircuitBreaker
-cp -r Sources/CircuitBreaker $projectDir/Sources/KituraKit
+cd .build/checkouts/CircuitBreaker* && cp -r Sources/CircuitBreaker $projectDir/Sources/KituraKit
 
-cd ../KituraContracts*
 rm -rf $projectDir/Sources/KituraKit/KituraContracts
-cp -r  Sources/KituraContracts $projectDir/Sources/KituraKit
+cd .build/checkouts/KituraContracts* && cp -r  Sources/KituraContracts $projectDir/Sources/KituraKit
 mv $projectDir/Sources/KituraKit/KituraContracts/CodableQuery/*.swift $projectDir/Sources/KituraKit/KituraContracts/
 
-cd ../SwiftyRequest*
 rm -rf $projectDir/Sources/KituraKit/SwiftyRequest
-cp -r Sources/SwiftyRequest $projectDir/Sources/KituraKit
+cd .build/checkouts/SwiftyRequest* && cp -r Sources/SwiftyRequest $projectDir/Sources/KituraKit
 
 
 # Remove all the import statements that aren't needed 
@@ -84,7 +80,7 @@ read -a SWIFTFILES <<< $(find $projectDir/Sources -name "*.swift")
 for file in "${SWIFTFILES[@]}"
 do
 	tempfile=$(mktemp)
-	python ../../ci/filter_imports.py $file > $tempfile
+	python $projectDir/ci/filter_imports.py $file > $tempfile
 	mv $tempfile $file
 	chmod a+r $file
 done
