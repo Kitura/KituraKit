@@ -78,6 +78,7 @@ class MainTests: XCTestCase {
     }
 
     func testClientGet() {
+        client.addBasicAuth(username: "hello", password: "world")
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
 
         // Invoke GET operation on library

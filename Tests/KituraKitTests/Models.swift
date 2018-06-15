@@ -16,6 +16,7 @@
 
 import Foundation
 import KituraContracts
+import Kitura
 
 // Models/entities (application/use case specific)
 public struct User: Codable, Equatable {
@@ -82,5 +83,124 @@ public struct Status: Codable, Equatable {
     }
     public static func == (lhs: Status, rhs: Status) -> Bool {
         return lhs.description == rhs.description
+    }
+}
+
+public struct MyBasicAuth: TypeSafeMiddleware {
+    
+    let id: String
+    
+    static let users = ["John" : "12345", "Mary" : "qwerasdf"]
+    
+    public static func handle(request: RouterRequest, response: RouterResponse, completion: @escaping (MyBasicAuth?, RequestError?) -> Void) {
+        authenticate(request: request, response: response,
+           onSuccess: { (profile) in
+            completion(profile, nil)
+        }, onFailure: { (_,_ ) in
+            completion(nil, .unauthorized)
+        }, onSkip: { (_,_ ) in
+            completion(nil, .unauthorized)
+        })
+    }
+    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (MyBasicAuth) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onSkip: @escaping (HTTPStatusCode?, [String : String]?) -> Void) {
+        
+        let userid: String
+        let password: String
+        if let requestUser = request.urlURL.user, let requestPassword = request.urlURL.password {
+            userid = requestUser
+            password = requestPassword
+        } else {
+            guard let authorizationHeader = request.headers["Authorization"]  else {
+                return onSkip(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"User\""])
+            }
+            
+            let authorizationHeaderComponents = authorizationHeader.components(separatedBy: " ")
+            guard authorizationHeaderComponents.count == 2,
+                authorizationHeaderComponents[0] == "Basic",
+                let decodedData = Data(base64Encoded: authorizationHeaderComponents[1], options: Data.Base64DecodingOptions(rawValue: 0)),
+                let userAuthorization = String(data: decodedData, encoding: .utf8) else {
+                    return onSkip(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"User\""])
+            }
+            let credentials = userAuthorization.components(separatedBy: ":")
+            guard credentials.count >= 2 else {
+                return onFailure(.badRequest, nil)
+            }
+            userid = credentials[0]
+            password = credentials[1]
+        }
+        
+        if let storedPassword = users[userid], storedPassword == password {
+            onSuccess(MyBasicAuth(id: userid))
+        } else {
+            return onFailure(.unauthorized, nil)
+        }
+    }
+}
+
+public struct MyFacebookAuth: TypeSafeMiddleware {
+    
+    let id: String
+    
+    static let tokenProfiles = ["12345": "John", "qwerasdf": "Mary"]
+    
+    public static func handle(request: RouterRequest, response: RouterResponse, completion: @escaping (MyFacebookAuth?, RequestError?) -> Void) {
+        authenticate(request: request, response: response,
+                     onSuccess: { (profile) in
+                        completion(profile, nil)
+        }, onFailure: { (_,_ ) in
+            completion(nil, .unauthorized)
+        }, onSkip: { (_,_ ) in
+            completion(nil, .unauthorized)
+        })
+    }
+    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (MyFacebookAuth) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onSkip: @escaping (HTTPStatusCode?, [String : String]?) -> Void) {
+        
+        guard let type = request.headers["X-token-type"], type == "FacebookToken" else {
+            return onSkip(nil, nil)
+        }
+        // Check whether a token has been supplied
+        guard let token = request.headers["access_token"] else {
+            return onFailure(nil, nil)
+        }
+        
+        if let userProfile = tokenProfiles[token] {
+            onSuccess(MyFacebookAuth(id: userProfile))
+        } else {
+            return onFailure(.unauthorized, nil)
+        }
+    }
+}
+
+public struct MyGoogleAuth: TypeSafeMiddleware {
+    
+    let id: String
+    
+    static let tokenProfiles = ["12345": "John", "qwerasdf": "Mary"]
+    
+    public static func handle(request: RouterRequest, response: RouterResponse, completion: @escaping (MyGoogleAuth?, RequestError?) -> Void) {
+        authenticate(request: request, response: response,
+                     onSuccess: { (profile) in
+                        completion(profile, nil)
+        }, onFailure: { (_,_ ) in
+            completion(nil, .unauthorized)
+        }, onSkip: { (_,_ ) in
+            completion(nil, .unauthorized)
+        })
+    }
+    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (MyGoogleAuth) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onSkip: @escaping (HTTPStatusCode?, [String : String]?) -> Void) {
+        
+        guard let type = request.headers["X-token-type"], type == "GoogleToken" else {
+            return onSkip(nil, nil)
+        }
+        // Check whether a token has been supplied
+        guard let token = request.headers["access_token"] else {
+            return onFailure(nil, nil)
+        }
+        
+        if let userProfile = tokenProfiles[token] {
+            onSuccess(MyGoogleAuth(id: userProfile))
+        } else {
+            return onFailure(.unauthorized, nil)
+        }
     }
 }
