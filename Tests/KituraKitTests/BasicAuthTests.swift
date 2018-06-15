@@ -47,12 +47,12 @@ class BasicAuthTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        client.addBasicAuth(username: "John", password: "12345")
         continueAfterFailure = false
         
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
+        KituraKit.defaultHeaders = client.HTTPBasicHeader(username: "John", password: "12345")
         
     }
     
@@ -61,11 +61,56 @@ class BasicAuthTests: XCTestCase {
         super.tearDown()
     }
     
+    func testBasicAuthHeadersGet() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/authusers", headers: client.HTTPBasicHeader(username: "John", password: "12345")) { (users: [User]?, error: RequestError?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(users.count, 5)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testBasicAuthUnauthorized() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/authusers", headers: client.HTTPBasicHeader(username: "John", password: "WrongPassword")) { (users: [User]?, error: RequestError?) -> Void in
+            guard let error = error else {
+                XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
+                return
+            }
+            XCTAssertEqual(error, .unauthorized)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testBasicAuthNoHeaders() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/authusers", headers: [:]) { (users: [User]?, error: RequestError?) -> Void in
+            guard let error = error else {
+                XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
+                return
+            }
+            XCTAssertEqual(error, .unauthorized)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
     func testBasicAuthClientGet() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/authusers") { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/authusers", headers: client.HTTPBasicHeader(username: "John", password: "12345")) { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return

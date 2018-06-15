@@ -48,7 +48,7 @@ class GoogleTokenTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        client.addGoogleToken("12345")
+        KituraKit.defaultHeaders = client.googleTokenHeader("12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -60,9 +60,54 @@ class GoogleTokenTest: XCTestCase {
         super.tearDown()
     }
     
-    func testGoogleTokenClientGet() {
+    func testGoogleTokenHeadersGet() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
+        // Invoke GET operation on library
+        client.get("/googleusers", headers: client.googleTokenHeader("12345")) { (users: [User]?, error: RequestError?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(users.count, 5)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testGoogleTokenUnauthorized() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/googleusers", headers: client.googleTokenHeader("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
+            guard let error = error else {
+                XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
+                return
+            }
+            XCTAssertEqual(error, .unauthorized)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testGoogleTokenNoHeaders() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/googleusers", headers: [:]) { (users: [User]?, error: RequestError?) -> Void in
+            guard let error = error else {
+                XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
+                return
+            }
+            XCTAssertEqual(error, .unauthorized)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testGoogleTokenClientGet() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+    
         // Invoke GET operation on library
         client.get("/googleusers") { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
@@ -74,7 +119,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientGetSingle() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
@@ -90,7 +135,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientPost() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
@@ -108,7 +153,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientPostWithIdentifier() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
@@ -132,7 +177,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientPut() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
@@ -151,7 +196,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientPatch() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
@@ -169,7 +214,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientDeleteSingle() {
         let expectation1 = expectation(description: "No error is received from the server")
         
@@ -183,9 +228,9 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     // delete tests get executed first and cause get individual user tests to fail as the users have been deleted
-    
+
     func testGoogleTokenClientDelete() {
         let expectation1 = expectation(description: "No error is received from the server")
         
@@ -199,7 +244,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientGetByQuery() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
@@ -216,7 +261,7 @@ class GoogleTokenTest: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
-    
+
     func testGoogleTokenClientDeleteByQuery() {
         let expectation1 = expectation(description: "No error is received from the server")
         

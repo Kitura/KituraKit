@@ -23,24 +23,26 @@ import KituraContracts
 
 extension KituraKit {
     
-    /// Add a username and password that will be used for HTTP basic authentication in the requests
-    /// - Parameter username: The unique user id that identifies the user
-    /// - Parameter password: The password for the given username
-    public func addBasicAuth(username: String, password: String) {
-        basicAuthentication = .basicAuthentication(username: username, password: password)
-    }
-    
     /// Add a Facebook oauth token that will be used as authentication in the requests
     /// - Parameter token: The Facebook oauth token
-    public func addFacebookToken(_ token: String) {
-        headers["X-token-type"] = "FacebookToken"
-        headers["access_token"] = token
+    public func facebookTokenHeaders(_ token: String) -> [String: String] {
+        return(["X-token-type": "FacebookToken", "access_token": token])
     }
     
     /// Add a Google oauth token that will be used as authentication in the requests
     /// - Parameter token: The Google oauth token
-    public func addGoogleToken(_ token: String) {
-        headers["X-token-type"] = "GoogleToken"
-        headers["access_token"] = token
+    public func googleTokenHeaders(_ token: String) -> [String: String] {
+        return(["X-token-type": "GoogleToken", "access_token": token])
+    }
+    
+    /// initialise HTTPBasic headers that will be used for HTTP basic authentication in the requests
+    /// - Parameter username: The unique user id that identifies the user
+    /// - Parameter password: The password for the given username
+    public func HTTPBasicHeaders(username: String, password: String) -> [String: String] {
+        let authData = (username + ":" + password).data(using: .utf8)!
+        let authString = authData.base64EncodedString()
+        return(["Authorization": "Basic \(authString)"])
     }
 }
+
+

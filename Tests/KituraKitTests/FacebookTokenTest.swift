@@ -48,7 +48,7 @@ class FacebookTokenTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        client.addFacebookToken("12345")
+        KituraKit.defaultHeaders = client.facebookTokenHeader("12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -58,6 +58,51 @@ class FacebookTokenTest: XCTestCase {
     override func tearDown() {
         Kitura.stop()
         super.tearDown()
+    }
+    
+    func testFacebookTokenHeadersGet() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/facebookusers", headers: client.facebookTokenHeader("12345")) { (users: [User]?, error: RequestError?) -> Void in
+            guard let users = users else {
+                XCTFail("Failed to get users! Error: \(String(describing: error))")
+                return
+            }
+            XCTAssertEqual(users.count, 5)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testFacebookTokenUnauthorized() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/facebookusers", headers: client.facebookTokenHeader("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
+            guard let error = error else {
+                XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
+                return
+            }
+            XCTAssertEqual(error, .unauthorized)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+    
+    func testFacebookTokenNoHeaders() {
+        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        
+        // Invoke GET operation on library
+        client.get("/facebookusers", headers: [:]) { (users: [User]?, error: RequestError?) -> Void in
+            guard let error = error else {
+                XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
+                return
+            }
+            XCTAssertEqual(error, .unauthorized)
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testFacebookTokenClientGet() {

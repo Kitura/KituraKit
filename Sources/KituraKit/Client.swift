@@ -35,11 +35,8 @@ public class KituraKit {
     /// Customisable URL used for setting up the routes when initializing a new KituraKit instance.
     public let baseURL: URL
 
-    /// Headers that will be added to all KituraKit requests
-    var headers: [String : String] = [:]
-    
-    /// HTTP basic authentication that will be added to all KituraKit requests
-    var basicAuthentication: Credentials?
+    /// Headers that will be used if none are provided to the route
+    public static var defaultHeaders = [String: String]()
     
     // Initializers
     public init(baseURL: URL) {
@@ -77,11 +74,10 @@ public class KituraKit {
     /// * This declaration of get retrieves all items. There is another declaration for specific item retrieval.
     ///
     /// - Parameter route: The custom route KituraKit points to during REST requests.
-    public func get<O: Codable>(_ route: String, respondWith: @escaping CodableResultClosure<O>) {
+    public func get<O: Codable>(_ route: String, headers: [String: String] = defaultHeaders, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         let request = RestRequest(url: url.absoluteString)
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handle(respondWith)
     }
 
@@ -102,11 +98,11 @@ public class KituraKit {
     /// * This declaration of get retrieves single items. There is another declaration for all item retrieval.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
-    public func get<O: Codable>(_ route: String, identifier: Identifier, respondWith: @escaping CodableResultClosure<O>) {
+    public func get<O: Codable>(_ route: String, identifier: Identifier, headers: [String: String] = defaultHeaders, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let request = RestRequest(url: url.absoluteString)
         request.headerParameters = headers
-        request.credentials = basicAuthentication
+        //request.credentials = basicAuthentication
         request.handle(respondWith)
     }
 
@@ -126,13 +122,12 @@ public class KituraKit {
     /// ````
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter data: The custom Codable object passed in to be sent.
-    public func post<I: Codable, O: Codable>(_ route: String, data: I, respondWith: @escaping CodableResultClosure<O>) {
+    public func post<I: Codable, O: Codable>(_ route: String, data: I, headers: [String: String] = defaultHeaders, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
         request.messageBody = encoded
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handle(respondWith)
     }
 
@@ -152,13 +147,12 @@ public class KituraKit {
     /// ````
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter data: The custom Codable object passed in to be sent.
-    public func post<I: Codable, Id: Identifier, O: Codable>(_ route: String, data: I, respondWith: @escaping IdentifierCodableResultClosure<Id, O>) {
+    public func post<I: Codable, Id: Identifier, O: Codable>(_ route: String, data: I, headers: [String: String] = defaultHeaders, respondWith: @escaping IdentifierCodableResultClosure<Id, O>) {
         let url = baseURL.appendingPathComponent(route)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .post, url: url.absoluteString)
         request.messageBody = encoded
         request.headerParameters = headers
-        request.credentials = basicAuthentication
 
         request.responseData { response in
             switch response.result {
@@ -197,13 +191,12 @@ public class KituraKit {
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
     /// - Parameter data: The custom Codable object passed in to be sent.
-    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableResultClosure<O>) {
+    public func put<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, headers: [String: String] = defaultHeaders, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .put, url: url.absoluteString)
         request.messageBody = encoded
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handle(respondWith)
     }
 
@@ -232,13 +225,12 @@ public class KituraKit {
     /// * This declaration uses the patch method to update data.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
-    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, respondWith: @escaping CodableResultClosure<O>) {
+    public func patch<I: Codable, O: Codable>(_ route: String, identifier: Identifier, data: I, headers: [String: String] = defaultHeaders, respondWith: @escaping CodableResultClosure<O>) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let encoded = try? JSONEncoder().encode(data)
         let request = RestRequest(method: .patch, url: url.absoluteString)
         request.messageBody = encoded
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handle(respondWith)
     }
 
@@ -253,11 +245,10 @@ public class KituraKit {
     /// ````
     /// * This declaration of delete deletes all items. There is another declaration for single item deletion.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
-    public func delete(_ route: String, respondWith: @escaping ResultClosure) {
+    public func delete(_ route: String, headers: [String: String] = defaultHeaders, respondWith: @escaping ResultClosure) {
         let url = baseURL.appendingPathComponent(route)
         let request = RestRequest(method: .delete, url: url.absoluteString)
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handleDelete(respondWith)
     }
 
@@ -273,11 +264,10 @@ public class KituraKit {
     /// * This declaration of delete deletes single items. There is another declaration for all item deletion.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter identifier: The custom Identifier object that is searched for.
-    public func delete(_ route: String, identifier: Identifier, respondWith: @escaping ResultClosure) {
+    public func delete(_ route: String, identifier: Identifier, headers: [String: String] = defaultHeaders, respondWith: @escaping ResultClosure) {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let request = RestRequest(method: .delete, url: url.absoluteString)
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handleDelete(respondWith)
     }
 
@@ -302,14 +292,13 @@ public class KituraKit {
     /// ````
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter queryParams: The QueryParam structure containing the route's query parameters
-    public func get<O: Codable, Q: QueryParams>(_ route: String, query: Q, respondWith: @escaping CodableArrayResultClosure<O>) {
+    public func get<O: Codable, Q: QueryParams>(_ route: String, query: Q, headers: [String: String] = defaultHeaders, respondWith: @escaping CodableArrayResultClosure<O>) {
         guard let queryItems: [URLQueryItem] = try? QueryEncoder().encode(query) else {
             respondWith(nil, .clientSerializationError)
             return
         }
         let request = RestRequest(method: .get, url: baseURL.appendingPathComponent(route).absoluteString)
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handle(respondWith, queryItems: queryItems)
     }
 
@@ -331,14 +320,13 @@ public class KituraKit {
     /// * This declaration of delete deletes multiple items. There is another declaration for a singular deletion and another for all item deletion.
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter queryParams: The QueryParam structure containing the route's query parameters
-    public func delete<Q: QueryParams>(_ route: String, query: Q, respondWith: @escaping ResultClosure) {
+    public func delete<Q: QueryParams>(_ route: String, query: Q, headers: [String: String] = defaultHeaders, respondWith: @escaping ResultClosure) {
         guard let queryItems: [URLQueryItem] = try? QueryEncoder().encode(query) else {
             respondWith(.clientSerializationError)
             return
         }
         let request = RestRequest(method: .delete, url: baseURL.appendingPathComponent(route).absoluteString)
         request.headerParameters = headers
-        request.credentials = basicAuthentication
         request.handleDelete(respondWith, queryItems: queryItems)
     }
 }
