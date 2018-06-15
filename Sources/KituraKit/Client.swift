@@ -55,7 +55,7 @@ public class KituraKit {
         }
         self.init(baseURL: url)
     }
-    
+
     // HTTP verb/action methods (basic type safe routing)
 
     /// Retrieves data from a designated route.
@@ -102,7 +102,6 @@ public class KituraKit {
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let request = RestRequest(url: url.absoluteString)
         request.headerParameters = headers
-        //request.credentials = basicAuthentication
         request.handle(respondWith)
     }
 
