@@ -21,24 +21,24 @@ import LoggerAPI
 import SwiftyRequest
 import KituraContracts
 
-extension KituraKit {
+public struct AuthHeaders {
     
-    /// Add a Facebook oauth token that will be used as authentication in the requests
+    /// Generate headers for a authenticating with a Facebook oauth token
     /// - Parameter token: The Facebook oauth token
-    public func facebookTokenHeaders(_ token: String) -> [String: String] {
+    public static func facebookToken(_ token: String) -> [String: String] {
         return(["X-token-type": "FacebookToken", "access_token": token])
     }
     
-    /// Add a Google oauth token that will be used as authentication in the requests
+    /// Generate headers for a authenticating with a Google oauth token
     /// - Parameter token: The Google oauth token
-    public func googleTokenHeaders(_ token: String) -> [String: String] {
+    public static func googleToken(_ token: String) -> [String: String] {
         return(["X-token-type": "GoogleToken", "access_token": token])
     }
     
-    /// initialise HTTPBasic headers that will be used for HTTP basic authentication in the requests
+    /// Generate headers for a authenticating with a username and password using HTTP basic 
     /// - Parameter username: The unique user id that identifies the user
     /// - Parameter password: The password for the given username
-    public func HTTPBasicHeaders(username: String, password: String) -> [String: String] {
+    public static func HTTPBasic(username: String, password: String) -> [String: String] {
         let authData = (username + ":" + password).data(using: .utf8)!
         let authString = authData.base64EncodedString()
         return(["Authorization": "Basic \(authString)"])
