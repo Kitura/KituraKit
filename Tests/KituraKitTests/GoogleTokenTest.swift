@@ -32,6 +32,9 @@ class GoogleTokenTest: XCTestCase {
     
     static var allTests: [(String, (GoogleTokenTest) -> () throws -> Void)] {
         return [
+            ("testGoogleTokenHeadersGet", testGoogleTokenHeadersGet),
+            ("testGoogleTokenUnauthorized", testGoogleTokenUnauthorized),
+            ("testGoogleTokenNoHeaders", testGoogleTokenNoHeaders),
             ("testGoogleTokenClientGet", testGoogleTokenClientGet),
             ("testGoogleTokenClientGetSingle", testGoogleTokenClientGetSingle),
             ("testGoogleTokenClientPost", testGoogleTokenClientPost),
@@ -48,7 +51,7 @@ class GoogleTokenTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        KituraKit.defaultHeaders = client.googleTokenHeader("12345")
+        KituraKit.defaultHeaders = client.googleTokenHeaders("12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -64,7 +67,7 @@ class GoogleTokenTest: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/googleusers", headers: client.googleTokenHeader("12345")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/googleusers", headers: client.googleTokenHeaders("12345")) { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
@@ -79,7 +82,7 @@ class GoogleTokenTest: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/googleusers", headers: client.googleTokenHeader("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/googleusers", headers: client.googleTokenHeaders("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return

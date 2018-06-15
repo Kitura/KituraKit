@@ -32,6 +32,9 @@ class FacebookTokenTest: XCTestCase {
     
     static var allTests: [(String, (FacebookTokenTest) -> () throws -> Void)] {
         return [
+            ("testfacebookTokenHeadersGet", testfacebookTokenHeadersGet),
+            ("testFacebookTokenUnauthorized", testFacebookTokenUnauthorized),
+            ("testFacebookTokenNoHeaders", testFacebookTokenNoHeaders),
             ("testFacebookTokenClientGet", testFacebookTokenClientGet),
             ("testFacebookTokenClientGetSingle", testFacebookTokenClientGetSingle),
             ("testFacebookTokenClientPost", testFacebookTokenClientPost),
@@ -48,7 +51,7 @@ class FacebookTokenTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        KituraKit.defaultHeaders = client.facebookTokenHeader("12345")
+        KituraKit.defaultHeaders = client.facebookTokenHeaders("12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -60,11 +63,11 @@ class FacebookTokenTest: XCTestCase {
         super.tearDown()
     }
     
-    func testFacebookTokenHeadersGet() {
+    func testfacebookTokenHeadersGet() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/facebookusers", headers: client.facebookTokenHeader("12345")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/facebookusers", headers: client.facebookTokenHeaders("12345")) { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
@@ -79,7 +82,7 @@ class FacebookTokenTest: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/facebookusers", headers: client.facebookTokenHeader("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/facebookusers", headers: client.facebookTokenHeaders("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return
