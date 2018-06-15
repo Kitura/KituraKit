@@ -28,9 +28,9 @@ import KituraContracts
 @testable import KituraKit
 
 
-class GoogleTokenTest: XCTestCase {
+class GoogleTokenTests: XCTestCase {
     
-    static var allTests: [(String, (GoogleTokenTest) -> () throws -> Void)] {
+    static var allTests: [(String, (GoogleTokenTests) -> () throws -> Void)] {
         return [
             ("testGoogleTokenHeadersGet", testGoogleTokenHeadersGet),
             ("testGoogleTokenUnauthorized", testGoogleTokenUnauthorized),

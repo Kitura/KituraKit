@@ -28,9 +28,9 @@ import KituraContracts
 @testable import KituraKit
 
 
-class FacebookTokenTest: XCTestCase {
+class FacebookTokenTests: XCTestCase {
     
-    static var allTests: [(String, (FacebookTokenTest) -> () throws -> Void)] {
+    static var allTests: [(String, (FacebookTokenTests) -> () throws -> Void)] {
         return [
             ("testfacebookTokenHeadersGet", testfacebookTokenHeadersGet),
             ("testFacebookTokenUnauthorized", testFacebookTokenUnauthorized),
