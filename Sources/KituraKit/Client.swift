@@ -36,10 +36,10 @@ public class KituraKit {
     public let baseURL: URL
 
     /// Headers that will be added to all KituraKit requests
-    public var headers: [String : String] = [:]
+    var headers: [String : String] = [:]
     
     /// HTTP basic authentication that will be added to all KituraKit requests
-    public var basicAuthentication: Credentials?
+    var basicAuthentication: Credentials?
     
     // Initializers
     public init(baseURL: URL) {
