@@ -21,27 +21,27 @@ import LoggerAPI
 import SwiftyRequest
 import KituraContracts
 
-public struct AuthHeaders {
+public struct AuthHelpers {
     
     /// Generate headers for a authenticating with a Facebook oauth token
     /// - Parameter token: The Facebook oauth token
-    public static func facebookToken(_ token: String) -> [String: String] {
-        return(["X-token-type": "FacebookToken", "access_token": token])
+    public static func getFacebookAuthHeaders(token: String) -> [String: String] {
+        return ["X-token-type": "FacebookToken", "access_token": token]
     }
     
     /// Generate headers for a authenticating with a Google oauth token
     /// - Parameter token: The Google oauth token
-    public static func googleToken(_ token: String) -> [String: String] {
-        return(["X-token-type": "GoogleToken", "access_token": token])
+    public static func getGoogleAuthHeaders(token: String) -> [String: String] {
+        return ["X-token-type": "GoogleToken", "access_token": token]
     }
     
     /// Generate headers for a authenticating with a username and password using HTTP basic 
     /// - Parameter username: The unique user id that identifies the user
     /// - Parameter password: The password for the given username
-    public static func HTTPBasic(username: String, password: String) -> [String: String] {
+    public static func getHTTPBasicAuthHeaders(username: String, password: String) -> [String: String] {
         let authData = (username + ":" + password).data(using: .utf8)!
         let authString = authData.base64EncodedString()
-        return(["Authorization": "Basic \(authString)"])
+        return ["Authorization": "Basic \(authString)"]
     }
 }
 

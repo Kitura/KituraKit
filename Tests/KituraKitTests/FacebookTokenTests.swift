@@ -51,7 +51,7 @@ class FacebookTokenTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        KituraKit.defaultHeaders = AuthHeaders.facebookToken("12345")
+        KituraKit.defaultHeaders = AuthHelpers.getFacebookAuthHeaders(token: "12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -67,7 +67,7 @@ class FacebookTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/facebookusers", headers: AuthHeaders.facebookToken("12345")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/facebookusers", headers: AuthHelpers.getFacebookAuthHeaders(token: "12345")) { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
@@ -82,7 +82,7 @@ class FacebookTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/facebookusers", headers: AuthHeaders.facebookToken("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/facebookusers", headers: AuthHelpers.getFacebookAuthHeaders(token: "wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return

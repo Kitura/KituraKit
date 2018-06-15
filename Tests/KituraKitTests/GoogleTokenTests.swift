@@ -51,7 +51,7 @@ class GoogleTokenTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        KituraKit.defaultHeaders = AuthHeaders.googleToken("12345")
+        KituraKit.defaultHeaders = AuthHelpers.getGoogleAuthHeaders(token: "12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -67,7 +67,7 @@ class GoogleTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/googleusers", headers: AuthHeaders.googleToken("12345")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/googleusers", headers: AuthHelpers.getGoogleAuthHeaders(token: "12345")) { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
@@ -82,7 +82,7 @@ class GoogleTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/googleusers", headers: AuthHeaders.googleToken("wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/googleusers", headers: AuthHelpers.getGoogleAuthHeaders(token: "wrongToken")) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return
