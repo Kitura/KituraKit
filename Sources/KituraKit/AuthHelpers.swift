@@ -14,13 +14,6 @@
  * limitations under the License.
  **/
 
-import Foundation
-
-import Foundation
-import LoggerAPI
-import SwiftyRequest
-import KituraContracts
-
 public struct AuthHelpers {
     
     /// Generate headers for a authenticating with a Facebook oauth token
