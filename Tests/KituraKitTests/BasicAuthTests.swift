@@ -55,8 +55,7 @@ class BasicAuthTests: XCTestCase {
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
-        KituraKit.defaultHeaders = AuthHelpers.getHTTPBasicAuthHeaders(username: "John", password: "12345")
-        
+        KituraKit.defaultAuth = HTTPBasicAuth(username: "John", password: "12345")
     }
     
     override func tearDown() {
@@ -68,7 +67,7 @@ class BasicAuthTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
         // Invoke GET operation on library
-        client.get("/authusers", headers: AuthHelpers.getHTTPBasicAuthHeaders(username: "John", password: "12345")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/authusers", authentication: HTTPBasicAuth(username: "Mary", password: "qwerasdf")  ) { (users: [User]?, error: RequestError?) -> Void in
             guard let users = users else {
                 XCTFail("Failed to get users! Error: \(String(describing: error))")
                 return
@@ -80,10 +79,10 @@ class BasicAuthTests: XCTestCase {
     }
     
     func testBasicAuthUnauthorized() {
-        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
-        client.get("/authusers", headers: AuthHelpers.getHTTPBasicAuthHeaders(username: "John", password: "WrongPassword")) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/authusers", authentication: HTTPBasicAuth(username: "Mary", password: "WrongPassword")) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return
@@ -95,10 +94,10 @@ class BasicAuthTests: XCTestCase {
     }
     
     func testBasicAuthNoHeaders() {
-        let expectation1 = expectation(description: "A response is received from the server -> array of users")
+        let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
-        client.get("/authusers", headers: [:]) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/authusers", authentication: nil) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return
