@@ -71,6 +71,7 @@ public struct HTTPBasic: ClientCredentials {
     /// The password for the given username
     public let password: String
 
+    /// Create an HTTP Basic credentials instance with the specified username and password.
     public init(username: String, password: String) {
         self.username = username
         self.password = password
@@ -110,6 +111,11 @@ public struct FacebookToken: ClientCredentials {
     /// The users Facebook Oauth token
     public let token: String
     
+    /// Create a Facebook Token credentials instance with the specified token data.
+    public init(token: String) {
+        self.token = token
+    }
+
     /// Function to generate headers using a provided token Facebook token authentication.
     /// The "X-token-type" header is set to be "FacebookToken"
     /// and the "access_token" header is set as the provided token.
@@ -142,6 +148,11 @@ public struct GoogleToken: ClientCredentials {
     /// The users Google Oauth token
     public let token: String
     
+    /// Create a Google Token credentials instance with the specified token data.
+    public init(token: String) {
+        self.token = token
+    }
+
     /// Function to generate headers using a provided token Google token authentication.
     /// The "X-token-type" header is set to be "GoogleToken"
     /// and the "access_token" header is set as the provided token.
@@ -151,7 +162,9 @@ public struct GoogleToken: ClientCredentials {
 }
 
 /**
- A type used to indicate that no credentials should be passed for this request.
+ A type used to indicate that no credentials should be passed for this request. This can
+ be used to override the default credentials for a client, to prevent those credentials
+ from being used for a particular request.
  ### Usage Example: ###
  ```swift
  client.get("/public", credentials: NilCredentials()) { (response: MyResponse?, error: RequestError?) -> Void in
@@ -163,6 +176,10 @@ public struct GoogleToken: ClientCredentials {
  ```
  */
 public struct NilCredentials: ClientCredentials {
+
+    /// Create an instance that represents no credentials.
+    public init() {}
+
     /// Returns an empty dictionary.
     public func getHeaders() -> [String : String] {
         return [:]
