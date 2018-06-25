@@ -62,18 +62,21 @@ git pull origin master
 swift package resolve
 
 rm -rf $projectDir/Sources/KituraKit/LoggerAPI
-cd .build/checkouts/LoggerAPI* && cp -r Sources/LoggerAPI $projectDir/Sources/KituraKit
+swift package edit LoggerAPI
+cp -r $projectDir/Packages/LoggerAPI/Sources/LoggerAPI $projectDir/Sources/KituraKit/
 
 rm -rf $projectDir/Sources/KituraKit/CircuitBreaker
-cd .build/checkouts/CircuitBreaker* && cp -r Sources/CircuitBreaker $projectDir/Sources/KituraKit
+swift package edit CircuitBreaker
+cp -r $projectDir/Packages/CircuitBreaker/Sources/CircuitBreaker $projectDir/Sources/KituraKit/
 
 rm -rf $projectDir/Sources/KituraKit/KituraContracts
-cd .build/checkouts/KituraContracts* && cp -r  Sources/KituraContracts $projectDir/Sources/KituraKit
+swift package edit KituraContracts
+cp -r $projectDir/Packages/KituraContracts/Sources/KituraContracts $projectDir/Sources/KituraKit/
 mv $projectDir/Sources/KituraKit/KituraContracts/CodableQuery/*.swift $projectDir/Sources/KituraKit/KituraContracts/
 
 rm -rf $projectDir/Sources/KituraKit/SwiftyRequest
-cd .build/checkouts/SwiftyRequest* && cp -r Sources/SwiftyRequest $projectDir/Sources/KituraKit
-
+swift package edit SwiftyRequest
+cp -r $projectDir/Packages/SwiftyRequest/Sources/SwiftyRequest $projectDir/Sources/KituraKit/
 
 # Remove all the import statements that aren't needed 
 read -a SWIFTFILES <<< $(find $projectDir/Sources -name "*.swift")
