@@ -70,7 +70,12 @@ public struct HTTPBasic: ClientCredentials {
     
     /// The password for the given username
     public let password: String
-    
+
+    public init(username: String, password: String) {
+        self.username = username
+        self.password = password
+    }
+
     /// Function to generate headers using a username and password for HTTP basic authentication.
     /// The "Authorization" header is set to be the string "Basic" followed by username:password
     /// encoded as a base64 encoded string.
@@ -144,3 +149,23 @@ public struct GoogleToken: ClientCredentials {
         return ["X-token-type": "GoogleToken", "access_token": self.token]
     }
 }
+
+/**
+ A type used to indicate that no credentials should be passed for this request.
+ ### Usage Example: ###
+ ```swift
+ client.get("/public", credentials: NilCredentials()) { (response: MyResponse?, error: RequestError?) -> Void in
+     guard let response = response else {
+         print("failed request: \(error)")
+     }
+     print("Successfully recieved \(response)")
+ }
+ ```
+ */
+public struct NilCredentials: ClientCredentials {
+    /// Returns an empty dictionary.
+    public func getHeaders() -> [String : String] {
+        return [:]
+    }
+}
+

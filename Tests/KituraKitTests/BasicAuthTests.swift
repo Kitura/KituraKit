@@ -55,7 +55,7 @@ class BasicAuthTests: XCTestCase {
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
-        KituraKit.defaultCredentials = HTTPBasic(username: "John", password: "12345")
+        client.defaultCredentials = HTTPBasic(username: "John", password: "12345")
     }
     
     override func tearDown() {
@@ -97,7 +97,7 @@ class BasicAuthTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
-        client.get("/authusers", credentials: nil) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/authusers", credentials: NilCredentials()) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return

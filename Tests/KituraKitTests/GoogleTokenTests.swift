@@ -51,7 +51,7 @@ class GoogleTokenTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        KituraKit.defaultCredentials = GoogleToken(token: "12345")
+        client.defaultCredentials = GoogleToken(token: "12345")
         let controller = Controller(userStore: initialStore)
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
@@ -97,7 +97,7 @@ class GoogleTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
-        client.get("/googleusers", credentials: nil) { (users: [User]?, error: RequestError?) -> Void in
+        client.get("/googleusers", credentials: NilCredentials()) { (users: [User]?, error: RequestError?) -> Void in
             guard let error = error else {
                 XCTFail("Got users unexpectantly! Users: \(String(describing: users))")
                 return
