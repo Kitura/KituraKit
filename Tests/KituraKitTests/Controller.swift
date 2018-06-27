@@ -35,6 +35,9 @@ public class Controller {
         self.employeeStore = employeeStore
         router = Router()
         setupRoutes()
+        setupBasicAuthRoutes()
+        setupFacebookAuthRoutes()
+        setupGoogleAuthRoutes()
     }
 
     private func setupRoutes() {
@@ -143,8 +146,262 @@ public class Controller {
         router.delete("/bodyerror") { (id: Int, respondWith: (RequestError?) -> Void) in respondWith(RequestError(.conflict, body: Status("Boo"))) }
         router.delete("/bodyerror") { (respondWith: (RequestError?) -> Void) in respondWith(RequestError(.conflict, body: Status("Boo"))) }
     }
+    
+    private func setupBasicAuthRoutes() {
+        // users routes
+        router.get("/authusers")  { (profile: MyBasicAuth, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.map({ $0.value })
+            respondWith(users, nil)
+        }
+        
+        router.get("/authusers") { (profile: MyBasicAuth, id: Int, respondWith: (User?, RequestError?) -> Void) in
+            guard let user = self.userStore[id.value] else {
+                respondWith(nil, .notFound)
+                return
+            }
+            respondWith(user, nil)
+        }
+        
+        router.post("/authusers") { (profile: MyBasicAuth, user: User?, respondWith: (User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user, nil)
+        }
+        
+        router.post("/authusersid") { (profile: MyBasicAuth, user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user.id, user, nil)
+        }
+        
+        router.put("/authusers") { (profile: MyBasicAuth, id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
+            self.userStore[String(id)] = user
+            respondWith(user, nil)
+        }
+        router.patch("/authusers") { (profile: MyBasicAuth, id: Int, user: UserOptional?, respondWith: (User?, RequestError?) -> Void) in
+            guard let exisitingUser = self.userStore[id.value] else {
+                respondWith(nil, .notFound)
+                return
+            }
+            if let userName = user?.name {
+                let updatedUser = User(id: id, name: userName)
+                self.userStore[id.value] = updatedUser
+                respondWith(updatedUser, nil)
+            } else {
+                respondWith(exisitingUser, nil)
+            }
+        }
+        
+        router.delete("/authusers") { (profile: MyBasicAuth, id: Int, respondWith: (RequestError?) -> Void) in
+            guard let _ = self.userStore.removeValue(forKey: id.value) else {
+                respondWith(.notFound)
+                return
+            }
+            respondWith(nil)
+        }
+        
+        router.delete("/authusers") { (profile: MyBasicAuth, respondWith: (RequestError?) -> Void) in
+            self.userStore.removeAll()
+            respondWith(nil)
+        }
+        
+        router.delete("/authusersWithQueryParams") { (profile: MyBasicAuth, queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
+            self.userStore.forEach {
+                if $1.name == queryParams.name {
+                    self.userStore[$0] = nil
+                }
+            }
+            respondWith(nil)
+        }
+        
+        router.get("/authusersWithQueryParams") { (profile: MyBasicAuth, queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.reduce([User]()) { acc, el in
+                var acc = acc
+                if el.value.name == queryParams.name {
+                    acc.append(el.value)
+                }
+                return acc
+            }
+            respondWith(users, nil)
+        }
+    }
 
-
+    private func setupFacebookAuthRoutes() {
+        // users routes
+        router.get("/facebookusers")  { (profile: MyFacebookAuth, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.map({ $0.value })
+            respondWith(users, nil)
+        }
+        
+        router.get("/facebookusers") { (profile: MyFacebookAuth, id: Int, respondWith: (User?, RequestError?) -> Void) in
+            guard let user = self.userStore[id.value] else {
+                respondWith(nil, .notFound)
+                return
+            }
+            respondWith(user, nil)
+        }
+        
+        router.post("/facebookusers") { (profile: MyFacebookAuth, user: User?, respondWith: (User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user, nil)
+        }
+        
+        router.post("/facebookusersid") { (profile: MyFacebookAuth, user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user.id, user, nil)
+        }
+        
+        router.put("/facebookusers") { (profile: MyFacebookAuth, id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
+            self.userStore[String(id)] = user
+            respondWith(user, nil)
+        }
+        router.patch("/facebookusers") { (profile: MyFacebookAuth, id: Int, user: UserOptional?, respondWith: (User?, RequestError?) -> Void) in
+            guard let exisitingUser = self.userStore[id.value] else {
+                respondWith(nil, .notFound)
+                return
+            }
+            if let userName = user?.name {
+                let updatedUser = User(id: id, name: userName)
+                self.userStore[id.value] = updatedUser
+                respondWith(updatedUser, nil)
+            } else {
+                respondWith(exisitingUser, nil)
+            }
+        }
+        
+        router.delete("/facebookusers") { (profile: MyFacebookAuth, id: Int, respondWith: (RequestError?) -> Void) in
+            guard let _ = self.userStore.removeValue(forKey: id.value) else {
+                respondWith(.notFound)
+                return
+            }
+            respondWith(nil)
+        }
+        
+        router.delete("/facebookusers") { (profile: MyFacebookAuth, respondWith: (RequestError?) -> Void) in
+            self.userStore.removeAll()
+            respondWith(nil)
+        }
+        
+        router.delete("/facebookusersWithQueryParams") { (profile: MyFacebookAuth, queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
+            self.userStore.forEach {
+                if $1.name == queryParams.name {
+                    self.userStore[$0] = nil
+                }
+            }
+            respondWith(nil)
+        }
+        
+        router.get("/facebookusersWithQueryParams") { (profile: MyFacebookAuth, queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.reduce([User]()) { acc, el in
+                var acc = acc
+                if el.value.name == queryParams.name {
+                    acc.append(el.value)
+                }
+                return acc
+            }
+            respondWith(users, nil)
+        }
+    }
+    
+    private func setupGoogleAuthRoutes() {
+        // users routes
+        router.get("/googleusers")  { (profile: MyGoogleAuth, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.map({ $0.value })
+            respondWith(users, nil)
+        }
+        
+        router.get("/googleusers") { (profile: MyGoogleAuth, id: Int, respondWith: (User?, RequestError?) -> Void) in
+            guard let user = self.userStore[id.value] else {
+                respondWith(nil, .notFound)
+                return
+            }
+            respondWith(user, nil)
+        }
+        
+        router.post("/googleusers") { (profile: MyGoogleAuth, user: User?, respondWith: (User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user, nil)
+        }
+        
+        router.post("/googleusersid") { (profile: MyGoogleAuth, user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, nil, .badRequest)
+                return
+            }
+            self.userStore[String(user.id)] = user
+            respondWith(user.id, user, nil)
+        }
+        
+        router.put("/googleusers") { (profile: MyGoogleAuth, id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
+            self.userStore[String(id)] = user
+            respondWith(user, nil)
+        }
+        router.patch("/googleusers") { (profile: MyGoogleAuth, id: Int, user: UserOptional?, respondWith: (User?, RequestError?) -> Void) in
+            guard let exisitingUser = self.userStore[id.value] else {
+                respondWith(nil, .notFound)
+                return
+            }
+            if let userName = user?.name {
+                let updatedUser = User(id: id, name: userName)
+                self.userStore[id.value] = updatedUser
+                respondWith(updatedUser, nil)
+            } else {
+                respondWith(exisitingUser, nil)
+            }
+        }
+        
+        router.delete("/googleusers") { (profile: MyGoogleAuth, id: Int, respondWith: (RequestError?) -> Void) in
+            guard let _ = self.userStore.removeValue(forKey: id.value) else {
+                respondWith(.notFound)
+                return
+            }
+            respondWith(nil)
+        }
+        
+        router.delete("/googleusers") { (profile: MyGoogleAuth, respondWith: (RequestError?) -> Void) in
+            self.userStore.removeAll()
+            respondWith(nil)
+        }
+        
+        router.delete("/googleusersWithQueryParams") { (profile: MyGoogleAuth, queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
+            self.userStore.forEach {
+                if $1.name == queryParams.name {
+                    self.userStore[$0] = nil
+                }
+            }
+            respondWith(nil)
+        }
+        
+        router.get("/googleusersWithQueryParams") { (profile: MyGoogleAuth, queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
+            let users = self.userStore.reduce([User]()) { acc, el in
+                var acc = acc
+                if el.value.name == queryParams.name {
+                    acc.append(el.value)
+                }
+                return acc
+            }
+            respondWith(users, nil)
+        }
+    }
+    
     public func updateUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
