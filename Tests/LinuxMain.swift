@@ -20,5 +20,8 @@ import XCTest
 
 XCTMain([
     testCase(MainTests.allTests),
+    testCase(BasicAuthTests.allTests),
+    testCase(FacebookTokenTests.allTests),
+    testCase(GoogleTokenTests.allTests)
     //testCase(PersistableTests.allTests)
 ])
