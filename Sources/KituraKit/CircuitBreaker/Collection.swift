@@ -15,7 +15,6 @@
  **/
 
 import Foundation
-import Dispatch
 
 /// Generic Semaphore protected queue
 class Collection<T> {

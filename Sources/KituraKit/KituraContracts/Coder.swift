@@ -16,21 +16,44 @@
 
 import Foundation
 
-/// Class defining shared resources for the QueryDecoder and QueryEncoder
+/**
+ Class defining shared resources for the [QueryDecoder](https://github.com/IBM-Swift/KituraContracts/blob/master/Sources/KituraContracts/CodableQuery/QueryDecoder.swift) and [QueryEncoder](https://github.com/IBM-Swift/KituraContracts/blob/master/Sources/KituraContracts/CodableQuery/QueryEncoder.swift).
+ 
+ ### Usage Example: ###
+ ````swift
+ let date = Coder().dateFormatter.date(from: "2017-10-31T16:15:56+0000")!
+ ````
+ */
 public class Coder {
 
-    /// The designated DateFormatter used for encoding and decoding query parameters
+    /**
+     The designated [DateFormatter](https://developer.apple.com/documentation/foundation/dateformatter) used for encoding and decoding query parameters.
+     
+     ### Usage Example: ###
+     ````swift
+     let date = Coder().dateFormatter.date(from: "2017-10-31T16:15:56+0000")
+     ````
+     */
     public let dateFormatter: DateFormatter
 
-    /// Initializes a Coder instance with a Date Formatter
-    /// using the "UTC" timezone and "yyyy-MM-dd'T'HH:mm:ssZ" date format
+    /**
+    Initializes a `Coder` instance with a `DateFormatter`
+    using the "UTC" timezone and "yyyy-MM-dd'T'HH:mm:ssZ" date format.
+     */
     public init() {
         self.dateFormatter = DateFormatter()
         self.dateFormatter.timeZone = TimeZone(identifier: "UTC")
         self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
     }
 
-    /// Helper method to extract the field name from a CodingKey array
+    /**
+     Helper method to extract the field name from a `CodingKey` array.
+     
+     ### Usage Example: ###
+     ````swift
+     let fieldName = Coder.getFieldName(from: codingPath)
+     ````
+     */
     public static func getFieldName(from codingPath: [CodingKey]) -> String {
         #if swift(>=4.1)
             return codingPath.compactMap({$0.stringValue}).joined(separator: ".")

@@ -16,30 +16,79 @@
 
 import Foundation
 
-/// Query Parameter Decoder
-/// Decodes a [String: String] object to a Decodable object instance
+/**
+ Query Parameter Decoder decodes a `[String: String]` object to a `Decodable` object instance. The decode function takes the `Decodable` object as a parameter to decode the dictionary into.
+ 
+ ### Usage Example: ###
+ ````swift
+ let dict = ["intField": "23", "stringField": "a string", "intArray": "1,2,3", "dateField": "2017-10-31T16:15:56+0000", "optionalDateField": "2017-10-31T16:15:56+0000", "nested": "{\"nestedIntField\":333,\"nestedStringField\":\"nested string\"}" ]
+ 
+ guard let query = try? QueryDecoder(dictionary: dict).decode(MyQuery.self) else {
+     print("Failed to decode query to MyQuery Object")
+     return
+ }
+ ````
+ 
+ ### Decoding Empty Values:
+ When an HTML form is sent with an empty or unchecked field, the corresponding key/value pair is sent with an empty value (i.e. `&key1=&key2=`).
+ The corresponding mapping to Swift types performed by `QueryDecoder` is as follows:
+ - Any Optional type (including `String?`) defaults to `nil`
+ - Non-optional `String` successfully decodes to `""`
+ - Non-optional `Bool` decodes to `false`
+ - All other non-optional types throw a decoding error
+ */
 public class QueryDecoder: Coder, Decoder {
-
+    
+    /**
+     The coding key path.
+     
+     ### Usage Example: ###
+     ````swift
+     let fieldName = Coder.getFieldName(from: codingPath)
+     ````
+     */
     public var codingPath: [CodingKey] = []
 
+    /**
+     The coding user info key.
+     */
     public var userInfo: [CodingUserInfoKey : Any] = [:]
 
+    /**
+     A `[String: String]` dictionary.
+     */
     public var dictionary: [String : String]
 
+    /**
+     Initializer with a `[String : String]` dictionary.
+     */
     public init(dictionary: [String : String]) {
         self.dictionary = dictionary
         super.init()
     }
 
-    /// Decodes a String -> String mapping to its Decodable object representation
-    ///
-    /// - Parameter _ value: The Decodable object to decode the dictionary into
+    /**
+     Decodes a `[String: String]` mapping to its Decodable object representation.
+     
+     - Parameter value: The Decodable object to decode the dictionary into.
+     
+     ### Usage Example: ###
+     ````swift
+     guard let query = try? QueryDecoder(dictionary: expectedDict).decode(MyQuery.self) else {
+         print("Failed to decode query to MyQuery Object")
+         return
+     }
+     ````
+     */
     public func decode<T: Decodable>(_ type: T.Type) throws -> T {
         let fieldName = Coder.getFieldName(from: codingPath)
         let fieldValue = dictionary[fieldName]
         Log.verbose("fieldName: \(fieldName), fieldValue: \(String(describing: fieldValue))")
 
         switch type {
+        /// Bool
+        case is Bool.Type:
+            return try decodeType(fieldValue?.boolean, to: T.self)
         /// Ints
         case is Int.Type:
             return try decodeType(fieldValue?.int, to: T.self)
@@ -104,6 +153,33 @@ public class QueryDecoder: Coder, Decoder {
             return try decodeType(fieldValue?.string, to: T.self)
         case is [String].Type:
             return try decodeType(fieldValue?.stringArray, to: T.self)
+        case is Operation.Type:
+            if let oType = type as? Operation.Type,
+               let value = fieldValue?.string {
+              let result = try oType.init(string: value)
+              if let castedValue = result as? T {
+                return castedValue
+              }
+            }
+            return try decodeType(fieldValue?.decodable(T.self), to: T.self)
+        case is Ordering.Type:
+            if let oType = type as? Ordering.Type,
+               let value = fieldValue?.string {
+              let result = try oType.init(string: value)
+              if let castedValue = result as? T {
+                return castedValue
+              }
+            }
+            return try decodeType(fieldValue?.decodable(T.self), to: T.self)
+        case is Pagination.Type:
+            if let oType = type as? Pagination.Type,
+               let value = fieldValue?.string {
+              let result = try oType.init(string: value)
+              if let castedValue = result as? T {
+                return castedValue
+              }
+            }
+            return try decodeType(fieldValue?.decodable(T.self), to: T.self)
         default:
             Log.verbose("Decoding Custom Type: \(T.Type.self)")
             if fieldName.isEmpty {
@@ -115,14 +191,38 @@ public class QueryDecoder: Coder, Decoder {
         }
     }
 
+    /**
+     Returns a keyed decoding container based on the key type.
+
+     ### Usage Example: ###
+     ````swift
+     decoder.container(keyedBy: keyType)
+     ````
+     */
     public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key : CodingKey {
         return KeyedDecodingContainer(KeyedContainer<Key>(decoder: self))
     }
 
+    /**
+     Returns an unkeyed decoding container.
+     
+     ### Usage Example: ###
+     ````swift
+     decoder.unkeyedContainer()
+     ````
+     */
     public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
         return UnkeyedContainer(decoder: self)
     }
 
+    /**
+     Returns a single value decoding container based on the key type.
+     
+     ### Usage Example: ###
+     ````swift
+     decoder.singleValueContainer()
+     ````
+     */
     public func singleValueContainer() throws -> SingleValueDecodingContainer {
         return UnkeyedContainer(decoder: self)
     }
@@ -153,16 +253,16 @@ public class QueryDecoder: Coder, Decoder {
         func contains(_ key: Key) -> Bool {
           return decoder.dictionary[key.stringValue] != nil
         }
-      
+
         func decode<T>(_ type: T.Type, forKey key: Key) throws -> T where T : Decodable {
           self.decoder.codingPath.append(key)
           defer { self.decoder.codingPath.removeLast() }
           return try decoder.decode(T.self)
         }
 
-        // If it is not in the dictionary it should be nil
+        // If it is not in the dictionary or it is a empty string it should be nil
         func decodeNil(forKey key: Key) throws -> Bool {
-          return !contains(key)
+          return decoder.dictionary[key.stringValue]?.isEmpty ??  true
         }
 
         func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: Key) throws -> KeyedDecodingContainer<NestedKey> where NestedKey : CodingKey {

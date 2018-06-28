@@ -15,7 +15,6 @@
  **/
 
 import Foundation
-import Dispatch
 
 /// Invocation entity
 public class Invocation<A, B> {

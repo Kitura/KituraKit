@@ -15,7 +15,6 @@
  **/
 
 import Foundation
-import Dispatch
 
 /// Bulkhead
 class Bulkhead {
