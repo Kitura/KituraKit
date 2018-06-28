@@ -15,6 +15,9 @@
 # limitations under the License.
 ##
 
+# Store the absolute path of the project root directory in a variable.
+projectDir=$(pwd)
+
 osName="linux"
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then osName="osx"; fi
 export osName
@@ -58,39 +61,35 @@ git pull origin master
 
 swift package resolve
 
-cd .build/checkouts/LoggerAPI*
-rm -rf ../../../Sources/KituraKit/LoggerAPI
-cp -r Sources/LoggerAPI ../../../Sources/KituraKit
+rm -rf $projectDir/Sources/KituraKit/LoggerAPI
+swift package edit LoggerAPI
+cp -r $projectDir/Packages/LoggerAPI/Sources/LoggerAPI $projectDir/Sources/KituraKit/
 
-cd ../CircuitBreaker*
-rm -rf ../../../Sources/KituraKit/CircuitBreaker
-cp -r Sources/CircuitBreaker ../../../Sources/KituraKit
+rm -rf $projectDir/Sources/KituraKit/CircuitBreaker
+swift package edit CircuitBreaker
+cp -r $projectDir/Packages/CircuitBreaker/Sources/CircuitBreaker $projectDir/Sources/KituraKit/
 
-cd ../KituraContracts*
-rm -rf ../../../Sources/KituraKit/KituraContracts
-cp -r  Sources/KituraContracts ../../../Sources/KituraKit
-mv ../../../Sources/KituraKit/KituraContracts/CodableQuery/*.swift ../../../Sources/KituraKit/KituraContracts/
+rm -rf $projectDir/Sources/KituraKit/KituraContracts
+swift package edit KituraContracts
+cp -r $projectDir/Packages/KituraContracts/Sources/KituraContracts $projectDir/Sources/KituraKit/
+mv $projectDir/Sources/KituraKit/KituraContracts/CodableQuery/*.swift $projectDir/Sources/KituraKit/KituraContracts/
 
-cd ../SwiftyRequest*
-rm -rf ../../../Sources/KituraKit/SwiftyRequest
-cp -r Sources/SwiftyRequest ../../../Sources/KituraKit
-
-cd ../../../Sources/KituraKit
+rm -rf $projectDir/Sources/KituraKit/SwiftyRequest
+swift package edit SwiftyRequest
+cp -r $projectDir/Packages/SwiftyRequest/Sources/SwiftyRequest $projectDir/Sources/KituraKit/
 
 # Remove all the import statements that aren't needed 
-read -a SWIFTFILES <<< $(find .. -name "*.swift")
+read -a SWIFTFILES <<< $(find $projectDir/Sources -name "*.swift")
 for file in "${SWIFTFILES[@]}"
 do
 	tempfile=$(mktemp)
-	python ../../ci/filter_imports.py $file > $tempfile
+	python $projectDir/ci/filter_imports.py $file > $tempfile
 	mv $tempfile $file
 	chmod a+r $file
 done
 
-cd ../../../
-
-rm -rf swift-4.0-RELEASE-ubuntu14.04/
-rm -rf Package-Builder/
+rm -rf $projectDir/swift-4.0-RELEASE-ubuntu14.04/
+rm -rf $projectDir/Package-Builder/
 git add -A
 NEW_VERSION='cat ci/VERSION'
 git commit -m "Updating pod branch to version: $NEW_VERSION"
