@@ -8,8 +8,8 @@
 
 
 <p align="center">
-    <a href="http://www.kitura.io/">
-    <img src="https://img.shields.io/badge/docs-kitura.io-1FBCE4.svg" alt="Docs">
+    <a href="https://ibm-swift.github.io/KituraKit/index.html">
+    <img src="https://img.shields.io/badge/apidoc-KituraKit-1FBCE4.svg?style=flat" alt="APIDoc">
     </a>
     <a href="https://travis-ci.org/IBM-Swift/KituraKit">
     <img src="https://travis-ci.org/IBM-Swift/KituraKit.svg?branch=master" alt="Build Status - Master">
@@ -35,9 +35,9 @@ KituraKit allows developers to use the Swift 4 Codable protocol in their front a
 
 #### Using an existing Podfile
 
-1. Open your Podfile with your preferred text editor
+1. Open your Podfile with your preferred text editor.
 
-2. Find the list of your currently installed pods and add to that list the following:
+2. Find the list of your currently installed pods and add to that list:
 ```
 pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch => 'pod'
 ```
@@ -45,27 +45,54 @@ pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch =
 
 #### Creating a new Podfile
 
-1. Navigate to the root of your project (where your .xcodeproj directory is)
+1. Navigate to the root of your project (the directory containing your `.xcodeproj` file).
 
-2. Run `pod init`  This will create a Podfile in your current directory.
+2. Run `pod init`.  This will create a Podfile in your current directory.
 
 3. Open the Podfile with your preferred text editer and under the "# Pods for 'your_project_name'>" line add:
 ```
 pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch => 'pod'
 ```
-4. Install KituraKit by running the command: `pod install`
+4. Install KituraKit by running the command: `pod install`.
 
-5. As well as installing KituraKit the `pod install` also creates an Xcode workspace which contains all of your installed pods. So you'll need to open the .xcworkspace (not .xcodeproj) to have access to those pods. This is the default behaviour of [Cocoapods](https://guides.cocoapods.org/using/getting-started.html).
+5. As well as installing KituraKit the `pod install` also creates an Xcode workspace which contains all of your installed pods. So you'll need to open the `.xcworkspace` file (not `.xcodeproj`) to have access to those pods. This is the default behaviour of [Cocoapods](https://guides.cocoapods.org/using/getting-started.html).
 
-### Examples
+### SPM Installation
 
-To run through a FoodTracker tutorial which covers various components of Kitura, including KituraKit, [click here](https://github.com/IBM/FoodTrackerBackend)
+We expect users on the client side to use the Cocoapod installation, however, if you require access to KituraKit from the server you can use Swift Package Manager.
 
-To try out the sample iOS project for yourself, making use of KituraKit, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit).
+#### Add dependencies
 
-## Swift version
-The 0.0.x releases were tested on macOS and Linux using the Swift 4.0.3 binary. Please note that this is the default version of Swift that is include in [Xcode 9.2](https://developer.apple.com/xcode/).
+Add the `KituraKit` package to the dependencies within your application’s `Package.swift` file. Substitute `"x.x.x"` with the latest `KituraKit` [release](https://github.com/IBM-Swift/KituraKit/releases).
+
+```swift
+.package(url: "https://github.com/IBM-Swift/KituraKit.git", from: "x.x.x")
+```
+
+Add `KituraKit` to your target's dependencies:
+
+```swift
+.target(name: "example", dependencies: ["KituraKit"]),
+```
+
+#### Import package
+
+  ```swift
+  import KituraKit
+  ```
+
+## Examples
+
+To run through a FoodTracker tutorial which covers various components of Kitura, including KituraKit, [click here](https://github.com/IBM/FoodTrackerBackend).
+
+To try out a sample iOS project yourself, which makes use of KituraKit, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit).
+
+## API Documentation
+For more information visit our [API reference](https://ibm-swift.github.io/KituraKit/index.html).
 
 ## Community
 
-We love to talk server-side Swift and Kitura. Join our [Slack](http://swift-at-ibm-slack.mybluemix.net/) to meet the team!
+We love to talk server-side Swift, and Kitura. Join our [Slack](http://swift-at-ibm-slack.mybluemix.net/) to meet the team!
+
+## License
+This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/KituraKit/blob/master/LICENSE).
