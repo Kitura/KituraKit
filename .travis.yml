@@ -22,7 +22,7 @@ jobs:
       - os: linux
       - os: osx
         osx_image: xcode9.2
-        env: SWIFT_SNAPSHOT=4.0.3
+        env: SWIFT_SNAPSHOT=4.0.3 JAZZY_ELIGIBLE=true
       - os: osx
         osx_image: xcode9.3
       - stage: Update
