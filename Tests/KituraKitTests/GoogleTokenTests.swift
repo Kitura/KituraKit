@@ -143,7 +143,7 @@ class GoogleTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
         // Invoke POST operation on library
-        let newUser = User(id: 5, name: "John Doe")
+        let newUser = User(id: 5, name: "John Doe", date: date)
         
         client.post("/googleusers", data: newUser) { (user: User?, error: RequestError?) -> Void in
             guard let user = user else {
@@ -162,7 +162,7 @@ class GoogleTokenTests: XCTestCase {
         
         // Invoke POST operation on library
         let userId = 5
-        let newUser = User(id: userId, name: "John Doe")
+        let newUser = User(id: userId, name: "John Doe", date: date)
         
         client.post("/googleusersid", data: newUser) { (id: Int?, user: User?, error: RequestError?) -> Void in
             guard let user = user else {
@@ -185,7 +185,7 @@ class GoogleTokenTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
         // Invoke PUT operation on library
-        let expectedUser = User(id: 5, name: "John Doe")
+        let expectedUser = User(id: 5, name: "John Doe", date: date)
         
         client.put("/googleusers", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: RequestError?) -> Void in
             
@@ -203,7 +203,7 @@ class GoogleTokenTests: XCTestCase {
     func testGoogleTokenClientPatch() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
         
-        let expectedUser = User(id: 4, name: "John Doe")
+        let expectedUser = User(id: 4, name: "John Doe", date: date)
         
         client.patch("/googleusers", identifier: String(describing: expectedUser.id), data: expectedUser) { (user: User?, error: RequestError?) -> Void in
             guard let user = user else {
