@@ -25,6 +25,8 @@ jobs:
       - os: linux
         env: DOCKER_IMAGE=ubuntu:16.04
       - os: linux
+        env: DOCKER_IMAGE=ubuntu:16.04 SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
+      - os: linux
         env: DOCKER_IMAGE=ubuntu:18.04
       - os: osx
         osx_image: xcode9.2
@@ -34,6 +36,9 @@ jobs:
         env: SWIFT_SNAPSHOT=4.1.2 JAZZY_ELIGIBLE=true
       - os: osx
         osx_image: xcode10
+      - os: osx
+        osx_image: xcode10.1
+        env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
       - stage: Update
         script: ci/update.sh
         if: type = push AND branch = master
