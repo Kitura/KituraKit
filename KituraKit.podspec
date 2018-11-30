@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "10.0"
   s.source   = { :git => "https://github.com/IBM-Swift/KituraKit.git", :tag => s.version }
   s.source_files = "Sources/KituraKit/*.swift"
-  s.dependency 'SwiftyRequest', '~> 1.1'
+  s.dependency 'SwiftyRequest', '~> 2.0'
   s.dependency 'KituraContracts', '~> 1.0'
 end
