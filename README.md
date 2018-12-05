@@ -33,25 +33,13 @@ KituraKit allows developers to use the Swift 4 Codable protocol in their front a
 
 ### Cocoapod Installation
 
-#### Using an existing Podfile
-
-1. Open your Podfile with your preferred text editor
-
-2. Find the list of your currently installed pods and add to that list the following:
-```
-pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch => 'pod'
-```
-3. Run `pod install` to install KituraKit.
-
-#### Creating a new Podfile
-
 1. Navigate to the root of your project (where your .xcodeproj directory is)
 
-2. Run `pod init`  This will create a Podfile in your current directory.
+2. If you don't already have a podfile, run `pod init`  to create a new podfile in your current directory.
 
 3. Open the Podfile with your preferred text editer and under the "# Pods for 'your_project_name'>" line add:
 ```
-pod 'KituraKit', :git => 'https://github.com/IBM-Swift/KituraKit.git', :branch => 'pod'
+pod 'KituraKit'
 ```
 4. Install KituraKit by running the command: `pod install`
 

@@ -25,9 +25,3 @@ jobs:
         env: SWIFT_SNAPSHOT=4.0.3
       - os: osx
         osx_image: xcode9.3
-      - stage: Update
-        script: ci/update.sh
-        if: type = push AND branch = master
-      - stage: Release
-        script: ci/release.sh
-        if: type = push AND branch = master
