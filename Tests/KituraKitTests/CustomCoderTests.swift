@@ -53,8 +53,9 @@ class CustomCoderTests: XCTestCase {
         controller.router.decoders[MediaType(type: .application, subType: "custom")] = customDecoder
         Kitura.addHTTPServer(onPort: 8080, with: controller.router)
         Kitura.start()
-        client.encoder = Encoder(bodyEncoder: customEncoder, contentType: "application/custom")
-        client.decoder = Decoder(bodyDecoder: customDecoder, accept: "application/custom")
+        client.encoder = customEncoder()
+        client.decoder = customDecoder()
+        client.mediaType = "application/custom"
 
     }
     
