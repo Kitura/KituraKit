@@ -25,9 +25,12 @@
 
 # KituraKit -  A Kitura v2 Client Library
 
-[Kitura](http://kitura.io) is a lightweight web framework for creating complex web routes for web applications.
+[Kitura](http://kitura.io) is a lightweight web framework for writing Swift server applications.
 
-KituraKit allows developers to use the Swift 4 Codable protocol in their front and back end applications and use the same code on the front and backend.
+KituraKit is a client side framework for sending HTTP requests to a Kitura server. By using the Swift `Codable` protocol, you can send and receive models directly from client to server.
+
+## Swift version
+The latest version of KituraKit requires **Swift 4.0** or later. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
 
 ## Usage
 
@@ -75,10 +78,115 @@ To run through a FoodTracker tutorial which covers various components of Kitura,
 
 To try out the sample iOS project for yourself, making use of KituraKit, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit).
 
-## Swift version
-The 0.0.x releases were tested on macOS and Linux using the Swift 4.0.3 binary. Please note that this is the default version of Swift that is include in [Xcode 9.2](https://developer.apple.com/xcode/).
-
 ## API Documentation
+
+### KituraKit
+
+The `KituraKit` class handles the connection to your Kitura server and executes the REST requests.
+
+You create a `KituraKit` instance by providing the URL of your Kitura server:
+```swift
+guard let client = KituraKit(baseURL: "http://localhost:8080") else {
+    print("Error creating KituraKit client")
+}
+```
+
+#### Codable Models
+
+Kitura and KituraKit send and receives instances of Swift types directly. These types (aka models) can be shared between the client and server.
+
+The only requirement for a model is that they conform to the `Codable` protocol:
+
+```swift
+public struct User: Codable {
+    public let name: String
+    public init(name: String) {
+        self.name = name
+    }
+}
+```
+
+#### HTTP Requests
+
+KituraKit signatures for HTTP requests mirror Kitura's Codable routes.
+
+If you had the following GET route on your server:
+```swift
+// Kitura server route
+router.get("/users") { (completion: ([User]?, RequestError?) -> Void) in
+    let users = [User(name: "Joe"), User(name: "Bloggs")]
+    completion(users, nil)
+}
+```
+You would make a request to it using the `get` function on your `KituraKit` client:
+```swift
+// KituraKit client request
+client.get("/users") { (users: [User]?, error: RequestError?) -> Void in
+    if let users = users {
+        // Work with returned users here
+    }
+}
+```
+
+Similarly, to make a request to a Kitura POST route:
+```swift
+// Kitura server route
+router.post("/users") { (user: User, completion: (User?, RequestError?) -> Void) in
+    completion(user, nil)
+}
+```
+You would make a request to it using the `post` function on your `KituraKit` client:
+```swift
+// KituraKit client request
+let newUser = User(name: "Kitura")
+client.post("/users", data: newUser) { (user: User?, error: RequestError?) -> Void in
+    if let user = user else {
+        // POST successful, Work with returned users here
+    }
+}
+```
+
+KituraKit supports the following REST requests:
+- GET a Codable object.
+- GET a Codable object using an identifier.
+- GET a Codable object using query parameters.
+- POST a Codable object.
+- POST a Codable object and be returned an identifier.
+- PUT a Codable object using an identifier.
+- PATCH a Codable object using an identifier.
+- DELETE using an identifier.
+- DELETE without an identifier.
+
+### Authentication
+
+The Kitura server can authenticate users using the [Credentials](https://github.com/IBM-Swift/Kitura-Credentials) repository. KituraKit allows you to providing credentials alongside your request to identify yourself to the server.
+
+**Note:** When sending credentials you should always use HTTPS to avoid sending passwords/tokens as plaintext.
+
+You can set default credentials for your client which will be attached to all requests. If your server is using [Kitura-CredentialsHTTP](https://github.com/IBM-Swift/Kitura-CredentialsHTTP) for basic authentication, you would provide the username and password as follows:
+```swift
+guard let client = KituraKit(baseURL: "https://localhost:8080") else {
+    print("Error creating KituraKit client")
+}
+client.defaultCredentials = HTTPBasic(username: "John", password: "12345")
+```
+
+Alternatively, you can provide the credentials directly on the request:
+```swift
+let credentials = HTTPBasic(username: "Mary", password: "abcde")
+client.get("/protected", credentials: credentials) { (users: [User]?, error: RequestError?) -> Void in
+    if let users = users {
+        // work with users
+    }
+}
+```
+
+KituraKit supports client side authentication for the following plugins:
+
+- HTTP Basic using [Kitura-CredentialsHTTP](https://github.com/IBM-Swift/Kitura-CredentialsHTTP).
+- Facebook OAuth token using [Kitura-CredentialsFacebook](https://github.com/IBM-Swift/Kitura-CredentialsFacebook)
+- Google OAuth token using [Kitura-CredentialsGoogle](https://github.com/IBM-Swift/Kitura-CredentialsGoogle)
+
 For more information visit our [API reference](https://ibm-swift.github.io/KituraKit/index.html).
 
 ## Community
