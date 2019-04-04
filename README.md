@@ -30,7 +30,7 @@
 KituraKit is a client side framework for sending HTTP requests to a Kitura server. By using the Swift `Codable` protocol, you can send and receive models directly from client to server.
 
 ## Swift version
-The latest version of KituraKit requires **Swift 4.0** or later. You can download this version of the Swift binaries by following this [link](https://swift.org/download/). Compatibility with other Swift versions is not guaranteed.
+The latest version of KituraKit requires **Swift 4.0** or later. You can download this version of the Swift binaries by following this [link](https://swift.org/download/).
 
 ## Usage
 
