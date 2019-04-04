@@ -1,16 +1,10 @@
-# Travis CI build file for KituraKit.
+# Travis CI build file.
 
+# whitelist (branches that should be built)
 branches:
   only:
     - master
-    - develop
     - /^issue.*$/
-
-before_install:
-  - git clone https://github.com/IBM-Swift/Package-Builder.git
-
-script:
-  - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR
 
 dist: xenial
 sudo: required
@@ -46,3 +40,9 @@ jobs:
       - os: osx
         osx_image: xcode10.2
         env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
+
+before_install:
+  - git clone https://github.com/IBM-Swift/Package-Builder.git
+
+script:
+  - ./Package-Builder/build-package.sh -projectDir $TRAVIS_BUILD_DIR
