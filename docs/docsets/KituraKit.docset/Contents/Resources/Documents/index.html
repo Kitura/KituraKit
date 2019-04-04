@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
           KituraKit Docs
         </a>
-         (96% documented)
+         (100% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -65,6 +65,34 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ClientCredentials.html">ClientCredentials</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ClientCertificate.html">ClientCertificate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/FacebookToken.html">FacebookToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/GoogleToken.html">GoogleToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/HTTPBasic.html">HTTPBasic</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/NilCredentials.html">NilCredentials</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -72,48 +100,175 @@
         <section class="section">
           <div class="section-content">
             
-            <h1 id='kiturakit-a-kitura-v2-client-library' class='heading'>KituraKit -  A Kitura v2 Client Library</h1>
+            <p align="center">
+    <a href="http://kitura.io/">
+        <img src="https://raw.githubusercontent.com/IBM-Swift/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
+    </a>
+</p>
 
-<p><a href="https://travis-ci.org/IBM-Swift/KituraKit"><img src="https://travis-ci.org/IBM-Swift/KituraKit.svg?branch=master" alt="Build Status"></a>
-<img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
-<img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux"></p>
+<p align="center">
+    <a href="https://ibm-swift.github.io/KituraKit/index.html">
+    <img src="https://img.shields.io/badge/apidoc-KituraKit-1FBCE4.svg?style=flat" alt="APIDoc">
+    </a>
+    <a href="https://travis-ci.org/IBM-Swift/KituraKit">
+    <img src="https://travis-ci.org/IBM-Swift/KituraKit.svg?branch=master" alt="Build Status - Master">
+    </a>
+    <img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
+    <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
+    <img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2">
+    <a href="http://swift-at-ibm-slack.mybluemix.net/">
+    <img src="http://swift-at-ibm-slack.mybluemix.net/badge.svg" alt="Slack Status">
+    </a>
+</p>
+<h1 id='kiturakit-a-kitura-v2-client-library' class='heading'>KituraKit -  A Kitura v2 Client Library</h1>
 
-<p><a href="http://kitura.io">Kitura</a> is a lightweight web framework for creating complex web routes for web applications.</p>
+<p><a href="http://kitura.io">Kitura</a> is a lightweight web framework for writing Swift server applications.</p>
 
-<p>KituraKit allows developers to use the Swift 4 Codable protocol in their front and back end applications and use the same code on the front and backend.</p>
+<p>KituraKit is a client side framework for sending HTTP requests to a Kitura server. By using the Swift <code>Codable</code> protocol, you can send and receive models directly from client to server.</p>
+<h2 id='swift-version' class='heading'>Swift version</h2>
+
+<p>The latest version of KituraKit requires <strong>Swift 4.0</strong> or later. You can download this version of the Swift binaries by following this <a href="https://swift.org/download/">link</a>.</p>
 <h2 id='usage' class='heading'>Usage</h2>
 <h3 id='cocoapod-installation' class='heading'>Cocoapod Installation</h3>
-<h4 id='using-an-existing-podfile' class='heading'>Using an existing Podfile</h4>
-
-<ol>
-<li><p>Open your Podfile with your preferred text editor</p></li>
-<li><p>Find the list of your currently installed pods and add to that list the following:</p>
-<pre class="highlight plaintext"><code>pod 'KituraKit', :git =&gt; 'https://github.com/IBM-Swift/KituraKit.git', :branch =&gt; 'pod'
-</code></pre></li>
-<li><p>Run <code>pod install</code> to install KituraKit.</p></li>
-</ol>
-<h4 id='creating-a-new-podfile' class='heading'>Creating a new Podfile</h4>
 
 <ol>
 <li><p>Navigate to the root of your project (where your .xcodeproj directory is)</p></li>
-<li><p>Run <code>pod init</code>  This will create a Podfile in your current directory.</p></li>
-<li><p>Open the Podfile with your preferred text editer and under the <q># Pods for &lsquo;your_project_name&rsquo;></q> line add:</p>
-<pre class="highlight plaintext"><code>pod 'KituraKit', :git =&gt; 'https://github.com/IBM-Swift/KituraKit.git', :branch =&gt; 'pod'
+<li><p>If you don&rsquo;t already have a podfile, run <code>pod init</code>  to create a new podfile in your current directory.</p></li>
+<li><p>Open the Podfile with your preferred text editor and under the <q># Pods for &lsquo;your_project_name&rsquo;></q> line add:</p>
+<pre class="highlight plaintext"><code>pod 'KituraKit'
 </code></pre></li>
 <li><p>Install KituraKit by running the command: <code>pod install</code></p></li>
-<li><p>As well as installing KituraKit the <code>pod install</code> also creates an Xcode workspace which contains all of your installed pods. So you&rsquo;ll need to open the .xcworkspace (not .xcodeproj) to have access to those pods. This is the default behaviour of <a href="https://guides.cocoapods.org/using/getting-started.html">Cocoapods</a>.</p></li>
+<li><p>As well as installing KituraKit, the <code>pod install</code> also creates an Xcode workspace which contains all of your installed pods. So you&rsquo;ll need to open the <code>.xcworkspace</code> file (not <code>.xcodeproj</code>) to have access to those pods. This is the default behaviour of <a href="https://guides.cocoapods.org/using/getting-started.html">Cocoapods</a>.</p></li>
 </ol>
+<h3 id='spm-installation' class='heading'>SPM Installation</h3>
+
+<p>We expect users on the client side to use the Cocoapod installation, however, if you require access to KituraKit from the server you can use Swift Package Manager.</p>
+<h4 id='add-dependencies' class='heading'>Add dependencies</h4>
+
+<p>Add the <code><a href="Classes/KituraKit.html">KituraKit</a></code> package to the dependencies within your application’s <code>Package.swift</code> file. Substitute <code>&quot;x.x.x&quot;</code> with the latest <code><a href="Classes/KituraKit.html">KituraKit</a></code> <a href="https://github.com/IBM-Swift/KituraKit/releases">release</a>.</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/IBM-Swift/KituraKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"x.x.x"</span><span class="p">)</span>
+</code></pre>
+
+<p>Add <code><a href="Classes/KituraKit.html">KituraKit</a></code> to your target&rsquo;s dependencies:</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">target</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"example"</span><span class="p">,</span> <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"KituraKit"</span><span class="p">]),</span>
+</code></pre>
+<h4 id='import-package' class='heading'>Import package</h4>
+<pre class="highlight swift"><code>  <span class="kd">import</span> <span class="kt">KituraKit</span>
+</code></pre>
 <h3 id='examples' class='heading'>Examples</h3>
 
 <p>To run through a FoodTracker tutorial which covers various components of Kitura, including KituraKit, <a href="https://github.com/IBM/FoodTrackerBackend">click here</a></p>
 
 <p>To try out the sample iOS project for yourself, making use of KituraKit, <a href="https://github.com/IBM-Swift/iOSSampleKituraKit">click here</a>.</p>
-<h2 id='swift-version' class='heading'>Swift version</h2>
+<h2 id='api-documentation' class='heading'>API Documentation</h2>
+<h3 id='kiturakit' class='heading'>KituraKit</h3>
 
-<p>The 0.0.x releases were tested on macOS and Linux using the Swift 4.0.3 binary. Please note that this is the default version of Swift that is include in <a href="https://developer.apple.com/xcode/">Xcode 9.2</a>.</p>
+<p>The <code><a href="Classes/KituraKit.html">KituraKit</a></code> class handles the connection to your Kitura server and executes the REST requests.</p>
+
+<p>You create a <code><a href="Classes/KituraKit.html">KituraKit</a></code> instance by providing the URL of your Kitura server:</p>
+<pre class="highlight swift"><code><span class="k">if</span> <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">KituraKit</span><span class="p">(</span><span class="nv">baseURL</span><span class="p">:</span> <span class="s">"http://localhost:8080"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Use client to make requests here</span>
+<span class="p">}</span>
+</code></pre>
+<h4 id='codable-models' class='heading'>Codable Models</h4>
+
+<p>Kitura and KituraKit send and receive instances of Swift types directly. These types (aka models) can be shared between the client and server.</p>
+
+<p>The only requirement for a model is that it conforms to the <code>Codable</code> protocol:</p>
+<pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">User</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h4 id='http-requests' class='heading'>HTTP Requests</h4>
+
+<p>The signatures for HTTP requests in KituraKit mirror the Codable routes in Kitura. We will demonstrate what the code for this looks like in the following examples.</p>
+
+<p>If you had the following GET route on your server:</p>
+<pre class="highlight swift"><code><span class="c1">// Kitura server route</span>
+<span class="n">router</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">([</span><span class="kt">User</span><span class="p">]?,</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="nv">users</span> <span class="o">=</span> <span class="p">[</span><span class="kt">User</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Joe"</span><span class="p">),</span> <span class="kt">User</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Bloggs"</span><span class="p">)]</span>
+    <span class="nf">completion</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>You would make a request to it using the <code>get</code> function on your <code><a href="Classes/KituraKit.html">KituraKit</a></code> client:</p>
+<pre class="highlight swift"><code><span class="c1">// KituraKit client request</span>
+<span class="n">client</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">users</span><span class="p">:</span> <span class="p">[</span><span class="kt">User</span><span class="p">]?,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">users</span> <span class="o">=</span> <span class="n">users</span> <span class="p">{</span>
+        <span class="c1">// GET successful, work with returned users here</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Similarly, to make a request to a Kitura POST route:</p>
+<pre class="highlight swift"><code><span class="c1">// Kitura server route</span>
+<span class="n">router</span><span class="o">.</span><span class="nf">post</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">User</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">(</span><span class="kt">User</span><span class="p">?,</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">in</span>
+    <span class="nf">completion</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>You would make a request to it using the <code>post</code> function on your <code><a href="Classes/KituraKit.html">KituraKit</a></code> client:</p>
+<pre class="highlight swift"><code><span class="c1">// KituraKit client request</span>
+<span class="k">let</span> <span class="nv">newUser</span> <span class="o">=</span> <span class="kt">User</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Kitura"</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="nf">post</span><span class="p">(</span><span class="s">"/users"</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">newUser</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">User</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="p">{</span>
+        <span class="c1">// POST successful, work with returned users here</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>KituraKit supports the following REST requests:</p>
+
+<ul>
+<li>GET a Codable object.</li>
+<li>GET a Codable object using an identifier.</li>
+<li>GET a Codable object using query parameters.</li>
+<li>POST a Codable object.</li>
+<li>POST a Codable object and be returned an identifier.</li>
+<li>PUT a Codable object using an identifier.</li>
+<li>PATCH a Codable object using an identifier.</li>
+<li>DELETE using an identifier.</li>
+<li>DELETE without an identifier.</li>
+</ul>
+<h3 id='authentication' class='heading'>Authentication</h3>
+
+<p>The Kitura server can authenticate users using the <a href="https://github.com/IBM-Swift/Kitura-Credentials">Credentials</a> repository. KituraKit allows you to provide credentials alongside your request to identify yourself to the server.</p>
+
+<p><strong>Note:</strong> When sending credentials you should always use HTTPS to avoid sending passwords/tokens as plaintext.</p>
+
+<p>You can set default credentials for your client which will be attached to all requests. If your server is using <a href="https://github.com/IBM-Swift/Kitura-CredentialsHTTP">Kitura-CredentialsHTTP</a> for basic authentication, you would provide the username and password as follows:</p>
+<pre class="highlight swift"><code><span class="k">if</span> <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">KituraKit</span><span class="p">(</span><span class="nv">baseURL</span><span class="p">:</span> <span class="s">"https://localhost:8080"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">defaultCredentials</span> <span class="o">=</span> <span class="kt">HTTPBasic</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="s">"John"</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="s">"12345"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Alternatively, you can provide the credentials directly on the request:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">credentials</span> <span class="o">=</span> <span class="kt">HTTPBasic</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="s">"Mary"</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="s">"abcde"</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/protected"</span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="n">credentials</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">users</span><span class="p">:</span> <span class="p">[</span><span class="kt">User</span><span class="p">]?,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">users</span> <span class="o">=</span> <span class="n">users</span> <span class="p">{</span>
+        <span class="c1">// work with users</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>KituraKit supports client side authentication for the following plugins:</p>
+
+<ul>
+<li>HTTP Basic using <a href="https://github.com/IBM-Swift/Kitura-CredentialsHTTP">Kitura-CredentialsHTTP</a>.</li>
+<li>Facebook OAuth token using <a href="https://github.com/IBM-Swift/Kitura-CredentialsFacebook">Kitura-CredentialsFacebook</a></li>
+<li>Google OAuth token using <a href="https://github.com/IBM-Swift/Kitura-CredentialsGoogle">Kitura-CredentialsGoogle</a></li>
+</ul>
+
+<p>For more information visit our <a href="https://ibm-swift.github.io/KituraKit/index.html">API reference</a>.</p>
 <h2 id='community' class='heading'>Community</h2>
 
 <p>We love to talk server-side Swift and Kitura. Join our <a href="http://swift-at-ibm-slack.mybluemix.net/">Slack</a> to meet the team!</p>
+<h2 id='license' class='heading'>License</h2>
+
+<p>This library is licensed under Apache 2.0. Full license text is available in <a href="https://github.com/IBM-Swift/KituraKit/blob/master/LICENSE">LICENSE</a>.</p>
 
           </div>
         </section>
@@ -122,8 +277,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2018-01-30)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.4</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-04-04)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
