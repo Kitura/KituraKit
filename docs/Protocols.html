@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Extensions  Reference</title>
+    <title>Protocols  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="Extensions  Reference"></a>
+    <a title="Protocols  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -43,7 +43,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">KituraKit Reference</a>
       <img class="carat" src="img/carat.png" />
-      Extensions  Reference
+      Protocols  Reference
     </p>
 
     <div class="content-wrapper">
@@ -99,8 +99,8 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Extensions</h1>
-            <p>The following extensions are available globally.</p>
+            <h1>Protocols</h1>
+            <p>The following protocols are available globally.</p>
 
           </div>
         </section>
@@ -112,9 +112,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15KituraContracts12RequestErrorV"></a>
-                    <a name="//apple_ref/swift/Extension/RequestError" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15KituraContracts12RequestErrorV">RequestError</a>
+                    <a name="/s:9KituraKit17ClientCredentialsP"></a>
+                    <a name="//apple_ref/swift/Protocol/ClientCredentials" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKit17ClientCredentialsP">ClientCredentials</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -122,15 +122,34 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An extension to Kitura RequestErrors with additional error codes specifically for the client.</p>
+                        <p>A protocol that credentials must implement to be used in KituraKit routes.</p>
 
-                        <a href="Extensions/RequestError.html" class="slightly-smaller">See more</a>
+<p>Classes or structs that conform to <code>ClientCredentials</code> must contain a <code>getHeaders()</code> function
+that will return the HTTP headers required to authenticate using the provided credentials.</p>
+<h3 id='usage-example' class='heading'>Usage Example:</h3>
+<pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MyToken</span><span class="p">:</span> <span class="kt">ClientCredentials</span> <span class="p">{</span>
+   <span class="kd">public</span> <span class="k">let</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span>
+
+   <span class="kd">public</span> <span class="kd">func</span> <span class="nf">getHeaders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="p">[</span><span class="s">"X-token-type"</span><span class="p">:</span> <span class="s">"MyToken"</span><span class="p">,</span> <span class="s">"access_token"</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">token</span><span class="p">]</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">client</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/protected"</span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt">MyToken</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="s">"12345"</span><span class="p">))</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">User</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="nf">print</span><span class="p">(</span><span class="s">"failed request"</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Protocols/ClientCredentials.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">RequestError</span> <span class="p">:</span> <span class="kt">RawRepresentable</span><span class="p">,</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Comparable</span><span class="p">,</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ClientCredentials</span></code></pre>
 
                         </div>
                       </div>

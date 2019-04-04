@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GoogleToken Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Struct/GoogleToken" class="dashAnchor"></a>
+
+    <a title="GoogleToken Structure Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          KituraKit Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/IBM-Swift/KituraKit">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">KituraKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      GoogleToken Structure Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/KituraKit.html">KituraKit</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/RequestError.html">RequestError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ClientCredentials.html">ClientCredentials</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ClientCertificate.html">ClientCertificate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/FacebookToken.html">FacebookToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GoogleToken.html">GoogleToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HTTPBasic.html">HTTPBasic</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/NilCredentials.html">NilCredentials</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>GoogleToken</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GoogleToken</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>A struct for providing a Google Oauth token as credentials to a KituraKit route.
+The struct is initialized with a token, which will be used to authenticate the user and generate their user profile.
+This client route mirrors a Kitura Codable route that implements <a href="https://ibm-swift.github.io/Kitura-CredentialsGoogle/Protocols/TypeSafeGoogleToken.html">TypeSafeGoogleToken</a> authentication to verify a users identity.</p>
+<h3 id='usage-example' class='heading'>Usage Example:</h3>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">User</span><span class="p">:</span> <span class="kt">ExampleProfile</span> <span class="p">{</span>
+   <span class="k">let</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span>
+   <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+   <span class="k">let</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+<span class="p">}</span>
+
+<span class="n">client</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/googleProfile"</span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt">GoogleToken</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="s">"exampleToken"</span><span class="p">))</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">ExampleProfile</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
+   <span class="k">guard</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="nf">print</span><span class="p">(</span><span class="s">"failed request: </span><span class="se">\(</span><span class="n">error</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+   <span class="p">}</span>
+   <span class="nf">print</span><span class="p">(</span><span class="s">"Successfully authenticated and recieved </span><span class="se">\(</span><span class="n">user</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKit11GoogleTokenV5tokenSSvp"></a>
+                    <a name="//apple_ref/swift/Property/token" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKit11GoogleTokenV5tokenSSvp">token</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The users Google Oauth token</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKit11GoogleTokenVACSS5token_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(token:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKit11GoogleTokenVACSS5token_tcfc">init(token:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a Google Token credentials instance with the specified token data.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKit11GoogleTokenV10getHeaderss10DictionaryVyS2SGyF"></a>
+                    <a name="//apple_ref/swift/Method/getHeaders()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKit11GoogleTokenV10getHeaderss10DictionaryVyS2SGyF">getHeaders()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Function to generate headers using a provided token Google token authentication.
+The <q>X-token-type</q> header is set to be <q>GoogleToken</q>
+and the <q>access_token</q> header is set as the provided token.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getHeaders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-04-04)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
