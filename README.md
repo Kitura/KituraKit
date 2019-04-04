@@ -46,7 +46,7 @@ pod 'KituraKit'
 ```
 4. Install KituraKit by running the command: `pod install`
 
-5. As well as installing KituraKit the `pod install` also creates an Xcode workspace which contains all of your installed pods. So you'll need to open the `.xcworkspace` file (not `.xcodeproj`) to have access to those pods. This is the default behaviour of [Cocoapods](https://guides.cocoapods.org/using/getting-started.html).
+5. As well as installing KituraKit, the `pod install` also creates an Xcode workspace which contains all of your installed pods. So you'll need to open the `.xcworkspace` file (not `.xcodeproj`) to have access to those pods. This is the default behaviour of [Cocoapods](https://guides.cocoapods.org/using/getting-started.html).
 
 ### SPM Installation
 
@@ -93,9 +93,9 @@ guard let client = KituraKit(baseURL: "http://localhost:8080") else {
 
 #### Codable Models
 
-Kitura and KituraKit send and receives instances of Swift types directly. These types (aka models) can be shared between the client and server.
+Kitura and KituraKit send and receive instances of Swift types directly. These types (aka models) can be shared between the client and server.
 
-The only requirement for a model is that they conform to the `Codable` protocol:
+The only requirement for a model is that it conforms to the `Codable` protocol:
 
 ```swift
 public struct User: Codable {
@@ -108,7 +108,7 @@ public struct User: Codable {
 
 #### HTTP Requests
 
-KituraKit signatures for HTTP requests mirror Kitura's Codable routes.
+The signatures for HTTP requests in KituraKit mirror the Codable routes in Kitura. We will demonstrate what the code for this looks like in the following examples.
 
 If you had the following GET route on your server:
 ```swift
@@ -123,7 +123,7 @@ You would make a request to it using the `get` function on your `KituraKit` clie
 // KituraKit client request
 client.get("/users") { (users: [User]?, error: RequestError?) -> Void in
     if let users = users {
-        // Work with returned users here
+        // GET successful, work with returned users here
     }
 }
 ```
@@ -140,8 +140,8 @@ You would make a request to it using the `post` function on your `KituraKit` cli
 // KituraKit client request
 let newUser = User(name: "Kitura")
 client.post("/users", data: newUser) { (user: User?, error: RequestError?) -> Void in
-    if let user = user else {
-        // POST successful, Work with returned users here
+    if let user = user {
+        // POST successful, work with returned users here
     }
 }
 ```
@@ -159,7 +159,7 @@ KituraKit supports the following REST requests:
 
 ### Authentication
 
-The Kitura server can authenticate users using the [Credentials](https://github.com/IBM-Swift/Kitura-Credentials) repository. KituraKit allows you to providing credentials alongside your request to identify yourself to the server.
+The Kitura server can authenticate users using the [Credentials](https://github.com/IBM-Swift/Kitura-Credentials) repository. KituraKit allows you to provide credentials alongside your request to identify yourself to the server.
 
 **Note:** When sending credentials you should always use HTTPS to avoid sending passwords/tokens as plaintext.
 
