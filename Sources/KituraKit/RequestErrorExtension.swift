@@ -19,11 +19,11 @@ import KituraContracts
 import SwiftyRequest
 
 /// An extension to Kitura RequestErrors with additional error codes specifically for the client.
-public extension RequestError {
+extension RequestError {
 
     /// An initializer to set up the client error codes.
     /// - Parameter clientErrorCode: The custom error code for the client.
-    init(clientErrorCode: Int, clientErrorDescription: String) {
+    public init(clientErrorCode: Int, clientErrorDescription: String) {
         self.init(rawValue: clientErrorCode, reason: clientErrorDescription)
     }
 
@@ -56,7 +56,7 @@ public extension RequestError {
 }
 
 /// An extension to Kitura RequestErrors with additional error codes specifically for the client.
-public extension RequestError {
+extension RequestError {
     
     /// An initializer to switch between different error types.
     /// - Parameter restError: The custom error type for the client.

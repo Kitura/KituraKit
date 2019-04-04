@@ -1,8 +1,7 @@
-// swift-tools-version:5.0
+// swift-tools-version:4.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
-
 /*
- * Copyright IBM Corporation 2017-2019
+ * Copyright IBM Corporation 2017
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +29,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", from: "2.0.0"),
+        .package(url: "https://github.com/IBM-Swift/SwiftyRequest.git", from: "1.1.0"),
         .package(url: "https://github.com/IBM-Swift/KituraContracts.git", from: "1.0.0"),
         // Kitura is only needed for testing (test dependency :-/)
         .package(url: "https://github.com/IBM-Swift/Kitura.git", from: "2.4.0"),
