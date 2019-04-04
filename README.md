@@ -86,8 +86,8 @@ The `KituraKit` class handles the connection to your Kitura server and executes 
 
 You create a `KituraKit` instance by providing the URL of your Kitura server:
 ```swift
-guard let client = KituraKit(baseURL: "http://localhost:8080") else {
-    print("Error creating KituraKit client")
+if let client = KituraKit(baseURL: "http://localhost:8080") {
+    // Use client to make requests here
 }
 ```
 
@@ -165,10 +165,9 @@ The Kitura server can authenticate users using the [Credentials](https://github.
 
 You can set default credentials for your client which will be attached to all requests. If your server is using [Kitura-CredentialsHTTP](https://github.com/IBM-Swift/Kitura-CredentialsHTTP) for basic authentication, you would provide the username and password as follows:
 ```swift
-guard let client = KituraKit(baseURL: "https://localhost:8080") else {
-    print("Error creating KituraKit client")
+if let client = KituraKit(baseURL: "https://localhost:8080") {
+    client.defaultCredentials = HTTPBasic(username: "John", password: "12345")
 }
-client.defaultCredentials = HTTPBasic(username: "John", password: "12345")
 ```
 
 Alternatively, you can provide the credentials directly on the request:
