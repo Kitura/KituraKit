@@ -113,8 +113,8 @@ print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
-    }
 #endif
+    }
     func testBasicAuthClientGet() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
