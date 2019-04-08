@@ -53,13 +53,38 @@ public class KituraKit {
     
     // MARK: Custom Coding Format
     
-    /// The BodyEncoder that will be used to encode the Codable object.
+    /**
+     The `BodyEncoder` that will be used to encode the Codable object.
+     ### Usage Example:
+     ```swift
+     let client = KituraKit.default
+     let encoder = JSONEncoder()
+     encoder.dateEncodingStrategy = .secondsSince1970
+     client.encoder = encoder
+     ```
+     */
     public var encoder: BodyEncoder = JSONEncoder() 
     
-    /// The BodyDecoder that will be used to decode the response Codable object.
+    /**
+     The `BodyDecoder` that will be used to decode the response Codable object.
+     ### Usage Example:
+     ```swift
+     let client = KituraKit.default
+     let decoder = JSONDecoder()
+     decoder.dateDecodingStrategy = .secondsSince1970
+     client.decoder = decoder
+     ```
+     */
     public var decoder: BodyDecoder = JSONDecoder()
     
-    /// The String that will be used for the Content-Type and Accept headers in the HTTP requests.
+    /**
+     The `String` that will be used for the Content-Type and Accept headers in the HTTP requests.
+     ### Usage Example:
+     ```swift
+     let client = KituraKit.default
+     client.mediaType = "application/xml"
+     ```
+     */
     public var mediaType: String = "application/json"
     
     // MARK: Initializers
