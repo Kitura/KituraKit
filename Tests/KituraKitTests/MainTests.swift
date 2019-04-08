@@ -14,12 +14,6 @@
  * limitations under the License.
  **/
 
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin
-#endif
-
 import XCTest
 import Foundation
 import Kitura
@@ -158,7 +152,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
         // Invoke POST operation on library
-        let newUser = User(id: 5, name: "John Doe")
+        let newUser = User(id: 5, name: "John Doe", date: date)
 
         client.post("/users", data: newUser) { (user: User?, error: RequestError?) -> Void in
             guard let user = user else {
@@ -177,7 +171,7 @@ class MainTests: XCTestCase {
 
         // Invoke POST operation on library
         let userId = 5
-        let newUser = User(id: userId, name: "John Doe")
+        let newUser = User(id: userId, name: "John Doe", date: date)
 
         client.post("/usersid", data: newUser) { (id: Int?, user: User?, error: RequestError?) -> Void in
             guard let user = user else {
@@ -200,7 +194,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "An error is received from the server")
 
         // Invoke POST operation on library
-        let newUser = User(id: 5, name: "John Doe")
+        let newUser = User(id: 5, name: "John Doe", date: date)
 
         client.post("/notAValidRoute", data: newUser) { (users: User?, error: RequestError?) -> Void in
             if case .notFound? = error {
@@ -217,7 +211,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
         // Invoke PUT operation on library
-        let expectedUser = User(id: 5, name: "John Doe")
+        let expectedUser = User(id: 5, name: "John Doe", date: date)
 
         client.put("/users", identifier: String(expectedUser.id), data: expectedUser) { (user: User?, error: RequestError?) -> Void in
 
@@ -236,7 +230,7 @@ class MainTests: XCTestCase {
         let expectation1 = expectation(description: "An error is received from the server")
 
         // Invoke PUT operation on library
-        let expectedUser = User(id: 5, name: "John Doe")
+        let expectedUser = User(id: 5, name: "John Doe", date: date)
 
         client.put("/notAValidRoute", identifier: String(expectedUser.id), data: expectedUser) { (users: User?, error: RequestError?) -> Void in
             if case .notFound? = error {
@@ -252,7 +246,7 @@ class MainTests: XCTestCase {
     func testClientPatch() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
-        let expectedUser = User(id: 4, name: "John Doe")
+        let expectedUser = User(id: 4, name: "John Doe", date: date)
 
         client.patch("/users", identifier: String(describing: expectedUser.id), data: expectedUser) { (user: User?, error: RequestError?) -> Void in
             guard let user = user else {
@@ -269,7 +263,7 @@ class MainTests: XCTestCase {
 
     func testClientPatchErrorPath() {
         let expectation1 = expectation(description: "An error is received from the server")
-        let expectedUser = User(id: 4, name: "John Doe")
+        let expectedUser = User(id: 4, name: "John Doe", date: date)
 
         client.patch("/notAValidRoute", identifier: String(describing: expectedUser.id), data: expectedUser) { (users: UserOptional?, error: RequestError?) -> Void in
             if case .notFound? = error {
@@ -435,7 +429,7 @@ class MainTests: XCTestCase {
 
     func testClientPostErrorWithBodyPath() {
         let expectation1 = expectation(description: "An error with body is received from the server")
-        let newUser = User(id: 5, name: "John Doe")
+        let newUser = User(id: 5, name: "John Doe", date: date)
         client.post("/bodyerror", data: newUser) { (user: User?, error: RequestError?) -> Void in
             XCTAssertNotNil(error, "Expected error but no error given")
             XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")
@@ -454,7 +448,7 @@ class MainTests: XCTestCase {
 
     func testClientPutErrorWithBodyPath() {
         let expectation1 = expectation(description: "An error with body is received from the server")
-        let userToUpdate = User(id: 5, name: "John Doe")
+        let userToUpdate = User(id: 5, name: "John Doe", date: date)
         client.put("/bodyerror",identifier: String(userToUpdate.id), data: userToUpdate) { (user: User?, error: RequestError?) -> Void in
             XCTAssertNotNil(error, "Expected error but no error given")
             XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")
@@ -473,7 +467,7 @@ class MainTests: XCTestCase {
 
     func testClientPatchErrorWithBodyPath() {
         let expectation1 = expectation(description: "An error with body is received from the server")
-        let userToUpdate = User(id: 4, name: "John Doe")
+        let userToUpdate = User(id: 4, name: "John Doe", date: date)
         client.patch("/bodyerror", identifier: String(describing: userToUpdate.id), data: userToUpdate) { (user: User?, error: RequestError?) -> Void in
             XCTAssertNotNil(error, "Expected error but no error given")
             XCTAssertNil(user, "Unexpected success value given: \(String(describing: user))")

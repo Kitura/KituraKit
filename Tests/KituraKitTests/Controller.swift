@@ -83,7 +83,7 @@ public class Controller {
                 return
             }
             if let userName = user?.name {
-                let updatedUser = User(id: id, name: userName)
+                let updatedUser = User(id: id, name: userName, date: date)
                 self.userStore[id.value] = updatedUser
                 respondWith(updatedUser, nil)
             } else {
@@ -190,7 +190,7 @@ public class Controller {
                 return
             }
             if let userName = user?.name {
-                let updatedUser = User(id: id, name: userName)
+                let updatedUser = User(id: id, name: userName, date: date)
                 self.userStore[id.value] = updatedUser
                 respondWith(updatedUser, nil)
             } else {
@@ -275,7 +275,7 @@ public class Controller {
                 return
             }
             if let userName = user?.name {
-                let updatedUser = User(id: id, name: userName)
+                let updatedUser = User(id: id, name: userName, date: date)
                 self.userStore[id.value] = updatedUser
                 respondWith(updatedUser, nil)
             } else {
@@ -360,7 +360,7 @@ public class Controller {
                 return
             }
             if let userName = user?.name {
-                let updatedUser = User(id: id, name: userName)
+                let updatedUser = User(id: id, name: userName, date: date)
                 self.userStore[id.value] = updatedUser
                 respondWith(updatedUser, nil)
             } else {
