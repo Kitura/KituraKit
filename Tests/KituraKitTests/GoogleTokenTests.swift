@@ -79,6 +79,9 @@ class GoogleTokenTests: XCTestCase {
     }
     
     func testGoogleTokenUnauthorized() {
+#if os(Linux) && swift(>=5.0)
+print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
+#else
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
@@ -91,9 +94,13 @@ class GoogleTokenTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
+#endif
     }
     
     func testGoogleTokenNoHeaders() {
+#if os(Linux) && swift(>=5.0)
+print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
+#else
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
@@ -106,6 +113,7 @@ class GoogleTokenTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
+#endif
     }
     
     func testGoogleTokenClientGet() {

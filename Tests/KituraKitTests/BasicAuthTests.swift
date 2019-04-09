@@ -79,6 +79,9 @@ class BasicAuthTests: XCTestCase {
     }
     
     func testBasicAuthUnauthorized() {
+#if os(Linux) && swift(>=5.0)
+print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
+#else
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
@@ -91,9 +94,13 @@ class BasicAuthTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
+#endif
     }
     
     func testBasicAuthNoHeaders() {
+#if os(Linux) && swift(>=5.0)
+print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
+#else
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
@@ -106,8 +113,8 @@ class BasicAuthTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
+#endif
     }
-    
     func testBasicAuthClientGet() {
         let expectation1 = expectation(description: "A response is received from the server -> array of users")
         
