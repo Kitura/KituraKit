@@ -1,4 +1,0 @@
-module CHTTPParser {
-    umbrella header "/Users/andrewlees/git/KituraKit/.build/checkouts/Kitura-net.git--7410958935072501107/Sources/CHTTPParser/include/CHTTPParser.h"
-    export *
-}
