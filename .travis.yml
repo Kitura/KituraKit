@@ -37,10 +37,9 @@ jobs:
         env: SWIFT_SNAPSHOT=4.2.1 JAZZY_ELIGIBLE=true
       - os: osx
         osx_image: xcode10.2
-# Pending Travis Xcode 11 image
-#      - os: osx
-#        osx_image: xcode11
-#        env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
+      - os: osx
+        osx_image: xcode11
+        env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
 
 before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
