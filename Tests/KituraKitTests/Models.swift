@@ -17,6 +17,7 @@
 import Foundation
 import KituraContracts
 import Kitura
+import SwiftJWT
 
 // Models/entities (application/use case specific)
 public struct User: Codable, Equatable {
@@ -215,4 +216,30 @@ public struct MyGoogleAuth: TypeSafeMiddleware {
             return onFailure(.unauthorized, nil)
         }
     }
+}
+
+struct MyJWTAuth<C: Claims>: TypeSafeMiddleware {
+    
+    let jwt: JWT<C>
+    
+    static func handle(request: RouterRequest, response: RouterResponse, completion: @escaping (MyJWTAuth?, RequestError?) -> Void) {
+        let auth = request.headers["Authorization"]
+        guard let authParts = auth?.split(separator: " ", maxSplits: 2),
+            authParts.count == 2,
+            authParts[0] == "Bearer",
+            let key = "<PrivateKey>".data(using: .utf8),
+            let jwt = try? JWT<C>(jwtString: String(authParts[1]), verifier: .hs256(key: key))
+            else {
+                return completion(nil, .unauthorized)
+        }
+        completion(MyJWTAuth(jwt: jwt), nil)
+    }
+}
+
+struct AccessToken: Codable {
+    let accessToken: String
+}
+
+struct JWTUser: Codable, Equatable {
+    let name: String
 }

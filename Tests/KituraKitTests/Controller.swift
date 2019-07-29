@@ -17,6 +17,7 @@
 import Kitura
 import Foundation
 import KituraContracts
+import SwiftJWT
 
 public class Controller {
 
@@ -38,6 +39,7 @@ public class Controller {
         setupBasicAuthRoutes()
         setupFacebookAuthRoutes()
         setupGoogleAuthRoutes()
+        setupJWTAuthRoutes()
     }
 
     private func setupRoutes() {
@@ -402,6 +404,31 @@ public class Controller {
         }
     }
     
+    private func setupJWTAuthRoutes() {
+        
+         router.post("/generateJWT") { (user: JWTUser?, respondWith: (AccessToken?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, .badRequest)
+                return
+            }
+                var jwt = JWT(claims: ClaimsStandardJWT(iss: "Kitura", sub: user.name))
+                guard let key = "<PrivateKey>".data(using: .utf8),
+                    let signedJWT = try? jwt.sign(using: .hs256(key: key))
+                    else {
+                        return respondWith(nil, .internalServerError)
+                }
+                respondWith(AccessToken(accessToken: signedJWT), nil)
+        }
+        
+        router.get("/protected") { (typeSafeJWT: MyJWTAuth<ClaimsStandardJWT>, respondWith: (JWTUser?, RequestError?) -> Void) in
+            guard let userName = typeSafeJWT.jwt.claims.sub else {
+                return respondWith(nil, .internalServerError)
+                }
+            respondWith(JWTUser(name: userName), nil)
+            }
+        
+    }
+    
     public func updateUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
@@ -436,7 +463,6 @@ public class Controller {
         }
 
         //print("employeeStore - \(employeeStore)")
-
         guard let employee = employeeStore[id] else {
             response.status(.badRequest)
             return
