@@ -22,7 +22,7 @@ XCTMain([
     testCase(MainTests.allTests),
     testCase(BasicAuthTests.allTests),
     testCase(FacebookTokenTests.allTests),
-    testCase(GoogleTokenTests.allTests)
-    testCase(JWTCredentialsTests.allTests)
+    testCase(GoogleTokenTests.allTests),
+    testCase(JWTCredentialsTests.allTests),
     //testCase(PersistableTests.allTests)
 ])
