@@ -22,22 +22,18 @@ import Darwin
 
 import XCTest
 import Foundation
-import Kitura
 import KituraContracts
-import Dispatch
 
 @testable import KituraKit
 
 class JWTCredentialsTests: XCTestCase {
     
     static var allTests: [(String, (JWTCredentialsTests) -> () throws -> Void)] {
-        
         return [
-        ("testNoCredentials", testNoCredentials),
-        ("testIncorrectJWT", testIncorrectJWT),
-        ("testCorrectJWT", testCorrectJWT),
+            ("testNoCredentials", testNoCredentials),
+            ("testIncorrectJWT", testIncorrectJWT),
+            ("testCorrectJWT", testCorrectJWT),
         ]
-        
     }
     
     private let client = KituraKit.default
@@ -46,19 +42,16 @@ class JWTCredentialsTests: XCTestCase {
         super.setUp()
         continueAfterFailure = false
         client.defaultCredentials = JWTCredentials(token: "12345")
-        let controller = Controller(userStore: initialStore)
-        Kitura.addHTTPServer(onPort: 8080, with: controller.router)
-        Kitura.start()
-        
+
+        // Reset state of server between tests
+        let serverReset = expectation(description: "Server state was successfully reset")
+        client.get("/reset") { (success: Status?, error: RequestError?) -> Void in
+            XCTAssertNotNil(success, "Unable to reset server: \(error?.localizedDescription ?? "unknown error")")
+            serverReset.fulfill()
+        }
     }
-    
-    override func tearDown() {
-        Kitura.stop()
-        super.tearDown()
-    }
-    
-    // This test checks that the server correctly rejects a request that doesn't supply any credentials
-    
+
+    // Checks that the server correctly rejects a request that doesn't supply any credentials
     func testNoCredentials() {
         
         let expectation1 = expectation(description: "A response from the server -> .unauthorized")
@@ -73,8 +66,7 @@ class JWTCredentialsTests: XCTestCase {
             waitForExpectations(timeout: 3.0, handler: nil)
     }
     
-    // This test checks that the server correctly rejects a request with invalid credentials
-    
+    // Checks that the server correctly rejects a request with invalid credentials
     func testIncorrectJWT() {
             
             let expectation1 = expectation(description: "A response from the server -> .unauthorized")
@@ -89,8 +81,7 @@ class JWTCredentialsTests: XCTestCase {
                 waitForExpectations(timeout: 3.0, handler: nil)
         }
     
-    // This test checks that the server correctly accepts a request with valid credentials
-    
+    // Checks that the server correctly accepts a request with valid credentials
     func testCorrectJWT() {
                 
         let expectation1 = expectation(description: "A response from the server -> OK")

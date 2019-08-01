@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corporation 2017
+ * Copyright IBM Corporation 2017-2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import Kitura
 import Foundation
-import KituraContracts
+import Kitura
+//import KituraContracts
 import SwiftJWT
 
 public class Controller {
@@ -43,6 +43,12 @@ public class Controller {
     }
 
     private func setupRoutes() {
+        // reset route
+        router.get("/reset") { (respondWith: (Status?, RequestError?) -> Void) in
+            self.userStore = initialStore
+            respondWith(Status("success"), nil)
+        }
+
         // users routes
         router.get("/users")  { (respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.map({ $0.value })
@@ -148,14 +154,14 @@ public class Controller {
         router.delete("/bodyerror") { (id: Int, respondWith: (RequestError?) -> Void) in respondWith(RequestError(.conflict, body: Status("Boo"))) }
         router.delete("/bodyerror") { (respondWith: (RequestError?) -> Void) in respondWith(RequestError(.conflict, body: Status("Boo"))) }
     }
-    
+
     private func setupBasicAuthRoutes() {
         // users routes
         router.get("/authusers")  { (profile: MyBasicAuth, respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.map({ $0.value })
             respondWith(users, nil)
         }
-        
+
         router.get("/authusers") { (profile: MyBasicAuth, id: Int, respondWith: (User?, RequestError?) -> Void) in
             guard let user = self.userStore[id.value] else {
                 respondWith(nil, .notFound)
@@ -163,7 +169,7 @@ public class Controller {
             }
             respondWith(user, nil)
         }
-        
+
         router.post("/authusers") { (profile: MyBasicAuth, user: User?, respondWith: (User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
@@ -172,7 +178,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user, nil)
         }
-        
+
         router.post("/authusersid") { (profile: MyBasicAuth, user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, nil, .badRequest)
@@ -181,7 +187,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user.id, user, nil)
         }
-        
+
         router.put("/authusers") { (profile: MyBasicAuth, id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)
@@ -199,7 +205,7 @@ public class Controller {
                 respondWith(exisitingUser, nil)
             }
         }
-        
+
         router.delete("/authusers") { (profile: MyBasicAuth, id: Int, respondWith: (RequestError?) -> Void) in
             guard let _ = self.userStore.removeValue(forKey: id.value) else {
                 respondWith(.notFound)
@@ -207,12 +213,12 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.delete("/authusers") { (profile: MyBasicAuth, respondWith: (RequestError?) -> Void) in
             self.userStore.removeAll()
             respondWith(nil)
         }
-        
+
         router.delete("/authusersWithQueryParams") { (profile: MyBasicAuth, queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
             self.userStore.forEach {
                 if $1.name == queryParams.name {
@@ -221,7 +227,7 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.get("/authusersWithQueryParams") { (profile: MyBasicAuth, queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.reduce([User]()) { acc, el in
                 var acc = acc
@@ -240,7 +246,7 @@ public class Controller {
             let users = self.userStore.map({ $0.value })
             respondWith(users, nil)
         }
-        
+
         router.get("/facebookusers") { (profile: MyFacebookAuth, id: Int, respondWith: (User?, RequestError?) -> Void) in
             guard let user = self.userStore[id.value] else {
                 respondWith(nil, .notFound)
@@ -248,7 +254,7 @@ public class Controller {
             }
             respondWith(user, nil)
         }
-        
+
         router.post("/facebookusers") { (profile: MyFacebookAuth, user: User?, respondWith: (User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
@@ -257,7 +263,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user, nil)
         }
-        
+
         router.post("/facebookusersid") { (profile: MyFacebookAuth, user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, nil, .badRequest)
@@ -266,7 +272,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user.id, user, nil)
         }
-        
+
         router.put("/facebookusers") { (profile: MyFacebookAuth, id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)
@@ -284,7 +290,7 @@ public class Controller {
                 respondWith(exisitingUser, nil)
             }
         }
-        
+
         router.delete("/facebookusers") { (profile: MyFacebookAuth, id: Int, respondWith: (RequestError?) -> Void) in
             guard let _ = self.userStore.removeValue(forKey: id.value) else {
                 respondWith(.notFound)
@@ -292,12 +298,12 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.delete("/facebookusers") { (profile: MyFacebookAuth, respondWith: (RequestError?) -> Void) in
             self.userStore.removeAll()
             respondWith(nil)
         }
-        
+
         router.delete("/facebookusersWithQueryParams") { (profile: MyFacebookAuth, queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
             self.userStore.forEach {
                 if $1.name == queryParams.name {
@@ -306,7 +312,7 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.get("/facebookusersWithQueryParams") { (profile: MyFacebookAuth, queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.reduce([User]()) { acc, el in
                 var acc = acc
@@ -318,14 +324,14 @@ public class Controller {
             respondWith(users, nil)
         }
     }
-    
+
     private func setupGoogleAuthRoutes() {
         // users routes
         router.get("/googleusers")  { (profile: MyGoogleAuth, respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.map({ $0.value })
             respondWith(users, nil)
         }
-        
+
         router.get("/googleusers") { (profile: MyGoogleAuth, id: Int, respondWith: (User?, RequestError?) -> Void) in
             guard let user = self.userStore[id.value] else {
                 respondWith(nil, .notFound)
@@ -333,7 +339,7 @@ public class Controller {
             }
             respondWith(user, nil)
         }
-        
+
         router.post("/googleusers") { (profile: MyGoogleAuth, user: User?, respondWith: (User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
@@ -342,7 +348,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user, nil)
         }
-        
+
         router.post("/googleusersid") { (profile: MyGoogleAuth, user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, nil, .badRequest)
@@ -351,7 +357,7 @@ public class Controller {
             self.userStore[String(user.id)] = user
             respondWith(user.id, user, nil)
         }
-        
+
         router.put("/googleusers") { (profile: MyGoogleAuth, id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)
@@ -369,7 +375,7 @@ public class Controller {
                 respondWith(exisitingUser, nil)
             }
         }
-        
+
         router.delete("/googleusers") { (profile: MyGoogleAuth, id: Int, respondWith: (RequestError?) -> Void) in
             guard let _ = self.userStore.removeValue(forKey: id.value) else {
                 respondWith(.notFound)
@@ -377,12 +383,12 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.delete("/googleusers") { (profile: MyGoogleAuth, respondWith: (RequestError?) -> Void) in
             self.userStore.removeAll()
             respondWith(nil)
         }
-        
+
         router.delete("/googleusersWithQueryParams") { (profile: MyGoogleAuth, queryParams: UserQuery, respondWith: (RequestError?) -> Void) in
             self.userStore.forEach {
                 if $1.name == queryParams.name {
@@ -391,7 +397,7 @@ public class Controller {
             }
             respondWith(nil)
         }
-        
+
         router.get("/googleusersWithQueryParams") { (profile: MyGoogleAuth, queryParams: UserQuery, respondWith: ([User]?, RequestError?) -> Void) in
             let users = self.userStore.reduce([User]()) { acc, el in
                 var acc = acc
@@ -403,32 +409,32 @@ public class Controller {
             respondWith(users, nil)
         }
     }
-    
+
     private func setupJWTAuthRoutes() {
-        
-         router.post("/generateJWT") { (user: JWTUser?, respondWith: (AccessToken?, RequestError?) -> Void) in
+
+        router.post("/generateJWT") { (user: JWTUser?, respondWith: (AccessToken?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
                 return
             }
-                var jwt = JWT(claims: ClaimsStandardJWT(iss: "Kitura", sub: user.name))
-                guard let key = "<PrivateKey>".data(using: .utf8),
-                    let signedJWT = try? jwt.sign(using: .hs256(key: key))
-                    else {
-                        return respondWith(nil, .internalServerError)
-                }
-                respondWith(AccessToken(accessToken: signedJWT), nil)
+            var jwt = JWT(claims: ClaimsStandardJWT(iss: "Kitura", sub: user.name))
+            guard let key = "<PrivateKey>".data(using: .utf8),
+                let signedJWT = try? jwt.sign(using: .hs256(key: key))
+                else {
+                    return respondWith(nil, .internalServerError)
+            }
+            respondWith(AccessToken(accessToken: signedJWT), nil)
         }
-        
+
         router.get("/protected") { (typeSafeJWT: MyJWTAuth<ClaimsStandardJWT>, respondWith: (JWTUser?, RequestError?) -> Void) in
             guard let userName = typeSafeJWT.jwt.claims.sub else {
                 return respondWith(nil, .internalServerError)
-                }
-            respondWith(JWTUser(name: userName), nil)
             }
-        
+            respondWith(JWTUser(name: userName), nil)
+        }
+
     }
-    
+
     public func updateUser(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         defer {
             next()
