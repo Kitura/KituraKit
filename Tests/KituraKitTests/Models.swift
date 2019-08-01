@@ -243,3 +243,7 @@ struct AccessToken: Codable {
 struct JWTUser: Codable, Equatable {
     let name: String
 }
+
+public static func ==(lhs: JWTUser, rhs: JWTUser) -> Bool {
+        return (lhs.name == rhs.name)
+   }
