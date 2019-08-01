@@ -56,6 +56,7 @@ class CustomCoderTests: XCTestCase {
             XCTAssertNotNil(success, "Unable to reset server: \(error?.localizedDescription ?? "unknown error")")
             serverReset.fulfill()
         }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testClientGet() {

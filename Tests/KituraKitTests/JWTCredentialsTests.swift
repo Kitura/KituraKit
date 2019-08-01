@@ -49,6 +49,7 @@ class JWTCredentialsTests: XCTestCase {
             XCTAssertNotNil(success, "Unable to reset server: \(error?.localizedDescription ?? "unknown error")")
             serverReset.fulfill()
         }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     // Checks that the server correctly rejects a request that doesn't supply any credentials
