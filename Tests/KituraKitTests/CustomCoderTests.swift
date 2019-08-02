@@ -16,7 +16,6 @@
 
 import XCTest
 import Foundation
-import Kitura
 import KituraContracts
 
 @testable import KituraKit
@@ -35,10 +34,8 @@ class CustomCoderTests: XCTestCase {
     private let client = KituraKit.default
     override func setUp() {
         super.setUp()
-        
         continueAfterFailure = false
-        
-        let controller = Controller(userStore: initialStore)
+
         let customEncoder: () -> BodyEncoder = {
             let encoder = JSONEncoder()
             encoder.dateEncodingStrategy = .secondsSince1970
@@ -49,19 +46,17 @@ class CustomCoderTests: XCTestCase {
             decoder.dateDecodingStrategy = .secondsSince1970
             return decoder
         }
-        controller.router.encoders[MediaType(type: .application, subType: "custom")] = customEncoder
-        controller.router.decoders[MediaType(type: .application, subType: "custom")] = customDecoder
-        Kitura.addHTTPServer(onPort: 8080, with: controller.router)
-        Kitura.start()
         client.encoder = customEncoder()
         client.decoder = customDecoder()
         client.mediaType = "application/custom"
 
-    }
-    
-    override func tearDown() {
-        Kitura.stop()
-        super.tearDown()
+        // Reset state of server between tests
+        let serverReset = expectation(description: "Server state was successfully reset")
+        client.get("/reset") { (success: Status?, error: RequestError?) -> Void in
+            XCTAssertNotNil(success, "Unable to reset server: \(error?.localizedDescription ?? "unknown error")")
+            serverReset.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testClientGet() {

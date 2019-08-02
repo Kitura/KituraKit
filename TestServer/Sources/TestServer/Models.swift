@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corporation 2017
+ * Copyright IBM Corporation 2017-2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public struct User: Codable, Equatable {
 
     public static func ==(lhs: User, rhs: User) -> Bool {
         return (lhs.id == rhs.id) && (lhs.name == rhs.name) && (lhs.date == rhs.date)
-   }
+    }
 
 }
 
@@ -58,7 +58,7 @@ public struct UserOptional: Codable, Equatable {
 
 }
 
-public struct Employee: Codable, Equatable {    
+public struct Employee: Codable, Equatable {
     public let id: String
     public let name: String
 
@@ -88,6 +88,7 @@ public struct Status: Codable, Equatable {
         return lhs.description == rhs.description
     }
 }
+
 
 struct AccessToken: Codable {
     let accessToken: String

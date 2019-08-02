@@ -22,7 +22,6 @@ import Darwin
 
 import XCTest
 import Foundation
-import Kitura
 import KituraContracts
 
 @testable import KituraKit
@@ -52,15 +51,14 @@ class FacebookTokenTests: XCTestCase {
         super.setUp()
         continueAfterFailure = false
         client.defaultCredentials = FacebookToken(token: "12345")
-        let controller = Controller(userStore: initialStore)
-        Kitura.addHTTPServer(onPort: 8080, with: controller.router)
-        Kitura.start()
         
-    }
-    
-    override func tearDown() {
-        Kitura.stop()
-        super.tearDown()
+        // Reset state of server between tests
+        let serverReset = expectation(description: "Server state was successfully reset")
+        client.get("/reset") { (success: Status?, error: RequestError?) -> Void in
+            XCTAssertNotNil(success, "Unable to reset server: \(error?.localizedDescription ?? "unknown error")")
+            serverReset.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testfacebookTokenHeadersGet() {
@@ -79,9 +77,7 @@ class FacebookTokenTests: XCTestCase {
     }
     
     func testFacebookTokenUnauthorized() {
-#if os(Linux) && swift(>=5.0)
-print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
-#else
+        // Note: fails on Linux with Swift 5 due to: https://bugs.swift.org/browse/SR-10281 - fixed in 5.0.2.
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
@@ -94,13 +90,10 @@ print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
-#endif
     }
     
     func testFacebookTokenNoHeaders() {
-#if os(Linux) && swift(>=5.0)
-print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
-#else
+        // Note: fails on Linux with Swift 5 due to: https://bugs.swift.org/browse/SR-10281 - fixed in 5.0.2.
         let expectation1 = expectation(description: "A response is received from the server -> .unauthorized")
         
         // Invoke GET operation on library
@@ -113,7 +106,6 @@ print("Test intentionally disabled: see https://bugs.swift.org/browse/SR-10281")
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 3.0, handler: nil)
-#endif
     }
     
     func testFacebookTokenClientGet() {

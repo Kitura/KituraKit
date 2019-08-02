@@ -22,7 +22,6 @@ import Darwin
 
 import XCTest
 import Foundation
-import Kitura
 import KituraContracts
 
 @testable import KituraKit
@@ -51,16 +50,15 @@ class BasicAuthTests: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        
-        let controller = Controller(userStore: initialStore)
-        Kitura.addHTTPServer(onPort: 8080, with: controller.router)
-        Kitura.start()
         client.defaultCredentials = HTTPBasic(username: "John", password: "12345")
-    }
-    
-    override func tearDown() {
-        Kitura.stop()
-        super.tearDown()
+        
+        // Reset state of server between tests
+        let serverReset = expectation(description: "Server state was successfully reset")
+        client.get("/reset") { (success: Status?, error: RequestError?) -> Void in
+            XCTAssertNotNil(success, "Unable to reset server: \(error?.localizedDescription ?? "unknown error")")
+            serverReset.fulfill()
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testBasicAuthHeadersGet() {

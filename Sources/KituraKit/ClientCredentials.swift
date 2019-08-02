@@ -162,6 +162,40 @@ public struct GoogleToken: ClientCredentials {
 }
 
 /**
+ A struct for providing a JWT as credentials to a KituraKit route.
+ The struct is initialized with a token, which will be used to authenticate the user and generate their user profile.
+ ### Usage Example: ###
+ ```swift
+ struct JWTUser: Codable {
+    let name: String
+ }
+ 
+ client.get("/protected", credentials: JWTCredentials(token: "exampleToken")) { (user: JWTUser?, error: RequestError?) -> Void in
+    guard let user = user else {
+        print("failed request: \(error)")
+    }
+    print("Successfully authenticated and recieved \(user)")
+ }
+ ```
+ */
+public struct JWTCredentials: ClientCredentials {
+    /// The users JWT
+    public let token: String
+    
+    /// Create a JWT credentials instance with the specified token data.
+    public init(token: String) {
+        self.token = token
+    }
+
+    /// Function to generate headers using a provided token JWT authentication.
+    /// The "X-token-type" header is set to be "JWT"
+    /// and the "Authorization: Bearer " is the header for a JWT
+    public func getHeaders() -> [String : String] {
+        return ["X-token-type": "JWT", "Authorization": "Bearer \(self.token)"]
+    }
+}
+
+/**
  A type used to indicate that no credentials should be passed for this request. This can
  be used to override the default credentials for a client, to prevent those credentials
  from being used for a particular request.

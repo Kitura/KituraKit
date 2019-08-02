@@ -22,10 +22,10 @@ jobs:
         env: DOCKER_IMAGE=swift:4.2.4 SWIFT_SNAPSHOT=4.2.4
       - os: linux
         services: docker
-        env: DOCKER_IMAGE=swift:5.0.1-xenial
+        env: DOCKER_IMAGE=swift:5.0.2-xenial
       - os: linux
         services: docker
-        env: DOCKER_IMAGE=swift:5.0.1 SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
+        env: DOCKER_IMAGE=swift:5.0.2 SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
       - os: osx
         osx_image: xcode9.2
         env: SWIFT_SNAPSHOT=4.0.3

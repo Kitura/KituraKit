@@ -1,5 +1,5 @@
-/**
- * Copyright IBM Corporation 2017
+/*
+ * Copyright IBM Corporation 2017-2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,17 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **/
+ */
 
-import XCTest
+import Foundation
+import KituraContracts
 
-@testable import KituraKitTests
-
-XCTMain([
-    testCase(MainTests.allTests),
-    testCase(BasicAuthTests.allTests),
-    testCase(FacebookTokenTests.allTests),
-    testCase(GoogleTokenTests.allTests),
-    testCase(JWTCredentialsTests.allTests),
-    //testCase(PersistableTests.allTests)
-])
+let customEncoder: () -> BodyEncoder = {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .secondsSince1970
+    return encoder
+}
+let customDecoder: () -> BodyDecoder = {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .secondsSince1970
+    return decoder
+}
