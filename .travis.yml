@@ -34,9 +34,10 @@ jobs:
         env: SWIFT_SNAPSHOT=4.1.2
       - os: osx
         osx_image: xcode10.1
-        env: SWIFT_SNAPSHOT=4.2.1 JAZZY_ELIGIBLE=true
+        env: SWIFT_SNAPSHOT=4.2.1
       - os: osx
         osx_image: xcode10.2
+        env: SWIFT_SNAPSHOT=5.0.1 JAZZY_ELIGIBLE=true
       - os: osx
         osx_image: xcode11
         env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
