@@ -185,6 +185,7 @@ KituraKit supports client side authentication for the following plugins:
 - HTTP Basic using [Kitura-CredentialsHTTP](https://github.com/IBM-Swift/Kitura-CredentialsHTTP).
 - Facebook OAuth token using [Kitura-CredentialsFacebook](https://github.com/IBM-Swift/Kitura-CredentialsFacebook)
 - Google OAuth token using [Kitura-CredentialsGoogle](https://github.com/IBM-Swift/Kitura-CredentialsGoogle)
+- JWT token (Kitura-CredentialsJWT coming soon)
 
 For more information visit our [API reference](https://ibm-swift.github.io/KituraKit/index.html).
 
