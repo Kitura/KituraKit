@@ -90,6 +90,9 @@
                 <a class="nav-group-task-link" href="../Structs/HTTPBasic.html">HTTPBasic</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/JWTCredentials.html">JWTCredentials</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/NilCredentials.html">NilCredentials</a>
               </li>
             </ul>
@@ -119,9 +122,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15KituraContracts12RequestErrorV0A3KitEACSi06clientD4Code_SS0fD11Descriptiontcfc"></a>
+                    <a name="/s:15KituraContracts12RequestErrorV0A3KitE06clientD4Code0fD11DescriptionACSi_SStcfc"></a>
                     <a name="//apple_ref/swift/Method/init(clientErrorCode:clientErrorDescription:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15KituraContracts12RequestErrorV0A3KitEACSi06clientD4Code_SS0fD11Descriptiontcfc">init(clientErrorCode:clientErrorDescription:)</a>
+                    <a class="token" href="#/s:15KituraContracts12RequestErrorV0A3KitE06clientD4Code0fD11DescriptionACSi_SStcfc">init(clientErrorCode:clientErrorDescription:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -136,7 +139,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -182,7 +185,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientErrorUnknown</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"An unknown error occurred"</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientErrorUnknown</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -209,7 +212,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientConnectionError</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">601</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"A connection error occurred, cannot connect to the server. Please ensure that the server is started and running, with the correct port and URL ('ToDoServer' if using the sample app)."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientConnectionError</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -236,7 +239,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientNoData</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">602</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"A no data error occurred. Please ensure that data exists, and is being passed to the correct destination."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientNoData</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -263,7 +266,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientSerializationError</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">603</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"A serialization error occurred. Please ensure that the type of the data being serialized is correct."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientSerializationError</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -290,7 +293,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientDeserializationError</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">604</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"A deserialization error occurred. Please ensure that the type of the data being deserialized is correct."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientDeserializationError</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -317,7 +320,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientEncodingError</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">605</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"An encoding error occurred. Please ensure that the types and format of the data being passed is correct."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientEncodingError</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -344,7 +347,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientFileManagerError</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">606</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"A file manager error occurred. Please ensure that the file exists, and correct permissions to the file manager are present for the user."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientFileManagerError</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -371,7 +374,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientInvalidFile</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">607</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"An invalid file error occurred. Please ensure that the file type and contents are correct."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientInvalidFile</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -398,7 +401,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientInvalidSubstitution</span> <span class="o">=</span> <span class="kt">RequestError</span><span class="p">(</span><span class="nv">clientErrorCode</span><span class="p">:</span> <span class="mi">608</span><span class="p">,</span> <span class="nv">clientErrorDescription</span><span class="p">:</span> <span class="s">"An invalid substitution error occurred. Please ensure that the data being substituted is correct."</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">clientInvalidSubstitution</span><span class="p">:</span> <span class="kt">RequestError</span></code></pre>
 
                         </div>
                       </div>
@@ -412,9 +415,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:15KituraContracts12RequestErrorV0A3KitEAC06SwiftyC004RestD0O04restD0_tcfc"></a>
+                    <a name="/s:15KituraContracts12RequestErrorV0A3KitE04restD0AC06SwiftyC004RestD0O_tcfc"></a>
                     <a name="//apple_ref/swift/Method/init(restError:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:15KituraContracts12RequestErrorV0A3KitEAC06SwiftyC004RestD0O04restD0_tcfc">init(restError:)</a>
+                    <a class="token" href="#/s:15KituraContracts12RequestErrorV0A3KitE04restD0AC06SwiftyC004RestD0O_tcfc">init(restError:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -463,8 +466,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-04-04)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-08-06)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
