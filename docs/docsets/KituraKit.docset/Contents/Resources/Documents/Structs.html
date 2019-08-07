@@ -14,6 +14,7 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Structures" class="dashAnchor"></a>
 
     <a title="Structures  Reference"></a>
 
@@ -87,6 +88,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/HTTPBasic.html">HTTPBasic</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/JWTCredentials.html">JWTCredentials</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/NilCredentials.html">NilCredentials</a>
@@ -176,7 +180,7 @@ This client route mirrors a Kitura Codable route that implements <a href="https:
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HTTPBasic</span><span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HTTPBasic</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
 
                         </div>
                       </div>
@@ -220,7 +224,7 @@ This client route mirrors a Kitura Codable route that implements <a href="https:
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FacebookToken</span><span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FacebookToken</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
 
                         </div>
                       </div>
@@ -264,7 +268,48 @@ This client route mirrors a Kitura Codable route that implements <a href="https:
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GoogleToken</span><span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GoogleToken</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKit14JWTCredentialsV"></a>
+                    <a name="//apple_ref/swift/Struct/JWTCredentials" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKit14JWTCredentialsV">JWTCredentials</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A struct for providing a JWT as credentials to a KituraKit route.
+The struct is initialized with a token, which will be used to authenticate the user and generate their user profile.</p>
+<h3 id='usage-example' class='heading'>Usage Example:</h3>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">JWTUser</span><span class="p">:</span> <span class="kt">Codable</span> <span class="p">{</span>
+   <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+
+<span class="n">client</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="s">"/protected"</span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt">JWTCredentials</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="s">"exampleToken"</span><span class="p">))</span> <span class="p">{</span> <span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">JWTUser</span><span class="p">?,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">RequestError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
+   <span class="k">guard</span> <span class="k">let</span> <span class="nv">user</span> <span class="o">=</span> <span class="n">user</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="nf">print</span><span class="p">(</span><span class="s">"failed request: </span><span class="se">\(</span><span class="n">error</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+   <span class="p">}</span>
+   <span class="nf">print</span><span class="p">(</span><span class="s">"Successfully authenticated and recieved </span><span class="se">\(</span><span class="n">user</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Structs/JWTCredentials.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">JWTCredentials</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
 
                         </div>
                       </div>
@@ -302,7 +347,7 @@ from being used for a particular request.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">NilCredentials</span><span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">NilCredentials</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ClientCredentials.html">ClientCredentials</a></span></code></pre>
 
                         </div>
                       </div>
@@ -317,8 +362,8 @@ from being used for a particular request.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-04-04)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-08-06)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

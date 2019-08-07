@@ -90,6 +90,9 @@
                 <a class="nav-group-task-link" href="../Structs/HTTPBasic.html">HTTPBasic</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/JWTCredentials.html">JWTCredentials</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/NilCredentials.html">NilCredentials</a>
               </li>
             </ul>
@@ -143,7 +146,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">defaultBaseURL</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"http://localhost:8080"</span><span class="p">)</span><span class="o">!</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">defaultBaseURL</span><span class="p">:</span> <span class="kt">URL</span></code></pre>
 
                         </div>
                       </div>
@@ -170,7 +173,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">var</span> <span class="p">`</span><span class="nv">default</span><span class="p">`:</span> <span class="kt">KituraKit</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">var</span> <span class="p">`</span><span class="nv">default</span><span class="p">`:</span> <span class="kt">KituraKit</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -239,6 +242,114 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
+                <a name="/Custom%20Coding%20Format"></a>
+                <a name="//apple_ref/swift/Section/Custom Coding Format" class="dashAnchor"></a>
+                <a href="#/Custom%20Coding%20Format">
+                  <h3 class="section-name">Custom Coding Format</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKitAAC7encoder0A9Contracts11BodyEncoder_pvp"></a>
+                    <a name="//apple_ref/swift/Property/encoder" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKitAAC7encoder0A9Contracts11BodyEncoder_pvp">encoder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>BodyEncoder</code> that will be used to encode the Codable object.</p>
+<h3 id='usage-example' class='heading'>Usage Example:</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">KituraKit</span><span class="o">.</span><span class="k">default</span>
+<span class="k">let</span> <span class="nv">encoder</span> <span class="o">=</span> <span class="kt">JSONEncoder</span><span class="p">()</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">dateEncodingStrategy</span> <span class="o">=</span> <span class="o">.</span><span class="n">secondsSince1970</span>
+<span class="n">client</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">encoder</span><span class="p">:</span> <span class="kt">BodyEncoder</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKitAAC7decoder0A9Contracts11BodyDecoder_pvp"></a>
+                    <a name="//apple_ref/swift/Property/decoder" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKitAAC7decoder0A9Contracts11BodyDecoder_pvp">decoder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>BodyDecoder</code> that will be used to decode the response Codable object.</p>
+<h3 id='usage-example' class='heading'>Usage Example:</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">KituraKit</span><span class="o">.</span><span class="k">default</span>
+<span class="k">let</span> <span class="nv">decoder</span> <span class="o">=</span> <span class="kt">JSONDecoder</span><span class="p">()</span>
+<span class="n">decoder</span><span class="o">.</span><span class="n">dateDecodingStrategy</span> <span class="o">=</span> <span class="o">.</span><span class="n">secondsSince1970</span>
+<span class="n">client</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">decoder</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">decoder</span><span class="p">:</span> <span class="kt">BodyDecoder</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9KituraKitAAC9mediaTypeSSvp"></a>
+                    <a name="//apple_ref/swift/Property/mediaType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9KituraKitAAC9mediaTypeSSvp">mediaType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>String</code> that will be used for the Content-Type and Accept headers in the HTTP requests.</p>
+<h3 id='usage-example' class='heading'>Usage Example:</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">KituraKit</span><span class="o">.</span><span class="k">default</span>
+<span class="n">client</span><span class="o">.</span><span class="n">mediaType</span> <span class="o">=</span> <span class="s">"application/xml"</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">mediaType</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
                 <a name="/Initializers"></a>
                 <a name="//apple_ref/swift/Section/Initializers" class="dashAnchor"></a>
                 <a href="#/Initializers">
@@ -249,9 +360,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAACAB10Foundation3URLV04baseD0_Sb22containsSelfSignedCertAA17ClientCertificateVSg06clientK0tcfc"></a>
+                    <a name="/s:9KituraKitAAC7baseURL22containsSelfSignedCert17clientCertificateAB10Foundation0D0V_SbAA06ClientJ0VSgtcfc"></a>
                     <a name="//apple_ref/swift/Method/init(baseURL:containsSelfSignedCert:clientCertificate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAACAB10Foundation3URLV04baseD0_Sb22containsSelfSignedCertAA17ClientCertificateVSg06clientK0tcfc">init(baseURL:containsSelfSignedCert:clientCertificate:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC7baseURL22containsSelfSignedCert17clientCertificateAB10Foundation0D0V_SbAA06ClientJ0VSgtcfc">init(baseURL:containsSelfSignedCert:clientCertificate:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -319,9 +430,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAACABSgSS7baseURL_Sb22containsSelfSignedCertAA17ClientCertificateVSg06clientJ0tcfc"></a>
+                    <a name="/s:9KituraKitAAC7baseURL22containsSelfSignedCert17clientCertificateABSgSS_SbAA06ClientJ0VSgtcfc"></a>
                     <a name="//apple_ref/swift/Method/init(baseURL:containsSelfSignedCert:clientCertificate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAACABSgSS7baseURL_Sb22containsSelfSignedCertAA17ClientCertificateVSg06clientJ0tcfc">init(baseURL:containsSelfSignedCert:clientCertificate:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC7baseURL22containsSelfSignedCert17clientCertificateABSgSS_SbAA06ClientJ0VSgtcfc">init(baseURL:containsSelfSignedCert:clientCertificate:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -404,9 +515,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC3getySS_AA17ClientCredentials_pSg11credentialsyxSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF"></a>
+                    <a name="/s:9KituraKitAAC3get_11credentials11respondWithySS_AA17ClientCredentials_pSgyxSg_0A9Contracts12RequestErrorVSgtctSeRzSERzlF"></a>
                     <a name="//apple_ref/swift/Method/get(_:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC3getySS_AA17ClientCredentials_pSg11credentialsyxSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF">get(_:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC3get_11credentials11respondWithySS_AA17ClientCredentials_pSgyxSg_0A9Contracts12RequestErrorVSgtctSeRzSERzlF">get(_:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -464,9 +575,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC3getySS_0A9Contracts10Identifier_p10identifierAA17ClientCredentials_pSg11credentialsyxSg_AD12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF"></a>
+                    <a name="/s:9KituraKitAAC3get_10identifier11credentials11respondWithySS_0A9Contracts10Identifier_pAA17ClientCredentials_pSgyxSg_AG12RequestErrorVSgtctSeRzSERzlF"></a>
                     <a name="//apple_ref/swift/Method/get(_:identifier:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC3getySS_0A9Contracts10Identifier_p10identifierAA17ClientCredentials_pSg11credentialsyxSg_AD12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzlF">get(_:identifier:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC3get_10identifier11credentials11respondWithySS_0A9Contracts10Identifier_pAA17ClientCredentials_pSgyxSg_AG12RequestErrorVSgtctSeRzSERzlF">get(_:identifier:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -537,9 +648,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC4postySS_x4dataAA17ClientCredentials_pSg11credentialsyq_Sg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzsANR_sAOR_r0_lF"></a>
+                    <a name="/s:9KituraKitAAC4post_4data11credentials11respondWithySS_xAA17ClientCredentials_pSgyq_Sg_0A9Contracts12RequestErrorVSgtctSeRzSERzSeR_SER_r0_lF"></a>
                     <a name="//apple_ref/swift/Method/post(_:data:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC4postySS_x4dataAA17ClientCredentials_pSg11credentialsyq_Sg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzsANR_sAOR_r0_lF">post(_:data:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC4post_4data11credentials11respondWithySS_xAA17ClientCredentials_pSgyq_Sg_0A9Contracts12RequestErrorVSgtctSeRzSERzSeR_SER_r0_lF">post(_:data:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -606,9 +717,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC4postySS_x4dataAA17ClientCredentials_pSg11credentialsyq_Sg_q0_Sg0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzAJ10IdentifierR_sAOR0_sAPR0_r1_lF"></a>
+                    <a name="/s:9KituraKitAAC4post_4data11credentials11respondWithySS_xAA17ClientCredentials_pSgyq_Sg_q0_Sg0A9Contracts12RequestErrorVSgtctSeRzSERzAK10IdentifierR_SeR0_SER0_r1_lF"></a>
                     <a name="//apple_ref/swift/Method/post(_:data:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC4postySS_x4dataAA17ClientCredentials_pSg11credentialsyq_Sg_q0_Sg0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzAJ10IdentifierR_sAOR0_sAPR0_r1_lF">post(_:data:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC4post_4data11credentials11respondWithySS_xAA17ClientCredentials_pSgyq_Sg_q0_Sg0A9Contracts12RequestErrorVSgtctSeRzSERzAK10IdentifierR_SeR0_SER0_r1_lF">post(_:data:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -675,9 +786,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC3putySS_0A9Contracts10Identifier_p10identifierx4dataAA17ClientCredentials_pSg11credentialsyq_Sg_AD12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzsAPR_sAQR_r0_lF"></a>
+                    <a name="/s:9KituraKitAAC3put_10identifier4data11credentials11respondWithySS_0A9Contracts10Identifier_pxAA17ClientCredentials_pSgyq_Sg_AH12RequestErrorVSgtctSeRzSERzSeR_SER_r0_lF"></a>
                     <a name="//apple_ref/swift/Method/put(_:identifier:data:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC3putySS_0A9Contracts10Identifier_p10identifierx4dataAA17ClientCredentials_pSg11credentialsyq_Sg_AD12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzsAPR_sAQR_r0_lF">put(_:identifier:data:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC3put_10identifier4data11credentials11respondWithySS_0A9Contracts10Identifier_pxAA17ClientCredentials_pSgyq_Sg_AH12RequestErrorVSgtctSeRzSERzSeR_SER_r0_lF">put(_:identifier:data:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -761,9 +872,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC5patchySS_0A9Contracts10Identifier_p10identifierx4dataAA17ClientCredentials_pSg11credentialsyq_Sg_AD12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzsAPR_sAQR_r0_lF"></a>
+                    <a name="/s:9KituraKitAAC5patch_10identifier4data11credentials11respondWithySS_0A9Contracts10Identifier_pxAA17ClientCredentials_pSgyq_Sg_AH12RequestErrorVSgtctSeRzSERzSeR_SER_r0_lF"></a>
                     <a name="//apple_ref/swift/Method/patch(_:identifier:data:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC5patchySS_0A9Contracts10Identifier_p10identifierx4dataAA17ClientCredentials_pSg11credentialsyq_Sg_AD12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzsAPR_sAQR_r0_lF">patch(_:identifier:data:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC5patch_10identifier4data11credentials11respondWithySS_0A9Contracts10Identifier_pxAA17ClientCredentials_pSgyq_Sg_AH12RequestErrorVSgtctSeRzSERzSeR_SER_r0_lF">patch(_:identifier:data:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -842,9 +953,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC6deleteySS_AA17ClientCredentials_pSg11credentialsy0A9Contracts12RequestErrorVSgc11respondWithtF"></a>
+                    <a name="/s:9KituraKitAAC6delete_11credentials11respondWithySS_AA17ClientCredentials_pSgy0A9Contracts12RequestErrorVSgctF"></a>
                     <a name="//apple_ref/swift/Method/delete(_:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC6deleteySS_AA17ClientCredentials_pSg11credentialsy0A9Contracts12RequestErrorVSgc11respondWithtF">delete(_:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC6delete_11credentials11respondWithySS_AA17ClientCredentials_pSgy0A9Contracts12RequestErrorVSgctF">delete(_:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -898,9 +1009,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC6deleteySS_0A9Contracts10Identifier_p10identifierAA17ClientCredentials_pSg11credentialsyAD12RequestErrorVSgc11respondWithtF"></a>
+                    <a name="/s:9KituraKitAAC6delete_10identifier11credentials11respondWithySS_0A9Contracts10Identifier_pAA17ClientCredentials_pSgyAG12RequestErrorVSgctF"></a>
                     <a name="//apple_ref/swift/Method/delete(_:identifier:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC6deleteySS_0A9Contracts10Identifier_p10identifierAA17ClientCredentials_pSg11credentialsyAD12RequestErrorVSgc11respondWithtF">delete(_:identifier:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC6delete_10identifier11credentials11respondWithySS_0A9Contracts10Identifier_pAA17ClientCredentials_pSgyAG12RequestErrorVSgctF">delete(_:identifier:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -966,9 +1077,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC3getySS_q_5queryAA17ClientCredentials_pSg11credentialsySayxGSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzAJ11QueryParamsR_r0_lF"></a>
+                    <a name="/s:9KituraKitAAC3get_5query11credentials11respondWithySS_q_AA17ClientCredentials_pSgySayxGSg_0A9Contracts12RequestErrorVSgtctSeRzSERzAK11QueryParamsR_r0_lF"></a>
                     <a name="//apple_ref/swift/Method/get(_:query:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC3getySS_q_5queryAA17ClientCredentials_pSg11credentialsySayxGSg_0A9Contracts12RequestErrorVSgtc11respondWithts9DecodableRzs9EncodableRzAJ11QueryParamsR_r0_lF">get(_:query:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC3get_5query11credentials11respondWithySS_q_AA17ClientCredentials_pSgySayxGSg_0A9Contracts12RequestErrorVSgtctSeRzSERzAK11QueryParamsR_r0_lF">get(_:query:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1037,9 +1148,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9KituraKitAAC6deleteySS_x5queryAA17ClientCredentials_pSg11credentialsy0A9Contracts12RequestErrorVSgc11respondWithtAH11QueryParamsRzlF"></a>
+                    <a name="/s:9KituraKitAAC6delete_5query11credentials11respondWithySS_xAA17ClientCredentials_pSgy0A9Contracts12RequestErrorVSgctAI11QueryParamsRzlF"></a>
                     <a name="//apple_ref/swift/Method/delete(_:query:credentials:respondWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9KituraKitAAC6deleteySS_x5queryAA17ClientCredentials_pSg11credentialsy0A9Contracts12RequestErrorVSgc11respondWithtAH11QueryParamsRzlF">delete(_:query:credentials:respondWith:)</a>
+                    <a class="token" href="#/s:9KituraKitAAC6delete_5query11credentials11respondWithySS_xAA17ClientCredentials_pSgy0A9Contracts12RequestErrorVSgctAI11QueryParamsRzlF">delete(_:query:credentials:respondWith:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1116,8 +1227,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-04-04)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-08-06)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
