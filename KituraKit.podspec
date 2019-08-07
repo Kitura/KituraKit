@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name        = "KituraKit"
-  s.version     = "0.0.23"
+  s.version     = "0.0.24"
   s.summary     = "KituraKit is a library for making Codable HTTP Requests to a Kitura server"
   s.homepage    = "https://github.com/IBM-Swift/KituraKit"
   s.license     = { :type => "Apache License, Version 2.0" }
