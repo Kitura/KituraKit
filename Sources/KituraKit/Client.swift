@@ -96,11 +96,7 @@ public class KituraKit {
     ///   - clientCertificate: Pass in `ClientCertificate` with the certificate name and path to use client certificates for 2-way SSL
     public init(baseURL: URL, containsSelfSignedCert: Bool = false, clientCertificate: ClientCertificate? = nil) {
         self.baseURL = baseURL
-        if let clientCertificate = clientCertificate {
-            self.clientCertificate = SwiftyRequest.ClientCertificate(name: clientCertificate.name, path: clientCertificate.path)
-        } else {
-            self.clientCertificate = nil
-        }
+        self.clientCertificate = clientCertificate
         self.containsSelfSignedCert = containsSelfSignedCert
     }
 
@@ -226,11 +222,11 @@ public class KituraKit {
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.contentType = mediaType
-        request.responseData { response in
-            switch response.result {
-            case .success(let data):
-                guard let item: O = try? self.decoder.decode(O.self, from: data),
-                      let locationHeader = response.response?.allHeaderFields["Location"] as? String,
+        request.responseData { result in
+            switch result {
+            case .success(let response):
+                guard let item: O = try? self.decoder.decode(O.self, from: response.body),
+                    let locationHeader = response.headers["Location"].first,
                       let id = try? Id.init(value: locationHeader)
                 else {
                     respondWith(nil, nil, RequestError.clientDeserializationError)
@@ -239,7 +235,7 @@ public class KituraKit {
                 respondWith(id, item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
-                respondWith(nil, nil, constructRequestError(from: error, data: response.data))
+                respondWith(nil, nil, constructRequestError(from: error, data: error.responseData))
             }
         }
     }
@@ -426,25 +422,25 @@ extension RestRequest {
 
     /// Helper method to handle the given request for CodableArrayResultClosures and CodableResultClosures
     fileprivate func handle<O: Codable>(decoder: BodyDecoder, _ respondWith: @escaping (O?, RequestError?) -> (), queryItems: [URLQueryItem]? = nil) {
-        self.responseData(queryItems: queryItems) { response in
-            switch response.result {
-            case .success(let data) :
-                self.defaultCodableHandler(decoder: decoder, data, respondWith: respondWith)
+        self.responseData(queryItems: queryItems) { result in
+            switch result {
+            case .success(let response):
+                self.defaultCodableHandler(decoder: decoder, response.body, respondWith: respondWith)
             case .failure(let error):
-                self.defaultErrorHandler(error, data: response.data, respondWith: respondWith)
+                self.defaultErrorHandler(error, data: error.responseData, respondWith: respondWith)
             }
         }
     }
 
     /// Helper method to handle the given delete request
     fileprivate func handleDelete(_ respondWith: @escaping (RequestError?) -> (), queryItems: [URLQueryItem]? = nil) {
-        self.responseData(queryItems: queryItems) { response in
-            switch response.result {
+        self.responseVoid(queryItems: queryItems) { result in
+            switch result {
             case .success:
                 respondWith(nil)
             case .failure(let error):
                 Log.error("DELETE failure: \(error)")
-                respondWith(constructRequestError(from: error, data: response.data))
+                respondWith(constructRequestError(from: error, data: error.responseData))
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corporation 2018
+ * Copyright IBM Corporation 2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,7 @@
  * limitations under the License.
  */
 
-/// Struct to store client certificate name and path
-public struct ClientCertificate {
-    /// The name for the client certificate
-    public let name: String
-    /// The path to the client certificate
-    public let path: String
+import SwiftyRequest
 
-    /// Initialize a `ClientCertificate` instance
-    public init(name: String, path: String) {
-      self.name = name
-      self.path = path
-    }
-}
+/// An alias of `SwiftyRequest.ClientCertificate`, so that you do not have to import SwiftyRequest directly.
+public typealias ClientCertificate = SwiftyRequest.ClientCertificate

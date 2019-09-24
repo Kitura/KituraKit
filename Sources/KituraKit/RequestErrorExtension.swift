@@ -53,6 +53,9 @@ extension RequestError {
     
     /// An HTTP 608 invalid substitution error
     public static var clientInvalidSubstitution = RequestError(clientErrorCode: 608, clientErrorDescription: "An invalid substitution error occurred. Please ensure that the data being substituted is correct.")
+
+    /// An HTTP 609 encoding error
+    public static var clientDecodingError = RequestError(clientErrorCode: 609, clientErrorDescription: "A decoding error occurred. Please ensure that the types and format of the data being received is correct.")
 }
 
 /// An extension to Kitura RequestErrors with additional error codes specifically for the client.
@@ -62,13 +65,23 @@ extension RequestError {
     /// - Parameter restError: The custom error type for the client.
     public init(restError: RestError) {
         switch restError {
-        case .erroredResponseStatus(let code): self = RequestError(httpCode: code)
         case .noData: self = .clientNoData
         case .serializationError: self = .clientSerializationError
         case .encodingError: self = .clientEncodingError
+        case .decodingError: self = .clientDecodingError
         case .fileManagerError: self = .clientFileManagerError
         case .invalidFile: self = .clientInvalidFile
         case .invalidSubstitution: self = .clientInvalidSubstitution
+        case .invalidURL: fallthrough       // Will not occur: Client can only be initialized with a valid URL
+        case .downloadError: fallthrough    // Will not occur: API is not used by KituraKit
+        case .errorStatusCode: fallthrough
+        default:
+            // All other cases:
+            if let response = restError.response {
+                self = RequestError(httpCode: Int(response.status.code))
+            } else {
+                self = RequestError(rawValue: 0, reason: "Error: No response was received by the client")
+            }
         }
     }
 }
