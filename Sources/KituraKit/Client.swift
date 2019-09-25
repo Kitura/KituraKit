@@ -137,7 +137,7 @@ public class KituraKit {
     public func get<O: Codable>(_ route: String, credentials: ClientCredentials? = nil, respondWith: @escaping CodableResultClosure<O>) {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route)
-        let request = RestRequest(url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.handle(decoder: decoder, respondWith)
@@ -163,7 +163,7 @@ public class KituraKit {
     public func get<O: Codable>(_ route: String, identifier: Identifier, credentials: ClientCredentials? = nil, respondWith: @escaping CodableResultClosure<O>) {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
-        let request = RestRequest(url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.handle(decoder: decoder, respondWith)
@@ -189,7 +189,7 @@ public class KituraKit {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route)
         let encoded = try? encoder.encode(data)
-        let request = RestRequest(method: .post, url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .post, url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.messageBody = encoded
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
@@ -217,7 +217,7 @@ public class KituraKit {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route)
         let encoded = try? encoder.encode(data)
-        let request = RestRequest(method: .post, url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .post, url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.messageBody = encoded
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
@@ -263,7 +263,7 @@ public class KituraKit {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let encoded = try? encoder.encode(data)
-        let request = RestRequest(method: .put, url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .put, url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.messageBody = encoded
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
@@ -300,7 +300,7 @@ public class KituraKit {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
         let encoded = try? encoder.encode(data)
-        let request = RestRequest(method: .patch, url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .patch, url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.messageBody = encoded
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
@@ -322,7 +322,7 @@ public class KituraKit {
     public func delete(_ route: String, credentials: ClientCredentials? = nil, respondWith: @escaping ResultClosure) {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route)
-        let request = RestRequest(method: .delete, url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .delete, url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.contentType = mediaType
@@ -344,7 +344,7 @@ public class KituraKit {
     public func delete(_ route: String, identifier: Identifier, credentials: ClientCredentials? = nil, respondWith: @escaping ResultClosure) {
         let credentials = (credentials ?? defaultCredentials)
         let url = baseURL.appendingPathComponent(route).appendingPathComponent(identifier.value)
-        let request = RestRequest(method: .delete, url: url.absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .delete, url: url.absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.contentType = mediaType
@@ -378,7 +378,7 @@ public class KituraKit {
             respondWith(nil, .clientSerializationError)
             return
         }
-        let request = RestRequest(method: .get, url: baseURL.appendingPathComponent(route).absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .get, url: baseURL.appendingPathComponent(route).absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.contentType = mediaType
@@ -409,7 +409,7 @@ public class KituraKit {
             respondWith(.clientSerializationError)
             return
         }
-        let request = RestRequest(method: .delete, url: baseURL.appendingPathComponent(route).absoluteString, containsSelfSignedCert: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+        let request = RestRequest(method: .delete, url: baseURL.appendingPathComponent(route).absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
         request.headerParameters = credentials?.getHeaders() ?? [:]
         request.acceptType = mediaType
         request.contentType = mediaType
