@@ -225,14 +225,18 @@ public class KituraKit {
         request.responseData { result in
             switch result {
             case .success(let response):
-                guard let item: O = try? self.decoder.decode(O.self, from: response.body),
-                    let locationHeader = response.headers["Location"].first,
-                      let id = try? Id.init(value: locationHeader)
-                else {
-                    respondWith(nil, nil, RequestError.clientDeserializationError)
-                    return
+                do {
+                    let item: O = try self.decoder.decode(O.self, from: response.body)
+                    guard let locationHeader = response.headers["Location"].first,
+                          let id = try? Id.init(value: locationHeader)
+                    else {
+                        respondWith(nil, nil, RequestError.clientDecodingError(underlyingError: "Missing location header." as? Error))
+                        return
+                    }
+                    respondWith(id, item, nil)
+                } catch {
+                    respondWith(nil, nil, RequestError.clientDecodingError(underlyingError: error))
                 }
-                respondWith(id, item, nil)
             case .failure(let error):
                 Log.error("POST failure: \(error)")
                 respondWith(nil, nil, constructRequestError(from: error, data: error.responseData))
@@ -373,16 +377,17 @@ public class KituraKit {
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter queryParams: The QueryParam structure containing the route's query parameters
     public func get<O: Codable, Q: QueryParams>(_ route: String, query: Q, credentials: ClientCredentials? = nil, respondWith: @escaping CodableArrayResultClosure<O>) {
-        let credentials = (credentials ?? defaultCredentials)
-        guard let queryItems: [URLQueryItem] = try? QueryEncoder().encode(query) else {
-            respondWith(nil, .clientSerializationError)
-            return
+        do {
+            let credentials = (credentials ?? defaultCredentials)
+            let queryItems: [URLQueryItem] = try QueryEncoder().encode(query)
+            let request = RestRequest(method: .get, url: baseURL.appendingPathComponent(route).absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+            request.headerParameters = credentials?.getHeaders() ?? [:]
+            request.acceptType = mediaType
+            request.contentType = mediaType
+            request.handle(decoder: decoder, respondWith, queryItems: queryItems)
+        } catch {
+            respondWith(nil, RequestError.clientEncodingError(underlyingError: error))
         }
-        let request = RestRequest(method: .get, url: baseURL.appendingPathComponent(route).absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
-        request.headerParameters = credentials?.getHeaders() ?? [:]
-        request.acceptType = mediaType
-        request.contentType = mediaType
-        request.handle(decoder: decoder, respondWith, queryItems: queryItems)
     }
 
     /// Deletes data at a designated route using a the specified Query Parameters.
@@ -404,16 +409,17 @@ public class KituraKit {
     /// - Parameter route: The custom route KituraKit points to during REST requests.
     /// - Parameter queryParams: The QueryParam structure containing the route's query parameters
     public func delete<Q: QueryParams>(_ route: String, query: Q, credentials: ClientCredentials? = nil, respondWith: @escaping ResultClosure) {
-        let credentials = (credentials ?? defaultCredentials)
-        guard let queryItems: [URLQueryItem] = try? QueryEncoder().encode(query) else {
-            respondWith(.clientSerializationError)
-            return
+        do {
+            let credentials = (credentials ?? defaultCredentials)
+            let queryItems: [URLQueryItem] = try QueryEncoder().encode(query)
+            let request = RestRequest(method: .delete, url: baseURL.appendingPathComponent(route).absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
+            request.headerParameters = credentials?.getHeaders() ?? [:]
+            request.acceptType = mediaType
+            request.contentType = mediaType
+            request.handleDelete(respondWith, queryItems: queryItems)
+        } catch {
+            respondWith(RequestError.clientEncodingError(underlyingError: error))
         }
-        let request = RestRequest(method: .delete, url: baseURL.appendingPathComponent(route).absoluteString, insecure: self.containsSelfSignedCert, clientCertificate: self.clientCertificate)
-        request.headerParameters = credentials?.getHeaders() ?? [:]
-        request.acceptType = mediaType
-        request.contentType = mediaType
-        request.handleDelete(respondWith, queryItems: queryItems)
     }
 }
 
@@ -447,11 +453,12 @@ extension RestRequest {
 
     /// Default success response handler for CodableArrayResultClosures and CodableResultClosures
     private func defaultCodableHandler<O: Codable>(decoder: BodyDecoder, _ data: Data, respondWith: (O?, RequestError?) -> ()) {
-        guard let items: O = try? decoder.decode(O.self, from: data) else {
-            respondWith(nil, .clientDeserializationError)
-            return
-        }
-        respondWith(items, nil)
+        do {
+            let items: O = try decoder.decode(O.self, from: data)
+            respondWith(items, nil)
+        } catch {
+            respondWith(nil, RequestError.clientDecodingError(underlyingError: error))
+            }
     }
 
     /// Default failure response handler for CodableArrayResultClosures and CodableResultClosures

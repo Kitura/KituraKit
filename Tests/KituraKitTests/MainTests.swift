@@ -202,7 +202,25 @@ class MainTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
+/*
+    func testClientPostErrorObject() {
+        let expectation1 = expectation(description: "An error is received from the server")
 
+        let invalidUser = NestedJSON(user: User(id: 5, name: "John Doe", date: date))
+
+        client.post("/invaliduser", data: invalidUser) { (id: Int?, returnedItem: User?, error: RequestError?) -> Void in
+            if error == RequestError(httpCode: 604) {
+                print(String(describing: error))
+                expectation1.fulfill()
+            } else {
+                print(String(describing: error))
+                XCTFail("Failed to get expected error: \(String(describing: error))")
+                return
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+*/
     func testClientPut() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 

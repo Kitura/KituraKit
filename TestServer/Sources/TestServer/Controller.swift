@@ -63,6 +63,11 @@ public class Controller {
             respondWith(user, nil)
         }
 
+        router.get("/invaliduser") { (id: Int, respondWith: (NestedJSON?, RequestError?) -> Void) in
+            let user = NestedJSON(user: User(id: 1, name: "TEST", date: date))
+            respondWith(user, nil)
+        }
+
         router.post("/users") { (user: User?, respondWith: (User?, RequestError?) -> Void) in
             guard let user = user else {
                 respondWith(nil, .badRequest)
@@ -79,6 +84,14 @@ public class Controller {
             }
             self.userStore[String(user.id)] = user
             respondWith(user.id, user, nil)
+        }
+
+        router.post("/invaliduser") { (user: NestedJSON?, respondWith: (Int?, NestedJSON?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, nil, .badRequest)
+                return
+            }
+            respondWith(1, user, nil)
         }
 
         router.put("/users") { (id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
