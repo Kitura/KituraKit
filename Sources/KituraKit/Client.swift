@@ -230,7 +230,7 @@ public class KituraKit {
                     guard let locationHeader = response.headers["Location"].first,
                           let id = try? Id.init(value: locationHeader)
                     else {
-                        respondWith(nil, nil, RequestError.clientDecodingError(underlyingError: "Missing location header." as? Error))
+                        respondWith(nil, nil, RequestError(.clientDecodingError, body: "Missing location header."))
                         return
                     }
                     respondWith(id, item, nil)

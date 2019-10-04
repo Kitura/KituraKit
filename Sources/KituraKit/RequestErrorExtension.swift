@@ -35,13 +35,13 @@ extension RequestError {
     public static let clientErrorUnknown = RequestError(clientErrorCode: 600, clientErrorDescription: "An unknown error occurred")
     
     /// An HTTP 601 connection error
-    //public static let clientConnectionError = RequestError(clientErrorCode: 601, clientErrorDescription: "A connection error occurred, cannot connect to the server. Please ensure that the server is started and running, with the correct port and URL ('ToDoServer' if using the sample app).")
+    public static let clientConnectionError = RequestError(clientErrorCode: 601, clientErrorDescription: "A connection error occurred, cannot connect to the server. Please ensure that the server is started and running, with the correct port and URL ('ToDoServer' if using the sample app).")
     
     /// An HTTP 602 no data error
-    public static let clientNoData = RequestError(clientErrorCode: 602, clientErrorDescription: "A no data error occurred. Please ensure that data exists, and is being passed to the correct destination.")
+    public static let clientNoData = RequestError(clientErrorCode: 602, clientErrorDescription: "A no data error occurred.")
     
     /// An HTTP 603 serialization error
-    public static let clientSerializationError = RequestError.clientEncodingError(underlyingError: nil)
+    public static let clientSerializationError = RequestError.clientSerializationError(underlyingError: nil)
     
     /// An HTTP 604 deserialization error
     public static let clientDeserializationError = RequestError.clientDecodingError(underlyingError: nil)
@@ -53,10 +53,10 @@ extension RequestError {
     public static let clientFileManagerError = RequestError(clientErrorCode: 606, clientErrorDescription: "A file manager error occurred. Please ensure that the file exists, and correct permissions to the file manager are present for the user.")
     
     /// An HTTP 607 invalid file error
-    public static let clientInvalidFile = RequestError(clientErrorCode: 607, clientErrorDescription: "An invalid file error occurred. Please ensure that the file type and contents are correct.")
+    public static let clientInvalidFile = RequestError(clientErrorCode: 607, clientErrorDescription: "An invalid file error occurred.")
     
     /// An HTTP 608 invalid substitution error
-    public static let clientInvalidSubstitution = RequestError(clientErrorCode: 608, clientErrorDescription: "An invalid substitution error occurred. Please ensure that the data being substituted is correct.")
+    public static let clientInvalidSubstitution = RequestError(clientErrorCode: 608, clientErrorDescription: "An invalid substitution error occurred.")
 
     /// An HTTP 609 encoding error
     public static let clientDecodingError = RequestError.clientDecodingError(underlyingError: nil)
@@ -67,6 +67,10 @@ extension RequestError {
 
     static func clientEncodingError(underlyingError: Error?) -> RequestError {
         return RequestError(clientErrorCode: 605, clientErrorDescription: "An encoding error occurred.", underlyingError: underlyingError)
+    }
+
+    static func clientSerializationError(underlyingError: Error?) -> RequestError {
+        return RequestError(clientErrorCode: 603, clientErrorDescription: "A serialization error occurred.", underlyingError: underlyingError)
     }
 }
 
@@ -82,12 +86,12 @@ extension RequestError {
     public init(restError: RestError) {
         switch restError {
         case .noData: self = RequestError.makeRequestError(.clientNoData, underlyingError: restError)
-        case .serializationError: self = .clientSerializationError
-        case .encodingError: self = .clientEncodingError
-        case .decodingError: self = .clientDecodingError
-        case .fileManagerError: self = .clientFileManagerError
-        case .invalidFile: self = .clientInvalidFile
-        case .invalidSubstitution: self = .clientInvalidSubstitution
+        case .serializationError: self = RequestError.makeRequestError(.clientSerializationError, underlyingError: restError)
+        case .encodingError: self = RequestError.makeRequestError(.clientEncodingError, underlyingError: restError)
+        case .decodingError: self = RequestError.makeRequestError(.clientDecodingError, underlyingError: restError)
+        case .fileManagerError: self = RequestError.makeRequestError(.clientFileManagerError, underlyingError: restError)
+        case .invalidFile: self = RequestError.makeRequestError(.clientInvalidFile, underlyingError: restError)
+        case .invalidSubstitution: self = RequestError.makeRequestError(.clientInvalidSubstitution, underlyingError: restError)
         case .invalidURL: fallthrough       // Will not occur: Client can only be initialized with a valid URL
         case .downloadError: fallthrough    // Will not occur: API is not used by KituraKit
         case .errorStatusCode: fallthrough

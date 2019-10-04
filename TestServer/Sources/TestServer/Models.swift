@@ -101,11 +101,3 @@ struct JWTUser: Codable, Equatable {
         return (lhs.name == rhs.name)
     }
 }
-
-struct NestedJSON: Codable {
-    let user: User
-
-    public static func ==(lhs: NestedJSON, rhs: NestedJSON) -> Bool {
-        return (lhs.user == rhs.user)
-    }
-}
