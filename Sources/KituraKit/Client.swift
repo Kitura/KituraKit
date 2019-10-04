@@ -462,18 +462,15 @@ extension RestRequest {
     }
 
     /// Default failure response handler for CodableArrayResultClosures and CodableResultClosures
-    private func defaultErrorHandler<O: Codable>(_ error: Error, data: Data?, respondWith: (O?, RequestError?) -> ()) {
+    private func defaultErrorHandler<O: Codable>(_ error: RestError, data: Data?, respondWith: (O?, RequestError?) -> ()) {
         respondWith(nil, constructRequestError(from: error, data: data))
     }
 }
 
 // Convert an Error to a RequestError, mapping HTTP error codes over if given a
 // SwiftyRequest.RestError. Decorate the RequestError with Data if provided
-fileprivate func constructRequestError(from error: Error, data: Data?) -> RequestError {
-    var requestError = RequestError.clientConnectionError
-    if let restError = error as? RestError {
-        requestError = RequestError(restError: restError)
-    }
+fileprivate func constructRequestError(from restError: RestError, data: Data?) -> RequestError {
+    var requestError = RequestError(restError: restError)
     if let data = data {
         do {
             // TODO: Check Content-Type for format, assuming JSON for now

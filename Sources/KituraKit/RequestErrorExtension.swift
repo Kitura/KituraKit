@@ -72,12 +72,16 @@ extension RequestError {
 
 /// An extension to Kitura RequestErrors with additional error codes specifically for the client.
 extension RequestError {
-    
+
+    static func makeRequestError(_ base: RequestError, underlyingError: RestError) -> RequestError {
+        return RequestError(clientErrorCode: base.rawValue, clientErrorDescription: base.reason, underlyingError: underlyingError)
+    }
+
     /// An initializer to switch between different error types.
     /// - Parameter restError: The custom error type for the client.
     public init(restError: RestError) {
         switch restError {
-        case .noData: self = .clientNoData
+        case .noData: self = RequestError.makeRequestError(.clientNoData, underlyingError: restError)
         case .serializationError: self = .clientSerializationError
         case .encodingError: self = .clientEncodingError
         case .decodingError: self = .clientDecodingError
