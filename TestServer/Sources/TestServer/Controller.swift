@@ -81,6 +81,14 @@ public class Controller {
             respondWith(user.id, user, nil)
         }
 
+        router.post("/invaliduser") { (user: User?, respondWith: (Int?, User?, RequestError?) -> Void) in
+            guard let user = user else {
+                respondWith(nil, nil, .badRequest)
+                return
+            }
+            respondWith(1, user, nil)
+        }
+
         router.put("/users") { (id: Int, user: User?, respondWith: (User?, RequestError?) -> Void) in
             self.userStore[String(id)] = user
             respondWith(user, nil)

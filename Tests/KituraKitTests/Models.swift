@@ -101,4 +101,21 @@ struct JWTUser: Codable, Equatable {
     }
 }
 
+public struct AugmentedUser: Codable, Equatable {
+    public let id: Int
+    public let name: String
+    public let date: Date
+    public let age: Int
+    public init(id: Int, name: String, date: Date, age: Int) {
+        self.id = id
+        self.name = name
+        self.date = date
+        self.age = age
+    }
+
+    public static func ==(lhs: AugmentedUser, rhs: AugmentedUser) -> Bool {
+        return (lhs.id == rhs.id) && (lhs.name == rhs.name) && (lhs.date == rhs.date) && (lhs.age == rhs.age)
+   }
+
+}
 

@@ -101,5 +101,3 @@ struct JWTUser: Codable, Equatable {
         return (lhs.name == rhs.name)
     }
 }
-
-

@@ -203,6 +203,25 @@ class MainTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
 
+    // Deliberately uses a type that is mismatched with the server, in order to decode more fields from a
+    // response than the server has sent, leading to a decoding error.
+    func testClientPostErrorObject() {
+        
+        let expectation1 = expectation(description: "An error is received from the server")
+        let invalidUser = AugmentedUser(id: 5, name: "John Doe", date: date, age: 20)
+        client.post("/invaliduser", data: invalidUser) { (id: Int?, returnedItem: AugmentedUser?, error: RequestError?) -> Void in
+            let errorString = String(describing: error)
+            // Can't access underlying error directly, so we check for evidence of the underlying error in the returned RequestError
+            if errorString.contains("keyNotFound(CodingKeys(stringValue: \"age\", intValue: nil)") {
+                expectation1.fulfill()
+            } else {
+                XCTFail("Failed to get expected error: \(String(describing: error))")
+                return
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
     func testClientPut() {
         let expectation1 = expectation(description: "A response is received from the server -> user")
 
