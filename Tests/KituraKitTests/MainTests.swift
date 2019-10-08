@@ -203,6 +203,8 @@ class MainTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
 
+    // Deliberately uses a type that is mismatched with the server, in order to decode more fields from a
+    // response than the server has sent, leading to a decoding error.
     func testClientPostErrorObject() {
         
         let expectation1 = expectation(description: "An error is received from the server")

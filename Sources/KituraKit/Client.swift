@@ -458,7 +458,7 @@ extension RestRequest {
             respondWith(items, nil)
         } catch {
             respondWith(nil, RequestError.clientDecodingError(underlyingError: error))
-            }
+        }
     }
 
     /// Default failure response handler for CodableArrayResultClosures and CodableResultClosures
