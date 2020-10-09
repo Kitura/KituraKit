@@ -1,7 +1,7 @@
 
 module: KituraKit
 author: IBM
-github_url: https://github.com/IBM-Swift/KituraKit
+github_url: https://github.com/Kitura/KituraKit
 
 theme: fullwidth
 clean: true
