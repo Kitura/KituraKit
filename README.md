@@ -1,8 +1,8 @@
 
 
 <p align="center">
-    <a href="http://kitura.io/">
-        <img src="https://raw.githubusercontent.com/IBM-Swift/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
+    <a href="http://kitura.dev/">
+        <img src="https://raw.githubusercontent.com/Kitura/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
     </a>
 </p>
 
@@ -11,8 +11,8 @@
     <a href="https://ibm-swift.github.io/KituraKit/index.html">
     <img src="https://img.shields.io/badge/apidoc-KituraKit-1FBCE4.svg?style=flat" alt="APIDoc">
     </a>
-    <a href="https://travis-ci.org/IBM-Swift/KituraKit">
-    <img src="https://travis-ci.org/IBM-Swift/KituraKit.svg?branch=master" alt="Build Status - Master">
+    <a href="https://travis-ci.org/Kitura/KituraKit">
+    <img src="https://travis-ci.org/Kitura/KituraKit.svg?branch=master" alt="Build Status - Master">
     </a>
     <img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
     <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
@@ -25,7 +25,7 @@
 
 # KituraKit -  A Kitura v2 Client Library
 
-[Kitura](http://kitura.io) is a lightweight web framework for writing Swift server applications.
+[Kitura](http://kitura.dev) is a lightweight web framework for writing Swift server applications.
 
 KituraKit is a client side framework for sending HTTP requests to a Kitura server. By using the Swift `Codable` protocol, you can send and receive models directly from client to server.
 
@@ -54,10 +54,10 @@ We expect users on the client side to use the Cocoapod installation, however, if
 
 #### Add dependencies
 
-Add the `KituraKit` package to the dependencies within your application’s `Package.swift` file. Substitute `"x.x.x"` with the latest `KituraKit` [release](https://github.com/IBM-Swift/KituraKit/releases).
+Add the `KituraKit` package to the dependencies within your application’s `Package.swift` file. Substitute `"x.x.x"` with the latest `KituraKit` [release](https://github.com/Kitura/KituraKit/releases).
 
 ```swift
-.package(url: "https://github.com/IBM-Swift/KituraKit.git", from: "x.x.x")
+.package(url: "https://github.com/Kitura/KituraKit.git", from: "x.x.x")
 ```
 
 Add `KituraKit` to your target's dependencies:
@@ -76,7 +76,7 @@ Add `KituraKit` to your target's dependencies:
 
 To run through a FoodTracker tutorial which covers various components of Kitura, including KituraKit, [click here](https://github.com/IBM/FoodTrackerBackend)
 
-To try out the sample iOS project for yourself, making use of KituraKit, [click here](https://github.com/IBM-Swift/iOSSampleKituraKit).
+To try out the sample iOS project for yourself, making use of KituraKit, [click here](https://github.com/Kitura/iOSSampleKituraKit).
 
 ## API Documentation
 
@@ -159,11 +159,11 @@ KituraKit supports the following REST requests:
 
 ### Authentication
 
-The Kitura server can authenticate users using the [Credentials](https://github.com/IBM-Swift/Kitura-Credentials) repository. KituraKit allows you to provide credentials alongside your request to identify yourself to the server.
+The Kitura server can authenticate users using the [Credentials](https://github.com/Kitura/Kitura-Credentials) repository. KituraKit allows you to provide credentials alongside your request to identify yourself to the server.
 
 **Note:** When sending credentials you should always use HTTPS to avoid sending passwords/tokens as plaintext.
 
-You can set default credentials for your client which will be attached to all requests. If your server is using [Kitura-CredentialsHTTP](https://github.com/IBM-Swift/Kitura-CredentialsHTTP) for basic authentication, you would provide the username and password as follows:
+You can set default credentials for your client which will be attached to all requests. If your server is using [Kitura-CredentialsHTTP](https://github.com/Kitura/Kitura-CredentialsHTTP) for basic authentication, you would provide the username and password as follows:
 ```swift
 if let client = KituraKit(baseURL: "https://localhost:8080") {
     client.defaultCredentials = HTTPBasic(username: "John", password: "12345")
@@ -182,9 +182,9 @@ client.get("/protected", credentials: credentials) { (users: [User]?, error: Req
 
 KituraKit supports client side authentication for the following plugins:
 
-- HTTP Basic using [Kitura-CredentialsHTTP](https://github.com/IBM-Swift/Kitura-CredentialsHTTP).
-- Facebook OAuth token using [Kitura-CredentialsFacebook](https://github.com/IBM-Swift/Kitura-CredentialsFacebook)
-- Google OAuth token using [Kitura-CredentialsGoogle](https://github.com/IBM-Swift/Kitura-CredentialsGoogle)
+- HTTP Basic using [Kitura-CredentialsHTTP](https://github.com/Kitura/Kitura-CredentialsHTTP).
+- Facebook OAuth token using [Kitura-CredentialsFacebook](https://github.com/Kitura/Kitura-CredentialsFacebook)
+- Google OAuth token using [Kitura-CredentialsGoogle](https://github.com/Kitura/Kitura-CredentialsGoogle)
 - JWT token (Kitura-CredentialsJWT coming soon)
 
 For more information visit our [API reference](https://ibm-swift.github.io/KituraKit/index.html).
@@ -194,4 +194,4 @@ For more information visit our [API reference](https://ibm-swift.github.io/Kitur
 We love to talk server-side Swift and Kitura. Join our [Slack](http://swift-at-ibm-slack.mybluemix.net/) to meet the team!
 
 ## License
-This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/IBM-Swift/KituraKit/blob/master/LICENSE).
+This library is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/Kitura/KituraKit/blob/master/LICENSE).
