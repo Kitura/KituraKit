@@ -1,7 +1,6 @@
-
 module: KituraKit
-author: IBM
-github_url: https://github.com/IBM-Swift/KituraKit
+author: IBM and Kitura project authors
+github_url: https://github.com/Kitura/KituraKit
 
 theme: fullwidth
 clean: true
@@ -12,4 +11,4 @@ readme: README.md
 skip_undocumented: false
 hide_documentation_coverage: false
 
-xcodebuild_arguments: [-project, KituraKit.xcodeproj, -target, KituraKit, LIBRARY_SEARCH_PATHS=.build/debug]
+xcodebuild_arguments: []
