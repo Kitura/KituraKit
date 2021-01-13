@@ -20,7 +20,7 @@
     <header class="header">
       <p class="header-col header-col--primary">
         <a class="header-link" href="index.html">
-          KituraKit Docs
+          KituraKit 0.0.24 Docs
         </a>
          (100% documented)
       </p>
@@ -32,7 +32,7 @@
       </p>
     
         <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://github.com/IBM-Swift/KituraKit">
+          <a class="header-link" href="https://github.com/Kitura/KituraKit">
             <img class="header-icon" src="img/gh.png"/>
             View on GitHub
           </a>
@@ -77,9 +77,6 @@
             <a class="nav-group-name-link" href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ClientCertificate.html">ClientCertificate</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/FacebookToken.html">FacebookToken</a>
               </li>
               <li class="nav-group-task">
@@ -96,25 +93,33 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9KituraKit17ClientCertificatea">ClientCertificate</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             
             <p align="center">
-    <a href="http://kitura.io/">
-        <img src="https://raw.githubusercontent.com/IBM-Swift/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
+    <a href="http://kitura.dev/">
+        <img src="https://raw.githubusercontent.com/Kitura/Kitura/master/Sources/Kitura/resources/kitura-bird.svg?sanitize=true" height="100" alt="Kitura">
     </a>
 </p>
 
 <p align="center">
-    <a href="https://ibm-swift.github.io/KituraKit/index.html">
+    <a href="https://kitura.github.io/KituraKit/index.html">
     <img src="https://img.shields.io/badge/apidoc-KituraKit-1FBCE4.svg?style=flat" alt="APIDoc">
     </a>
-    <a href="https://travis-ci.org/IBM-Swift/KituraKit">
-    <img src="https://travis-ci.org/IBM-Swift/KituraKit.svg?branch=master" alt="Build Status - Master">
+    <a href="https://travis-ci.org/Kitura/KituraKit">
+    <img src="https://travis-ci.org/Kitura/KituraKit.svg?branch=master" alt="Build Status - Master">
     </a>
     <img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
     <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
@@ -125,7 +130,7 @@
 </p>
 <h1 id='kiturakit-a-kitura-v2-client-library' class='heading'>KituraKit -  A Kitura v2 Client Library</h1>
 
-<p><a href="http://kitura.io">Kitura</a> is a lightweight web framework for writing Swift server applications.</p>
+<p><a href="http://kitura.dev">Kitura</a> is a lightweight web framework for writing Swift server applications.</p>
 
 <p>KituraKit is a client side framework for sending HTTP requests to a Kitura server. By using the Swift <code>Codable</code> protocol, you can send and receive models directly from client to server.</p>
 <h2 id='swift-version' class='heading'>Swift version</h2>
@@ -137,7 +142,7 @@
 <ol>
 <li><p>Navigate to the root of your project (where your .xcodeproj directory is)</p></li>
 <li><p>If you don&rsquo;t already have a podfile, run <code>pod init</code>  to create a new podfile in your current directory.</p></li>
-<li><p>Open the Podfile with your preferred text editor and under the <q># Pods for &lsquo;your_project_name&rsquo;></q> line add:</p>
+<li><p>Open the Podfile with your preferred text editor and under the &ldquo;# Pods for &lsquo;your_project_name&rsquo;&gt;&rdquo; line add:</p>
 <pre class="highlight plaintext"><code>pod 'KituraKit'
 </code></pre></li>
 <li><p>Install KituraKit by running the command: <code>pod install</code></p></li>
@@ -148,8 +153,8 @@
 <p>We expect users on the client side to use the Cocoapod installation, however, if you require access to KituraKit from the server you can use Swift Package Manager.</p>
 <h4 id='add-dependencies' class='heading'>Add dependencies</h4>
 
-<p>Add the <code><a href="Classes/KituraKit.html">KituraKit</a></code> package to the dependencies within your application’s <code>Package.swift</code> file. Substitute <code>&quot;x.x.x&quot;</code> with the latest <code><a href="Classes/KituraKit.html">KituraKit</a></code> <a href="https://github.com/IBM-Swift/KituraKit/releases">release</a>.</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/IBM-Swift/KituraKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"x.x.x"</span><span class="p">)</span>
+<p>Add the <code><a href="Classes/KituraKit.html">KituraKit</a></code> package to the dependencies within your application’s <code>Package.swift</code> file. Substitute <code>&quot;x.x.x&quot;</code> with the latest <code><a href="Classes/KituraKit.html">KituraKit</a></code> <a href="https://github.com/Kitura/KituraKit/releases">release</a>.</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/Kitura/KituraKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"x.x.x"</span><span class="p">)</span>
 </code></pre>
 
 <p>Add <code><a href="Classes/KituraKit.html">KituraKit</a></code> to your target&rsquo;s dependencies:</p>
@@ -162,7 +167,7 @@
 
 <p>To run through a FoodTracker tutorial which covers various components of Kitura, including KituraKit, <a href="https://github.com/IBM/FoodTrackerBackend">click here</a></p>
 
-<p>To try out the sample iOS project for yourself, making use of KituraKit, <a href="https://github.com/IBM-Swift/iOSSampleKituraKit">click here</a>.</p>
+<p>To try out the sample iOS project for yourself, making use of KituraKit, <a href="https://github.com/Kitura/iOSSampleKituraKit">click here</a>.</p>
 <h2 id='api-documentation' class='heading'>API Documentation</h2>
 <h3 id='kiturakit' class='heading'>KituraKit</h3>
 
@@ -238,11 +243,11 @@
 </ul>
 <h3 id='authentication' class='heading'>Authentication</h3>
 
-<p>The Kitura server can authenticate users using the <a href="https://github.com/IBM-Swift/Kitura-Credentials">Credentials</a> repository. KituraKit allows you to provide credentials alongside your request to identify yourself to the server.</p>
+<p>The Kitura server can authenticate users using the <a href="https://github.com/Kitura/Kitura-Credentials">Credentials</a> repository. KituraKit allows you to provide credentials alongside your request to identify yourself to the server.</p>
 
 <p><strong>Note:</strong> When sending credentials you should always use HTTPS to avoid sending passwords/tokens as plaintext.</p>
 
-<p>You can set default credentials for your client which will be attached to all requests. If your server is using <a href="https://github.com/IBM-Swift/Kitura-CredentialsHTTP">Kitura-CredentialsHTTP</a> for basic authentication, you would provide the username and password as follows:</p>
+<p>You can set default credentials for your client which will be attached to all requests. If your server is using <a href="https://github.com/Kitura/Kitura-CredentialsHTTP">Kitura-CredentialsHTTP</a> for basic authentication, you would provide the username and password as follows:</p>
 <pre class="highlight swift"><code><span class="k">if</span> <span class="k">let</span> <span class="nv">client</span> <span class="o">=</span> <span class="kt">KituraKit</span><span class="p">(</span><span class="nv">baseURL</span><span class="p">:</span> <span class="s">"https://localhost:8080"</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">client</span><span class="o">.</span><span class="n">defaultCredentials</span> <span class="o">=</span> <span class="kt">HTTPBasic</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="s">"John"</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="s">"12345"</span><span class="p">)</span>
 <span class="p">}</span>
@@ -260,19 +265,19 @@
 <p>KituraKit supports client side authentication for the following plugins:</p>
 
 <ul>
-<li>HTTP Basic using <a href="https://github.com/IBM-Swift/Kitura-CredentialsHTTP">Kitura-CredentialsHTTP</a>.</li>
-<li>Facebook OAuth token using <a href="https://github.com/IBM-Swift/Kitura-CredentialsFacebook">Kitura-CredentialsFacebook</a></li>
-<li>Google OAuth token using <a href="https://github.com/IBM-Swift/Kitura-CredentialsGoogle">Kitura-CredentialsGoogle</a></li>
+<li>HTTP Basic using <a href="https://github.com/Kitura/Kitura-CredentialsHTTP">Kitura-CredentialsHTTP</a>.</li>
+<li>Facebook OAuth token using <a href="https://github.com/Kitura/Kitura-CredentialsFacebook">Kitura-CredentialsFacebook</a></li>
+<li>Google OAuth token using <a href="https://github.com/Kitura/Kitura-CredentialsGoogle">Kitura-CredentialsGoogle</a></li>
 <li>JWT token (Kitura-CredentialsJWT coming soon)</li>
 </ul>
 
-<p>For more information visit our <a href="https://ibm-swift.github.io/KituraKit/index.html">API reference</a>.</p>
+<p>For more information visit our <a href="https://kitura.github.io/KituraKit/index.html">API reference</a>.</p>
 <h2 id='community' class='heading'>Community</h2>
 
 <p>We love to talk server-side Swift and Kitura. Join our <a href="http://swift-at-ibm-slack.mybluemix.net/">Slack</a> to meet the team!</p>
 <h2 id='license' class='heading'>License</h2>
 
-<p>This library is licensed under Apache 2.0. Full license text is available in <a href="https://github.com/IBM-Swift/KituraKit/blob/master/LICENSE">LICENSE</a>.</p>
+<p>This library is licensed under Apache 2.0. Full license text is available in <a href="https://github.com/Kitura/KituraKit/blob/master/LICENSE">LICENSE</a>.</p>
 
           </div>
         </section>
@@ -281,8 +286,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://github.com/IBM-Swift/KituraKit" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-08-06)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2021 <a class="link" href="https://github.com/Kitura/KituraKit" target="_blank" rel="external">IBM and Kitura project authors</a>. All rights reserved. (Last updated: 2021-01-13)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
