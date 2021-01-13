@@ -49,7 +49,7 @@ public protocol ClientCredentials {
 /**
  A struct for providing HTTP basic credentials to a KituraKit route.
  The struct is initialized with a username and password, which will be used to authenticate the user.
- This client route mirrors a Kitura Codable route that implements [TypeSafeHTTPBasic](https://ibm-swift.github.io/Kitura-CredentialsHTTP/Protocols/TypeSafeHTTPBasic.html) authentication to verify a users identity.
+ This client route mirrors a Kitura Codable route that implements [TypeSafeHTTPBasic](https://kitura.github.io/Kitura-CredentialsHTTP/Protocols/TypeSafeHTTPBasic.html) authentication to verify a users identity.
  ### Usage Example: ###
  ```swift
  struct User: Codable {
@@ -90,7 +90,7 @@ public struct HTTPBasic: ClientCredentials {
 /**
  A struct for providing a Facebook Oauth token as credentials to a KituraKit route.
  The struct is initialized with a token, which will be used to authenticate the user and generate their user profile.
- This client route mirrors a Kitura Codable route that implements [TypeSafeFacebookToken](https://ibm-swift.github.io/Kitura-CredentialsFacebook/Protocols/TypeSafeFacebookToken.html) authentication to verify a users identity.
+ This client route mirrors a Kitura Codable route that implements [TypeSafeFacebookToken](https://kitura.github.io/Kitura-CredentialsFacebook/Protocols/TypeSafeFacebookToken.html) authentication to verify a users identity.
  ### Usage Example: ###
  ```swift
  struct User: ExampleProfile {
@@ -127,7 +127,7 @@ public struct FacebookToken: ClientCredentials {
 /**
  A struct for providing a Google Oauth token as credentials to a KituraKit route.
  The struct is initialized with a token, which will be used to authenticate the user and generate their user profile.
- This client route mirrors a Kitura Codable route that implements [TypeSafeGoogleToken](https://ibm-swift.github.io/Kitura-CredentialsGoogle/Protocols/TypeSafeGoogleToken.html) authentication to verify a users identity.
+ This client route mirrors a Kitura Codable route that implements [TypeSafeGoogleToken](https://kitura.github.io/Kitura-CredentialsGoogle/Protocols/TypeSafeGoogleToken.html) authentication to verify a users identity.
  ### Usage Example: ###
  ```swift
  struct User: ExampleProfile {
